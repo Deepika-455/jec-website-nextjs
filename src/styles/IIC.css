@@ -1,0 +1,314 @@
+/* ==========================================================================
+   INSTITUTION INNOVATION COUNCIL (IIC) STYLES - PIXEL PERFECT
+   ========================================================================== */
+
+:root {
+    --logo-red: #e63946;
+    --logo-blue: #003366;
+    --logo-gold: #f1c40f;
+    --shadow-card: 0 5px 15px rgba(0,0,0,0.08); /* Matches your variable */
+}
+
+.iic-page {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #fdfdfd;
+}
+
+.iic-page .max-width-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+}
+
+/* --- Hero Section --- */
+.iic-page .innovation-hero {
+    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    padding: 110px 20px 90px;
+    text-align: center;
+    color: #fff;
+}
+
+.iic-page .innovation-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.iic-page .innovation-hero p {
+    font-size: 1.25rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--logo-gold);
+}
+
+/* --- Stats Bar --- */
+.iic-page .stats-bar {
+    margin: -80px auto 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+    border-bottom: 4px solid var(--logo-blue);
+}
+
+.iic-page .stat-item { 
+    text-align: center; 
+    border-right: 1px solid #eee; 
+}
+
+.iic-page .stat-item:last-child { border-right: none; }
+
+.iic-page .stat-item h3 { 
+    font-size: 36px; 
+    color: var(--logo-red); 
+    margin-bottom: 5px; 
+    font-weight: 800;
+}
+
+.iic-page .stat-item p { 
+    font-size: 14px; 
+    font-weight: 600; 
+    text-transform: uppercase; 
+    color: #555; 
+}
+
+/* --- Intro Section --- */
+.iic-page .intro-section { padding: 100px 0 60px; }
+
+.iic-page .section-title {
+    font-size: 2rem;
+    color: var(--logo-blue);
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.iic-page .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--logo-gold);
+}
+
+.iic-page .intro-text {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+.iic-page .intro-text p { margin-bottom: 20px; }
+
+/* --- Info Grid Section --- */
+.iic-page .info-grid-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.iic-page .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px; 
+}
+
+/* --- CARD STYLES (MATCHING YOUR INSPECT SCREENSHOT) --- */
+.iic-page .info-card {
+    background: #fff;
+    /* 1. Padding from screenshot */
+    padding: 35px; 
+    /* 2. Radius from screenshot */
+    border-radius: 12px; 
+    /* 3. Shadow variable from screenshot */
+    box-shadow: var(--shadow-card); 
+    /* 4. Top Border (instead of left) */
+    border-top: 5px solid transparent; 
+    height: 100%;
+    /* 5. Transition for hover effect */
+    transition: transform 0.3s ease; 
+}
+
+/* HOVER ANIMATION: Moves card up slightly */
+.iic-page .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+/* Card Specific Border Colors (Top Border) */
+.iic-page .info-card.focus { border-top-color: var(--logo-red); }
+.iic-page .info-card.functions { border-top-color: var(--logo-blue); }
+.iic-page .info-card.benefits { 
+    border-top-color: var(--logo-gold); 
+    grid-column: 1 / -1; 
+}
+
+.iic-page .info-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.iic-page .info-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.iic-page .info-card ul li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    color: #555;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* Icons */
+.iic-page .info-card.focus ul li::before {
+    content: '\f058';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--logo-red);
+    font-size: 1.1rem;
+}
+
+.iic-page .info-card.functions ul li::before {
+    content: '\f058';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 2px;
+    color: var(--logo-blue);
+    font-size: 1.1rem;
+}
+
+.iic-page .benefits-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.iic-page .info-card.benefits ul li::before {
+    content: '\f111';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    color: var(--logo-gold);
+    font-size: 0.5rem; 
+}
+
+/* --- Certificates Section --- */
+.iic-page .cert-section {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.iic-page .cert-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+/* Fixed Image Size */
+.iic-page .cert-frame {
+    background: #fff;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+    max-width: 550px; 
+    width: 100%;      
+}
+
+.iic-page .cert-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.iic-page .cert-caption {
+    margin-top: 15px;
+    font-weight: 700;
+    color: var(--logo-blue);
+    font-size: 1.1rem;
+}
+
+/* --- Contact Section --- */
+.iic-page .contact-section {
+    background: var(--logo-blue);
+    color: #fff;
+    padding: 60px 0;
+}
+
+.iic-page .contact-box {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    border: 2px dashed rgba(255,255,255,0.3);
+    padding: 40px;
+    border-radius: 12px;
+}
+
+.iic-page .contact-box h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--logo-gold);
+}
+
+.iic-page .contact-box h4 {
+    font-size: 1.5rem;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.iic-page .contact-box a {
+    text-decoration: underline;
+    margin-left: 8px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+    .iic-page .grid-container { 
+        grid-template-columns: 1fr; 
+    }
+    .iic-page .benefits-list {
+        grid-template-columns: 1fr; 
+    }
+    .iic-page .info-card.benefits {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .iic-page .innovation-hero h1 { font-size: 2.5rem; }
+    .iic-page .stat-item { border-right: none; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+    .iic-page .stat-item:last-child { border-bottom: none; }
+}
