@@ -33,12 +33,12 @@ export default function AdmissionOpen() {
             
             <div className="admissions-stats-container">
                 <div className="admissions-stat-card">
-                    <span className="admissions-stat-number">10k+</span>
+                    <span className="admissions-stat-number">12k+</span>
                     <span className="admissions-stat-label">Alumni</span>
                     <span className="admissions-stat-desc">Glorious and successful</span>
                 </div>
                 <div className="admissions-stat-card">
-                    <span className="admissions-stat-number">15+</span>
+                    <span className="admissions-stat-number">13</span>
                     <span className="admissions-stat-label">Courses</span>
                     <span className="admissions-stat-desc">Career Centric</span>
                 </div>

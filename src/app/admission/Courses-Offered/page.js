@@ -19,7 +19,7 @@ function CoursesOffered() {
       <div className="max-width-container">
         <div className="courses-stats-bar">
             <div className="courses-stat-item">
-                <h3>36</h3>
+                <h3>13</h3>
                 <p>Courses Offered</p>
             </div>
             <div className="courses-stat-item">
@@ -61,13 +61,13 @@ function CoursesOffered() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Computer Science Engineering</td><td>90</td></tr>
-                    <tr><td>Computer Science Engineering (AI)</td><td>30</td></tr>
+                    <tr><td>Computer Science Engineering</td><td>180</td></tr>
+                    <tr><td>Computer Science Engineering (AI)</td><td>120</td></tr>
                     <tr><td>Electronics & Comm. Engineering</td><td>30</td></tr>
                     <tr><td>Electrical Engineering</td><td>60</td></tr>
-                    <tr><td>Mechanical Engineering</td><td>90</td></tr>
-                    <tr><td>Civil Engineering</td><td>120</td></tr>
-                    <tr><td><strong>Total Intake</strong></td><td><strong>480</strong></td></tr>
+                    <tr><td>Mechanical Engineering</td><td>60</td></tr>
+                    <tr><td>Civil Engineering</td><td>60</td></tr>
+                    <tr><td><strong>Total Intake</strong></td><td><strong>510</strong></td></tr>
                 </tbody>
             </table>
         </div>
@@ -108,39 +108,21 @@ function CoursesOffered() {
                 <p>In-depth analysis of power generation, transmission, and distribution.</p>
             </div>
               <div className="courses-card courses-mtech">
-                <h3>Environmental Engineering</h3>
+                <h3>Environmental Engineering*</h3>
                 <span className="courses-duration">18 Seats</span>
                 <p>Focuses on sustainable development and managing natural resources. Addresses water, air, and waste management challenges.</p>
             </div>
+             <div className="courses-card courses-mtech">
+                <h3>Electrical Engineering</h3>
+                <span className="courses-duration">18 Seats</span>
+                <p>Focuses on the generation, transmission, and efficient use of electrical energy. Addresses challenges in power systems, electronics, automation, and emerging technologies.</p>
+            </div>
         </div>
 
-        {/* 4. B.Voc (Gold Border + Top Spacing) */}
-        <h2 className="courses-section-title courses-border-gold courses-spacing-top">4. Bachelor of Vocation (B.Voc)</h2>
-        <div className="courses-text-block">
-            <p><strong>Duration:</strong> 3 Years / 6 Semesters</p>
-            <p>Skill-development based higher education with multiple entry/exit options (Certificate, Diploma, Advanced Diploma). Aligned with National Skills Qualifications Framework (NSQF).</p>
-        </div>
-        <div className="courses-table-container">
-            <table className="courses-data-table">
-                <thead>
-                    <tr>
-                        <th>Discipline</th>
-                        <th>Seats</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Software Development</td><td>25</td></tr>
-                    <tr><td>Production Technology</td><td>25</td></tr>
-                    <tr><td>Electronic Manufacturing Services</td><td>25</td></tr>
-                    <tr><td>Automotive Manufacturing Technology</td><td>25</td></tr>
-                    <tr><td><strong>Total Seats</strong></td><td><strong>100</strong></td></tr>
-                </tbody>
-            </table>
-        </div>
-
+        
         {/* 5. KARMA (Default Styling) */}
         <div className="courses-karma-section">
-            <h3>5. KARMA Skill Courses (AICTE)</h3>
+            <h3>4. KARMA Skill Courses (AICTE)</h3>
             <p className="courses-text-block">AICTE's "Kaushal Augmentation and Restructuring Mission" (KARMA) integrates vocational education. JEC offers various skill courses under this scheme.</p>
             <ul className="courses-karma-list" style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
                 <li>Any 10th pass and above may join. No age bar.</li>
@@ -150,6 +132,82 @@ function CoursesOffered() {
             </ul>
             <a style={{ color: 'var(--courses-blue)', fontWeight: 'bold', marginTop: '15px', display: 'inline-block' }}>View 24 KARMA Courses &rarr;</a>
         </div>
+
+
+
+          <h2 className="section-title" style={{ marginTop: '60px', borderColor: 'var(--logo-gold)' }}>5. "SURYAMITRA" Skill Development Programme</h2>
+                <div className="text-block">
+                    <p><strong>Focus Area:</strong> Solar Energy (Solar PV Technician Course)<br />
+                        <strong>Sponsored By:</strong> MNRE (Ministry of New and Renewable Energy), Govt. of India in collaboration with NISE.</p>
+                    <p>This program covers solar PV feasibility studies, basics of design, installation, operation, and maintenance of solar power plants. It is designed to prepare candidates to become new entrepreneurs in the Solar Sector.</p>
+                </div>
+                <div className="highlight-box">
+                    <h4 style={{ color: 'var(--logo-red)', fontSize: '18px', marginBottom: '10px' }}><i className="fas fa-gift"></i> FREE PROGRAM - NEED NOT TO PAY ANYTHING</h4>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ padding: '5px 0', width: '180px' }}><strong>Qualification:</strong></td>
+                                <td style={{ padding: '5px 0' }}>ITI (Electrician, Wireman, Electronics) OR Diploma (Electrical, Electronics, Mechanical).</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Age Limit:</strong></td>
+                                <td style={{ padding: '5px 0' }}>18 to 40 Years.</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Duration:</strong></td>
+                                <td style={{ padding: '5px 0' }}>Residential programme of THREE MONTHS (600 HOURS).</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Medium:</strong></td>
+                                <td style={{ padding: '5px 0' }}>Hindi and English Language.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style={{ marginTop: '15px', borderTop: '1px solid #ddd', paddingTop: '10px' }}>
+                        <p><strong>Admission Contact:</strong> "Suryamitra" Skill Development Center, JEC Group of Colleges<br />
+                            SP-43 RIICO Industrial Area, Kukas- Jaipur (Rajasthan) - 302 028<br />
+                            <i className="fas fa-phone-alt"></i> +91 94148 57536, +91 84400 44825, +91 94132 06287</p>
+                    </div>
+                </div>
+
+                <h2 className="section-title" style={{ marginTop: '60px', borderColor: 'var(--logo-blue)' }}>6. "VAYUMITRA" Skill Development Program (VSDP)</h2>
+                <div className="text-block">
+                    <p><strong>Focus Area:</strong> Wind Energy (Wind Farm Engineer)<br />
+                        <strong>Sponsored By:</strong> MNRE, Govt. of India in collaboration with NIWE (National Institute of Wind Energy) & NCVET.</p>
+                    <p>A complete overview of Wind Power including resource assessment, installation, commissioning, O&M of wind farms, financial and policy aspects. Covers mechanical, electrical, and hydraulic components.</p>
+                </div>
+                <div className="highlight-box" style={{ borderLeftColor: 'var(--logo-red)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
+                        <h4 style={{ color: 'var(--logo-red)', fontSize: '18px' }}><i className="fas fa-gift"></i> NO COURSE FEE</h4>
+                        <span style={{ background: 'var(--logo-gold)', padding: '2px 10px', borderRadius: '4px', fontWeight: 'bold', fontSize: '13px' }}>30 Seats per Batch</span>
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <tbody>
+                            <tr>
+                                <td style={{ padding: '5px 0', width: '180px' }}><strong>Qualification:</strong></td>
+                                <td style={{ padding: '5px 0' }}>ITI + Exp. / Diploma + Exp. / B.E./B. Tech (Electrical / Mechanical / Civil / Electronics & Instrumentation).</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Age Limit:</strong></td>
+                                <td style={{ padding: '5px 0' }}>Minimum 22 Years.</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Duration:</strong></td>
+                                <td style={{ padding: '5px 0' }}>Residential course of 81 Days.</td>
+                            </tr>
+                            <tr>
+                                <td style={{ padding: '5px 0' }}><strong>Certification:</strong></td>
+                                <td style={{ padding: '5px 0' }}>Certificate from Govt. of India through NCVET/ NIWE /MNRE.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style={{ marginTop: '15px', borderTop: '1px solid #ddd', paddingTop: '10px' }}>
+                        <p><strong>Admission Contact:</strong> "Vayumitra" Skill Development Center, All India Agrasen Technical Education & Research Foundation<br />
+                            Jaipur Engineering College Campus, SP-43 RIICO Industrial Area, Kukas, Jaipur<br />
+                            <i className="fas fa-phone-alt"></i> 9414857536, 8440044825, 7891188636, 9116160495</p>
+                    </div>
+                </div>
+
 
         {/* Career Opportunities (Blue Border + Top Spacing) */}
         <h2 className="courses-section-title courses-border-blue courses-spacing-top">Career Opportunities</h2>

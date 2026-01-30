@@ -27,7 +27,7 @@ export default function Alumni() {
       <div className="max-width-container">
         <div className="stats-bar">
           <div className="stat-item">
-            <h3>7</h3>
+            <h3>10+</h3>
             <p>Continents Presence</p>
           </div>
           <div className="stat-item">

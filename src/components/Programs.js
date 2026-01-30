@@ -14,7 +14,7 @@ const programs = [
     { type: 'M.Tech', name: 'Digital communication (18 seats)', path: '/department/MTech' },
     { type: 'M.Tech', name: 'Power system (18 seats)', path: '/department/MTech' },
     { type: 'M.Tech', name: 'Production engineering (18 seats)', path: '/departmentMTech' },
-    { type: 'M.Tech', name: 'Environmental Engineering (18 seats)', path: '/department/MTech' },
+    { type: 'M.Tech', name: 'Environmental Engineering*(18 seats)', path: '/department/MTech' },
 ];
 
 function Programs() {

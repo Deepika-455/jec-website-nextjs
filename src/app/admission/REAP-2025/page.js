@@ -9,7 +9,7 @@ function Reap2025() {
       
       {/* Hero Section */}
       <section className="reap-hero">
-        <div className="reap-badge">Session 2025-26</div>
+        <div className="reap-badge">Session 2026-27</div>
         <h1>REAP-2025 Disclosure</h1>
         <p>Rajasthan Engineering Admission Process</p>
         <div style={{ marginTop: '1rem' }}>
@@ -31,7 +31,7 @@ function Reap2025() {
                 <p>University Results</p>
             </div>
             <div className="reap-stat-item">
-                <h3>36</h3>
+                <h3>13</h3>
                 <p>Courses Offered</p>
             </div>
             <div className="reap-stat-item">
@@ -45,9 +45,9 @@ function Reap2025() {
 
         {/* Alert Box */}
         <div className="reap-alert-box">
-            <h4 style={{ color: 'var(--reap-primary)', marginBottom: '0.5rem' }}>General Instructions</h4>
+            <h4 style={{ color: 'var(--reap-primary)', marginBottom: '0.5rem' }}>General Instructions session 2026-27</h4>
             <p style={{ color: 'var(--reap-text-main)', fontSize: '0.95rem' }}>
-                Department of Technical Education, Rajasthan has appointed <strong>Centre for Electronic Governance (CEG), Jaipur</strong> to conduct the centralized admission process for the academic session 2025-26. Eligible candidates may apply for admission in B. Tech (I year).
+                Department of Technical Education, Rajasthan has appointed <strong>Centre for Electronic Governance (CEG), Jaipur</strong> to conduct the centralized admission process for the academic session 2026-27. Eligible candidates may apply for admission in B. Tech (I year).
             </p>
         </div>
 
@@ -194,11 +194,11 @@ function Reap2025() {
             <h3 style={{ marginBottom: '1rem' }}>Fee Structure (I Semester)</h3>
             <div className="reap-fee-wrapper">
                 <div className="reap-fee-box">
-                    <span className="reap-fee-amount">₹ 71,400</span>
+                    <span className="reap-fee-amount">₹ 67,000</span>
                     <span className="reap-fee-label">Admission Fee</span>
                 </div>
                 <div className="reap-fee-box" style={{ background: '#ECFDF5', borderColor: '#6EE7B7' }}>
-                    <span className="reap-fee-amount" style={{ color: '#047857' }}>₹ 55,000</span>
+                    <span className="reap-fee-amount" style={{ color: '#047857' }}>₹ 50,000</span>
                     <span className="reap-fee-label">Hostel Fee (Optional)</span>
                 </div>
             </div>

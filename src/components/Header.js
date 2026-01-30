@@ -1,12 +1,12 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import '@/styles/Navigation.css';
+// import '@/styles/Navigation.css';
 
 export default function Header() {
   return (
-    <div className="top-bar">
-      <div className="top-bar-container">
+    <div className="jec-top-bar">
+      <div className="jec-top-bar-container">
         {/* Left Side: Contact Info */}
         <div className="contact-info">
           <span>
@@ -23,9 +23,10 @@ export default function Header() {
              <i className="fas fa-edit"></i> Admission Enquiry 2026
           </Link>
           {/* UPDATED CLASS HERE: contact-btn -> jec-top-cta */}
-          <Link href="/contact-us" className="jec-top-cta">
-            CONTACT US
-          </Link>
+          <Link href="/contact-us" legacyBehavior>
+  <a className="jec-top-cta">CONTACT US</a>
+</Link>
+
         </div>
       </div>
     </div>

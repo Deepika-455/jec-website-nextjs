@@ -123,28 +123,36 @@ body {
     color: var(--jec-gold) !important;
 }
 
-a.jec-top-cta {
-    background-color: #D62828 !important; /* Explicit hex code for safety */
+/* --- UPDATED CONTACT US BUTTON FOR PIC 2 --- */
+.jec-top-right .jec-top-cta {
+    background-color: #D62828 !important; /* The solid red from Pic 2 */
     color: #ffffff !important;
-    padding: 8px 20px !important;
-    border-radius: 4px !important;
-    font-size: 13px !important;
+    padding: 6px 18px !important;      /* More horizontal padding for the button look */
+    border-radius: 6px !important;     /* Rounded corners */
+    font-size: 11px !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    text-decoration: none !important;
+    text-decoration: none !important;  /* REMOVES THE BLUE UNDERLINE */
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     line-height: 1 !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none !important;
 }
 
-a.jec-top-cta:hover {
-    background-color: #FCA311 !important; /* Gold on hover */
+.jec-top-right .jec-top-cta:hover {
+    background-color: #b32121 !important; /* Darker red on hover */
     color: #ffffff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(252, 163, 17, 0.4);
+    text-decoration: none !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Ensure the Admission Enquiry link doesn't have an underline either */
+.jec-top-link {
+    text-decoration: none !important;
 }
 
 /* --- MAIN NAVIGATION --- */
@@ -576,3 +584,5 @@ a.jec-top-cta:hover {
         width: 16px;
     }
 }
+
+

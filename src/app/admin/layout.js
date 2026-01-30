@@ -3,6 +3,8 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import '@/styles/Admin.css';
+import '@/styles/Navigation.css';
+
 import ProtectedRoute from '@/components/admin/ProtectedRoute'; // Import the guard
 
 export default function AdminLayout({ children }) {

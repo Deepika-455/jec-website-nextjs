@@ -26,7 +26,7 @@ function MandatoryDisclosure() {
             </div>
             <div className="md-stat-item">
                 <h3>RTU</h3>
-                <p>Affiliated To</p>
+                <p>Affiliated </p>
             </div>
             <div className="md-stat-item">
                 <h3>AICTE</h3>
@@ -113,10 +113,22 @@ function MandatoryDisclosure() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Computer Science & Engineering</td>
+                            <td>Computer Science & Engineering(AI)</td>
                             <td>B.Tech</td>
                             <td>4 Years</td>
                             <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>Computer Science & Engineering</td>
+                            <td>B.Tech</td>
+                            <td>4 Years</td>
+                            <td>180</td>
+                        </tr>
+                        <tr>
+                            <td>Electronics Engineering</td>
+                            <td>B.Tech</td>
+                            <td>4 Years</td>
+                            <td>60</td>
                         </tr>
                         <tr>
                             <td>Electronics & Comm. Engineering</td>
@@ -136,6 +148,13 @@ function MandatoryDisclosure() {
                             <td>4 Years</td>
                             <td>60</td>
                         </tr>
+                        <tr>
+                            <td>IT</td>
+                            <td>B.Tech</td>
+                            <td>4 Years</td>
+                            <td>30</td>
+                        </tr>
+
                     </tbody>
                 </table>
             </div>
