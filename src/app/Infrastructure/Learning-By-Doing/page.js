@@ -57,14 +57,14 @@ function LearningByDoing() {
                 <p>Jaipur Engineering College (JEC) has some of the finest workshops for Mechanical, Electronics and Communication, Civil and Electrical Engineering. The Computer Science and Information Technology labs are provided with latest soft wares for students. Labs help students learn and develop a healthy thought process.</p>
             </div>
             <div className="learning-img-block">
-                <img src="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?q=80&w=1000&auto=format&fit=crop" alt="Engineering Workshop" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/jec-website-55397.firebasestorage.app/o/images%2Flab.jpg?alt=media&token=c44886fe-3fef-42ed-b19c-8de68445e5fe" alt="Engineering Workshop" />
             </div>
         </div>
 
         {/* NetLab Section Split */}
         <div className="learning-section-split">
             <div className="learning-img-block">
-                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1000&auto=format&fit=crop" alt="NetLab Computers" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/jec-website-55397.firebasestorage.app/o/images%2FCivil%20Engineering%20(1).png?alt=media&token=1d2cfc4e-669b-480c-8f19-1464116cd0f2" alt="NetLab Computers" />
             </div>
             <div className="learning-text-block">
                 <h2>The High-Tech NetLab</h2>

@@ -138,7 +138,7 @@ function Subheader() {
                             <li className={`jec-menu-item ${activeDropdown === 'campus' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'campus')}>Campus Life <i className="fas fa-chevron-down"></i></a>
                                 <ul className={`jec-dropdown jec-mega jec-cols-3 ${activeDropdown === 'campus' ? 'jec-show' : ''}`}>
-                                    <li><Link href="/campus-life/jec-vibrant-india" className="jec-dropdown-link">JEC: Vibrant India</Link></li>
+                                  
                                     <li><Link href="/campus-life/academic-achievers" className="jec-dropdown-link">Academic Achievers</Link></li>
                                     <li><Link href="/campus-life/engineering-projects" className="jec-dropdown-link">Engineering Projects</Link></li>
                                     <li><Link href="/campus-life/games-and-sports" className="jec-dropdown-link">Games and Sports</Link></li>

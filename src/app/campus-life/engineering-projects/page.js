@@ -9,8 +9,15 @@ const EngineeringProjects = () => {
       
       {/* HERO SECTION */}
       <header className="hero">
+        <div className="hero-content-layer">
         <h1>Engineering Projects</h1>
         <p>Students Learn, Innovate, Create & Demonstrate Themselves</p>
+        <a
+                        href="mailto:Examination@jeckukas.org.in"
+                        className="hero-apply-btn" >
+                        Email us 
+                    </a>
+        </div>
       </header>
 
       {/* STATS SECTION */}

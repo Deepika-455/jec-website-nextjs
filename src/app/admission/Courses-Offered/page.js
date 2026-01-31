@@ -5,7 +5,7 @@ import LogoCarousel from '@/components/LogoCarousel';
 
 function CoursesOffered() {
   return (
-    <div className="courses-page">
+    <div className="courses-offered-page">
       
       {/* Hero Section */}
       <section className="courses-hero">
@@ -17,20 +17,20 @@ function CoursesOffered() {
 
       {/* Stats Banner */}
       <div className="max-width-container">
-        <div className="courses-stats-bar">
-            <div className="courses-stat-item">
+        <div className="stats-bar">
+            <div className="stat-item">
                 <h3>13</h3>
                 <p>Courses Offered</p>
             </div>
-            <div className="courses-stat-item">
+            <div className="stat-item">
                 <h3>8</h3>
                 <p>Departments</p>
             </div>
-            <div className="courses-stat-item">
+            <div className="stat-item">
                 <h3>Value</h3>
                 <p>Added Courses</p>
             </div>
-            <div className="courses-stat-item">
+            <div className="stat-item">
                 <h3>Expert</h3>
                 <p>Faculty Members</p>
             </div>
@@ -38,22 +38,22 @@ function CoursesOffered() {
       </div>
 
       {/* Main Content Section */}
-      <div className="max-width-container courses-content-section">
+      <div className="max-width-container content-section">
         
-        <div className="courses-text-block">
+        <div className="text-block">
             <p>Intensely curious and driven to explore, JEC values rigorous analytical thinking, ingenuity, hands-on problem solving, and big new ideas. Globalization has beautifully integrated the world of technology. There is an ever-expanding requirement of quality human resources who can respond to the complex requirements of this sector.</p>
         </div>
 
         {/* 1. B.Tech (Default Gold) */}
-        <h2 className="courses-section-title">1. Bachelor of Technology (B.Tech)</h2>
+        <h2 className="section-title">1. Bachelor of Technology (B.Tech)</h2>
         <div className="courses-text-block">
             <p><strong>Duration:</strong> 4 Years / 8 Semesters (for 10+2 applicants)<br />
             <strong>Eligibility:</strong> 10+2 passed with min 45% marks (40% for reserved). Subjects: Physics & Math (Compulsory) + one optional subject.</p>
             <p>The exciting journey of B.Tech is for those willing to enrich themselves with the vastness of technology. JEC ensures purposeful environments through excellent faculty, motivated students, and modern infrastructure.</p>
         </div>
 
-        <div className="courses-table-container">
-            <table className="courses-data-table">
+        <div className="table-container">
+            <table className="data-table">
                 <thead>
                     <tr>
                         <th>Discipline</th>
@@ -73,64 +73,64 @@ function CoursesOffered() {
         </div>
 
         {/* 2. Lateral Entry (Explicitly Gold) */}
-        <h2 className="courses-section-title courses-border-gold">2. Lateral Entry (Direct 2nd Year)</h2>
-        <div className="courses-highlight-box">
+        <h2 className="section-title"> 2. Lateral Entry (Direct 2nd Year)</h2>
+        <div className="highlight-box">
             <p><strong>Duration:</strong> 3 Years / 6 Semesters</p>
             <p>Intended for meritorious Diploma holders or B.Sc. graduates. 10% seats over total intake are reserved. Admission via centralized counseling or direct application based on AICTE norms.</p>
         </div>
 
         {/* 3. M.Tech (Default Gold) */}
-        <h2 className="courses-section-title">3. Master of Technology (M.Tech)</h2>
-        <div className="courses-text-block">
+        <h2 className="section-title">3. Master of Technology (M.Tech)</h2>
+        <div className="text-block">
             <p><strong>Duration:</strong> 2 Years / 4 Semesters</p>
             <p>Approved by AICTE & Affiliated to RTU, Kota. Eligibility: B.Tech/BE with 50% marks (45% reserved).</p>
         </div>
 
-        <div className="courses-grid">
-            <div className="courses-card courses-mtech">
+        <div className="course-grid">
+            <div className="course-card mtech">
                 <h3>Digital Communication</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>Advanced study in communication systems and signal processing.</p>
             </div>
-            <div className="courses-card courses-mtech">
+            <div className="course-card mtech">
                 <h3>Production Engineering</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>Focus on manufacturing technology and industrial management.</p>
             </div>
-            <div className="courses-card courses-mtech">
+            <div className="course-card mtech">
                 <h3>Computer Science</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>Specialization in algorithms, data science, and software architecture.</p>
             </div>
-            <div className="courses-card courses-mtech">
+            <div className="course-card mtech">
                 <h3>Power System</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>In-depth analysis of power generation, transmission, and distribution.</p>
             </div>
-              <div className="courses-card courses-mtech">
+              <div className="course-card mtech">
                 <h3>Environmental Engineering*</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>Focuses on sustainable development and managing natural resources. Addresses water, air, and waste management challenges.</p>
             </div>
-             <div className="courses-card courses-mtech">
+             <div className="course-card mtech">
                 <h3>Electrical Engineering</h3>
-                <span className="courses-duration">18 Seats</span>
+                <span className="duration">18 Seats</span>
                 <p>Focuses on the generation, transmission, and efficient use of electrical energy. Addresses challenges in power systems, electronics, automation, and emerging technologies.</p>
             </div>
         </div>
 
         
         {/* 5. KARMA (Default Styling) */}
-        <div className="courses-karma-section">
+        <div className="karma-section">
             <h3>4. KARMA Skill Courses (AICTE)</h3>
             <p className="courses-text-block">AICTE's "Kaushal Augmentation and Restructuring Mission" (KARMA) integrates vocational education. JEC offers various skill courses under this scheme.</p>
-            <ul className="courses-karma-list" style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+            <ul className="karma-list" style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
                 <li>Any 10th pass and above may join. No age bar.</li>
                 <li>Preference to local community learners.</li>
                 <li>5% seats offered to PwD students under fee waiver.</li>
                 <li>Round-the-year admission based on course duration.</li>
             </ul>
-            <a style={{ color: 'var(--courses-blue)', fontWeight: 'bold', marginTop: '15px', display: 'inline-block' }}>View 24 KARMA Courses &rarr;</a>
+            <a href="https://jeckukas.org.in/admission/Skill-Courses-JEC" style={{ color: 'var(--courses-blue)', fontWeight: 'bold', marginTop: '15px', display: 'inline-block' }}>View 24 KARMA Courses &rarr;</a>
         </div>
 
 
@@ -210,14 +210,14 @@ function CoursesOffered() {
 
 
         {/* Career Opportunities (Blue Border + Top Spacing) */}
-        <h2 className="courses-section-title courses-border-blue courses-spacing-top">Career Opportunities</h2>
+        <h2 className="section-title courses-border-blue courses-spacing-top">Career Opportunities</h2>
         <div className="courses-text-block">
             <p>Students have a gamut of career options after B.Tech in MNCs (Software, Core Engineering), Startups, or Higher Studies (M.Tech, MBA). Opportunities in Government sectors (PSUs like BEL, BHEL, ONGC, NTPC) are also vast through GATE scores.</p>
         </div>
 
       </div>
 
-      <section className="courses-contact-bar">
+      <section className="contact-bar">
         <div className="max-width-container">
             <h3>Meet Your Admission Counselor</h3>
             <p>Don't miss out on your lifetime opportunity! We are here to assist you.</p>
