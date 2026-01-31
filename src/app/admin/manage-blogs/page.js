@@ -1,22 +1,29 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
-import dynamic from 'next/dynamic'; // Required for Quill in Next.js
-import { db } from '@/firebase'; 
+import dynamic from 'next/dynamic'; 
+import { db, storage } from '@/firebase'; 
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
-import ImageUpload from '@/components/admin/ImageUpload'; 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Import Storage functions
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID for unique filenames
 
-// --- DYNAMIC QUILL IMPORT (SSR FALSE) ---
+// --- FIX FOR REACT 19 / NEXT.JS 15 ---
+import ReactDOM from 'react-dom';
+if (typeof window !== 'undefined' && !ReactDOM.findDOMNode) {
+    // @ts-ignore
+    ReactDOM.findDOMNode = (component) => {
+        return component instanceof Element ? component : (component?.current || null);
+    };
+}
+
+// --- DYNAMIC QUILL IMPORT ---
 const ReactQuill = dynamic(async () => {
   const { default: RQ } = await import('react-quill');
-  
-  // Import modules client-side
   const { default: BlotFormatter } = await import('quill-blot-formatter');
   const { default: htmlEditButton } = await import('quill-html-edit-button');
 
-  // Register Styles & Modules
   const ColorStyle = RQ.Quill.import('attributors/style/color');
   const BackgroundStyle = RQ.Quill.import('attributors/style/background');
   const SizeStyle = RQ.Quill.import('attributors/style/size');
@@ -39,6 +46,7 @@ const ManageBlogs = () => {
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
+    const [uploading, setUploading] = useState(false); // State for upload spinner
 
     // Form State
     const [title, setTitle] = useState('');
@@ -74,10 +82,7 @@ const ManageBlogs = () => {
         htmlEditButton: {
             debug: true, msg: "Edit HTML Source", okText: "Update", buttonHTML: "&lt;&gt;",
             buttonTitle: "Show HTML Source",
-            styleWrapper: `
-        .ql-html-editorContainer { background: #f0f0f0; padding: 20px; border: 1px solid #ccc; }
-        .ql-html-textArea { background: #1e1e1e; color: #d4d4d4; font-family: monospace; font-size: 14px; }
-      `
+            styleWrapper: `.ql-html-editorContainer { background: #f0f0f0; padding: 20px; border: 1px solid #ccc; }`
         }
     }), []);
 
@@ -92,11 +97,58 @@ const ManageBlogs = () => {
 
     useEffect(() => { fetchPosts(); }, []);
 
+    // --- NEW IMAGE UPLOAD LOGIC (Replaces Component) ---
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // 1. Check File Size (1.00 MB = 1048576 bytes)
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (file.size > 1048576) {
+            alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+            e.target.value = null; // Reset input
+            return;
+        }
+
+        // 2. Upload to Firebase
+        try {
+            setUploading(true);
+            const storageRef = ref(storage, `blog-covers/${uuidv4()}-${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    // Optional: You can track progress here
+                },
+                (error) => {
+                    console.error(error);
+                    toast.error("Upload failed!");
+                    setUploading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    setImage(downloadURL);
+                    setUploading(false);
+                    toast.success("Image uploaded!");
+                }
+            );
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            setUploading(false);
+            toast.error("Something went wrong.");
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setImage('');
+        // Optional: If you want to delete from Firebase Storage, you'd need the ref here.
+        // For now, we just clear the link from the form.
+    };
+    // ---------------------------------------------------
+
     const autoGenerateSlug = (text) => {
-        return text
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)+/g, '');
+        return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     };
 
     const handleSubmit = async (e) => {
@@ -149,11 +201,12 @@ const ManageBlogs = () => {
             <div style={styles.card}>
                 <form onSubmit={handleSubmit}>
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '25px' }}>
+                        {/* Left Column */}
                         <div>
                             <label style={styles.label}>Title</label>
                             <input type="text" value={title} onChange={e => setTitle(e.target.value)} style={styles.input} placeholder="Enter article title..." />
 
-                            <label style={styles.label}>Excerpt (Short summary for listing cards)</label>
+                            <label style={styles.label}>Excerpt (Short summary)</label>
                             <textarea value={excerpt} onChange={e => setExcerpt(e.target.value)} style={{ ...styles.input, height: '80px' }} />
 
                             <label style={styles.label}>Main Content</label>
@@ -162,9 +215,64 @@ const ManageBlogs = () => {
                             </div>
                         </div>
 
+                        {/* Right Column */}
                         <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', border: '1px solid #e2e8f0', height: 'fit-content' }}>
-                            <ImageUpload label="Cover Image" onUploadComplete={setImage} />
-                            {image && <img src={image} alt="Preview" style={{ width: '100%', borderRadius: '5px', marginTop: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }} />}
+                            
+                            {/* --- CUSTOM IMAGE UPLOAD UI --- */}
+                            <label style={styles.label}>Cover Image</label>
+                            
+                            {!image ? (
+                                // Upload State
+                                <div style={{ border: '2px dashed #cbd5e1', borderRadius: '6px', padding: '20px', textAlign: 'center', background: 'white' }}>
+                                    {uploading ? (
+                                        <p style={{ color: '#0072C6', fontWeight: 'bold' }}>Uploading...</p>
+                                    ) : (
+                                        <>
+                                            <input 
+                                                type="file" 
+                                                accept="image/*" 
+                                                onChange={handleImageChange} 
+                                                id="file-upload"
+                                                style={{ display: 'none' }} 
+                                            />
+                                            <label htmlFor="file-upload" style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600', display: 'block' }}>
+                                                <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
+                                                Click to Upload
+                                            </label>
+                                            <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                // Preview State with Remove Button
+                                <div style={{ position: 'relative', border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden' }}>
+                                    <img src={image} alt="Preview" style={{ width: '100%', display: 'block' }} />
+                                    <button 
+                                        type="button" 
+                                        onClick={handleRemoveImage}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '5px',
+                                            right: '5px',
+                                            background: 'rgba(255, 0, 0, 0.8)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '24px',
+                                            height: '24px',
+                                            cursor: 'pointer',
+                                            fontWeight: 'bold',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                        title="Remove Image"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            )}
+                            {/* ---------------------------------- */}
 
                             <label style={styles.label}>Image Alt Text</label>
                             <input type="text" value={imageAlt} onChange={e => setImageAlt(e.target.value)} style={styles.input} placeholder="Description for accessibility" />
@@ -182,7 +290,6 @@ const ManageBlogs = () => {
                                 <option>Admissions</option>
                                 <option>Science & Technology</option>
                                 <option>Others</option>
-
                             </select>
 
                             <label style={styles.label}>Author & Date</label>
@@ -200,43 +307,23 @@ const ManageBlogs = () => {
 
                             <h4 style={{ marginBottom: '10px' }}>SEO Settings</h4>
 
-                            <label style={styles.label}>URL Slug (Custom Path)</label>
+                            <label style={styles.label}>URL Slug</label>
                             <input
                                 type="text"
                                 value={slug}
                                 onChange={e => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))}
                                 style={styles.input}
-                                placeholder="e.g. best-engineering-college-jaipur"
                             />
-                            <small style={{ fontSize: '11px', color: '#64748B' }}>Leave empty to generate from title</small>
+                            <small style={{ fontSize: '11px', color: '#64748B' }}>Leave empty to generate</small>
 
                             <label style={{ ...styles.label, marginTop: '15px' }}>Meta Title</label>
-                            <input type="text" value={metaTitle} onChange={e => setMetaTitle(e.target.value)} style={styles.input} placeholder="Title for Google" />
+                            <input type="text" value={metaTitle} onChange={e => setMetaTitle(e.target.value)} style={styles.input} />
 
                             <label style={styles.label}>Meta Description</label>
-                            <textarea
-                                value={metaDesc}
-                                onChange={e => setMetaDesc(e.target.value)}
-                                style={{ ...styles.input, height: '70px', fontSize: '13px' }}
-                                placeholder="Brief summary for Google results"
-                            />
+                            <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} style={{ ...styles.input, height: '70px', fontSize: '13px' }} />
 
                             <label style={styles.label}>Keywords</label>
-                            <input type="text" value={metaKeywords} onChange={e => setMetaKeywords(e.target.value)} style={styles.input} placeholder="engineering, JEC, placements..." />
-
-                            {/* --- GOOGLE PREVIEW --- */}
-                            <div style={styles.previewBox}>
-                                <span style={styles.previewLabel}>Google Preview</span>
-                                <div style={styles.googleContainer}>
-                                    <div style={styles.googleUrl}>
-                                        https://jecjaipur.ac.in › blog › {slug || autoGenerateSlug(title) || 'url-slug'}
-                                    </div>
-                                    <div style={styles.googleTitle}>{metaTitle || title || 'Post Title Will Appear Here'}</div>
-                                    <div style={styles.googleDesc}>
-                                        {metaDesc || excerpt || 'Start writing a meta description or excerpt to see how it looks in search results...'}
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="text" value={metaKeywords} onChange={e => setMetaKeywords(e.target.value)} style={styles.input} />
 
                             <button type="submit" style={styles.saveBtn}>{isEditing ? "Update Post" : "Publish Post"}</button>
                         </div>
@@ -246,7 +333,7 @@ const ManageBlogs = () => {
 
             <div style={styles.listContainer}>
                 <h3>Recent Articles</h3>
-                {posts.length === 0 && <p>No posts found. Create one above!</p>}
+                {posts.length === 0 && <p>No posts found.</p>}
                 {posts.map(post => (
                     <div key={post.id} style={styles.listItem}>
                         <img src={post.image} alt="thumb" style={styles.thumb} />
@@ -276,12 +363,6 @@ const styles = {
     thumb: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '6px' },
     editBtn: { padding: '6px 12px', background: '#E0F2FE', color: '#0284C7', border: 'none', borderRadius: '5px', cursor: 'pointer', marginRight: '5px', fontWeight: '600' },
     deleteBtn: { padding: '6px 12px', background: '#FEE2E2', color: '#DC2626', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: '600' },
-    previewBox: { marginTop: '20px', padding: '15px', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '8px' },
-    previewLabel: { fontSize: '11px', textTransform: 'uppercase', color: '#94a3b8', fontWeight: '700', marginBottom: '8px', display: 'block' },
-    googleContainer: { fontFamily: 'arial, sans-serif', textAlign: 'left' },
-    googleUrl: { fontSize: '12px', color: '#202124', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-    googleTitle: { fontSize: '18px', color: '#1a0dab', marginBottom: '3px', cursor: 'pointer', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
-    googleDesc: { fontSize: '14px', color: '#4d5156', lineHeight: '1.58', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }
 };
 
 export default ManageBlogs;

@@ -1,16 +1,17 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation'; // Updated for Next.js
-import Link from 'next/link'; // Updated for Next.js
+import { useParams } from 'next/navigation'; 
+import Link from 'next/link'; 
 import { db } from '@/firebase';
-// IMPORT both query/where (for slugs) AND doc/getDoc (for IDs)
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import '@/styles/Blog.css';
-import LogoCarousel from '@/components/LogoCarousel'; // Added for consistency
+import LogoCarousel from '@/components/LogoCarousel'; 
 
 const SinglePost = () => {
-    // 'slug' here captures whatever is after /blog/, whether it's a real slug or an ID
-    const { slug } = useParams();
+    const params = useParams();
+    // Decode the slug to handle spaces/special characters (e.g., "my%20blog" -> "my blog")
+    const slug = params?.slug ? decodeURIComponent(params.slug) : null;
+
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -18,27 +19,45 @@ const SinglePost = () => {
 
     useEffect(() => {
         const fetchPost = async () => {
+            if (!slug) return;
             setLoading(true);
+            
             try {
-                // STRATEGY 1: Try to find by "slug" field first (The Pretty URL way)
+                let foundPost = null;
+
+                // STRATEGY 1: Exact Slug Match (Preferred)
+                // This finds posts where the 'slug' field matches the URL exactly.
                 const q = query(collection(db, "blog_posts"), where("slug", "==", slug));
                 const querySnapshot = await getDocs(q);
 
                 if (!querySnapshot.empty) {
                     const docData = querySnapshot.docs[0];
-                    setPost({ id: docData.id, ...docData.data() });
+                    foundPost = { id: docData.id, ...docData.data() };
                 } else {
-                    // STRATEGY 2: If no slug matched, try to find by Document ID (The Old way)
-                    // This fixes the "Not Found" error for posts that still have ID URLs
-                    const docRef = doc(db, "blog_posts", slug);
-                    const docSnap = await getDoc(docRef);
+                    // STRATEGY 2: Case-Insensitive Slug Match
+                    // If URL is "My-Post" but DB has "my-post", this finds it.
+                    const qLower = query(collection(db, "blog_posts"), where("slug", "==", slug.toLowerCase()));
+                    const querySnapshotLower = await getDocs(qLower);
 
-                    if (docSnap.exists()) {
-                        setPost({ id: docSnap.id, ...docSnap.data() });
+                    if (!querySnapshotLower.empty) {
+                        const docData = querySnapshotLower.docs[0];
+                        foundPost = { id: docData.id, ...docData.data() };
                     } else {
-                        setPost(null);
+                        // STRATEGY 3: Document ID Match (Fallback for old blogs)
+                        // This checks if the URL is actually a Document ID (e.g., "8f6278...")
+                        try {
+                            const docRef = doc(db, "blog_posts", slug);
+                            const docSnap = await getDoc(docRef);
+                            if (docSnap.exists()) {
+                                foundPost = { id: docSnap.id, ...docSnap.data() };
+                            }
+                        } catch (e) {
+                            // Not a valid ID format, ignore error
+                        }
                     }
                 }
+
+                setPost(foundPost);
             } catch (error) {
                 console.error("Error fetching post:", error);
             } finally {
@@ -46,12 +65,10 @@ const SinglePost = () => {
             }
         };
 
-        if (slug) {
-            fetchPost();
-        }
+        fetchPost();
     }, [slug]);
 
-    // Fix links automatically
+    // Fix links automatically (Your original logic)
     useEffect(() => {
         if (post && contentRef.current) {
             const links = contentRef.current.querySelectorAll('a');
@@ -85,9 +102,6 @@ const SinglePost = () => {
             </div>
         );
     }
-
-    // Safe access to window for client-side only
-    const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
 
     return (
         <div className="blog-page-wrapper">

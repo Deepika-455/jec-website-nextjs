@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase'; // Updated to use '@' alias
+import { db, storage } from '@/firebase'; // Added storage import
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import ImageUpload from '@/components/admin/ImageUpload'; // Updated path to components
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Added storage functions
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Ensure CSS is imported
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditGallery = () => {
   const [albums, setAlbums] = useState([]);
@@ -14,10 +14,13 @@ const EditGallery = () => {
   // New Album Form State
   const [newAlbumTitle, setNewAlbumTitle] = useState('');
   const [newAlbumCover, setNewAlbumCover] = useState('');
-  const [newAlbumAlt, setNewAlbumAlt] = useState(''); // 1. Cover Alt Text
+  const [newAlbumAlt, setNewAlbumAlt] = useState(''); 
 
   // New Photo Alt State
-  const [photoAlt, setPhotoAlt] = useState(''); // 2. Photo Alt Text for Upload
+  const [photoAlt, setPhotoAlt] = useState(''); 
+  
+  // Uploading State
+  const [uploading, setUploading] = useState(false);
 
   // --- 1. FETCH ALBUMS ---
   const fetchAlbums = async () => {
@@ -41,6 +44,46 @@ const EditGallery = () => {
     fetchAlbums();
   }, []);
 
+  // --- NEW UPLOAD LOGIC (Replaces ImageUpload Component) ---
+  const processUpload = async (file, onSuccess) => {
+    if (!file) return;
+
+    // 1. Check Size (1.00 MB Limit)
+    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+    if (file.size > 1048576) {
+        alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+        return; // Stop execution
+    }
+
+    // 2. Upload to Firebase
+    try {
+        setUploading(true);
+        // Create a unique name
+        const storageRef = ref(storage, `gallery/${Date.now()}-${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+            "state_changed",
+            null,
+            (error) => {
+                console.error(error);
+                toast.error("Upload failed");
+                setUploading(false);
+            },
+            async () => {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                setUploading(false);
+                onSuccess(downloadURL); // Pass URL back to the specific handler
+                toast.success("Image uploaded!");
+            }
+        );
+    } catch (error) {
+        console.error(error);
+        setUploading(false);
+        toast.error("Something went wrong");
+    }
+  };
+
   // --- 2. CREATE ALBUM ---
   const handleCreateAlbum = async (e) => {
     e.preventDefault();
@@ -52,7 +95,7 @@ const EditGallery = () => {
       await addDoc(collection(db, "albums"), {
         title: newAlbumTitle,
         cover: newAlbumCover,
-        coverAlt: newAlbumAlt, // Save Cover Alt
+        coverAlt: newAlbumAlt, 
         count: 0,
         images: [] 
       });
@@ -90,7 +133,7 @@ const EditGallery = () => {
     try {
       const albumRef = doc(db, "albums", selectedAlbum.id);
       
-      const newPhotoObj = { url: url, alt: finalAlt }; // Save as Object
+      const newPhotoObj = { url: url, alt: finalAlt }; 
 
       await updateDoc(albumRef, {
         images: arrayUnion(newPhotoObj),
@@ -98,7 +141,7 @@ const EditGallery = () => {
       });
 
       toast.success("Photo added!");
-      setPhotoAlt(''); // Reset input
+      setPhotoAlt(''); 
       
       // Update local state
       setSelectedAlbum(prev => ({
@@ -158,8 +201,35 @@ const EditGallery = () => {
                     <input type="text" value={newAlbumTitle} onChange={e => setNewAlbumTitle(e.target.value)} style={styles.input} />
                     
                     <label style={styles.label}>Cover Image</label>
-                    <ImageUpload onUploadComplete={setNewAlbumCover} label="Upload Cover" />
-                    {newAlbumCover && <img src={newAlbumCover} alt="Preview" style={{width:'100%', height:'150px', objectFit:'cover', margin:'10px 0'}} />}
+                    
+                    {/* CUSTOM UPLOAD FOR COVER */}
+                    {!newAlbumCover ? (
+                        <div style={{ border: '2px dashed #ccc', padding: '15px', textAlign: 'center', marginBottom: '15px', borderRadius: '5px' }}>
+                            {uploading ? <p>Uploading...</p> : (
+                                <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        processUpload(e.target.files[0], setNewAlbumCover);
+                                        e.target.value = null; // Reset input
+                                    }}
+                                />
+                            )}
+                            <small style={{display:'block', color:'#666', marginTop:'5px'}}>Max: 1.00 MB</small>
+                        </div>
+                    ) : (
+                        <div style={{ position: 'relative', marginBottom: '15px' }}>
+                            <img src={newAlbumCover} alt="Preview" style={{width:'100%', height:'150px', objectFit:'cover', borderRadius: '5px'}} />
+                            <button 
+                                type="button"
+                                onClick={() => setNewAlbumCover('')}
+                                style={{ position: 'absolute', top: 5, right: 5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '25px', height: '25px', cursor: 'pointer' }}
+                            >
+                                X
+                            </button>
+                        </div>
+                    )}
+                    {/* ------------------------- */}
                     
                     <label style={styles.label}>Cover Alt Text</label>
                     <input 
@@ -207,9 +277,26 @@ const EditGallery = () => {
                         placeholder="e.g. Student receiving award"
                     />
                 </div>
-                {/* Disable upload if no alt text? Or just warn. Here we rely on user discipline + warning in handleAddPhoto */}
+                
                 <label style={styles.label}>Step 2: Upload Image</label>
-                <ImageUpload onUploadComplete={handleAddPhoto} label="Upload Photo" />
+                
+                {/* CUSTOM UPLOAD FOR ALBUM PHOTO */}
+                <div style={{ border: '2px dashed #ccc', padding: '15px', textAlign: 'center', marginBottom: '15px', borderRadius: '5px' }}>
+                    {uploading ? <p>Uploading...</p> : (
+                        <input 
+                            type="file" 
+                            accept="image/*"
+                            onChange={(e) => {
+                                // For photos, we pass the handleAddPhoto function directly as the success callback
+                                processUpload(e.target.files[0], handleAddPhoto);
+                                e.target.value = null; // Reset
+                            }}
+                        />
+                    )}
+                    <small style={{display:'block', color:'#666', marginTop:'5px'}}>Max: 1.00 MB</small>
+                </div>
+                {/* ----------------------------- */}
+
             </div>
 
             <div style={styles.photoGrid}>
