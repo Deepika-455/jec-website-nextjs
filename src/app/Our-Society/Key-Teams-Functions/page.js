@@ -1,5 +1,7 @@
 import React from 'react';
 import '@/styles/KeyTeams.css';
+import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
+
 
 export default function KeyTeamsFunctions() {
   return (
@@ -111,6 +113,9 @@ export default function KeyTeamsFunctions() {
         </div>
 
       </div>
+     <LogoCarousel />
+   
     </div>
   );
+
 }

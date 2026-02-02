@@ -327,25 +327,7 @@ const MoocsNptel = () => {
         </div>
 
         {/* Credit Transfer / Conclusion */}
-        <div className="cta-box animated-section">
-          <div className="section-split" style={{ marginBottom: 0, alignItems: 'flex-start' }}>
-            <div>
-              <h3 style={{ color: 'var(--jec-red)', fontFamily: 'var(--font-head)', marginBottom: '1rem' }}>Credit Transfer Policy</h3>
-              <p>UGC has already issued the <strong>UGC (Credit Framework for online learning courses through SWAYAM) Regulation 2016</strong> advising the Universities to identify courses where credits can be transferred on to the academic record of the students for courses done on SWAYAM. AICTE has also put out gazette notification in 2016 and subsequently for adoption of these courses for credit transfer.</p>
-              <p style={{ fontSize: '0.9rem', marginTop: '10px', color: 'var(--text-muted)' }}>Universities/colleges approving credit transfer for these courses can use the marks/certificate obtained in these courses for the same. Learners wanting a SWAYAM certificate should register for the final proctored exams that come at a fee and attend in-person at designated centres.</p>
-              
-              <h4 style={{ marginTop: '2rem' }}>Final Conclusion</h4>
-              <p style={{ color: 'var(--text-muted)' }}>To take this initiative forward and to encourage more students, JEC is actively participating in this initiative. We have set up a SWAYAM-NPTEL chapter in college (with the approval of the management) which is under the headship of <strong>Dr. B.B. Jain</strong>, a faculty member of the college, who is our Single Point of Contact (SPOC). For further details contact the <strong>SWAYAM NPTEL CELL</strong> of Jaipur Engineering College.</p>
-            </div>
-            <div style={{ background: '#FFF5F5', padding: '2rem', borderRadius: '12px', border: '1px solid #FECACA' }}>
-              <h4 style={{ color: 'var(--jec-red)', marginBottom: '1rem' }}><i className="fas fa-file-alt"></i> Official Gazette Notifications</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <a href="https://storage.googleapis.com/swayam1-pub-data/wqimgtest_9da02ba8-bdd8-409c-afdb-645e6dbc544f.pdf" target="_blank" rel="noopener noreferrer" className="btn-outline">Download AICTE Notification</a>
-                <a href="https://storage.googleapis.com/swayam1-pub-data/UGC_Gazette-Credit_Framework_for_Online_Courses_through_SWAYAM.pdf" target="_blank" rel="noopener noreferrer" className="btn-outline">Download UGC Notification</a>
-              </div>
-            </div>
-          </div>
-        </div>
+       
 
       </div>
       

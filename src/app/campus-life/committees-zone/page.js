@@ -1,7 +1,8 @@
-"use client";
+// src/pages/CommitteesZone.js
 import React from 'react';
-import '@/styles/CommitteesZone.css'; 
-import LogoCarousel from '@/components/LogoCarousel'; 
+import '@/styles/CommitteesZone.css'; // Import the CSS
+
+// Note: Ensure you have Font Awesome icons set up in your project (e.g., using react-icons/fa or a global CDN/package)
 
 const CommitteeCard = ({ iconClass, name, mentor, achievements, outcomes }) => (
     <div className="comm-card">
@@ -27,6 +28,7 @@ const CommitteeCard = ({ iconClass, name, mentor, achievements, outcomes }) => (
     </div>
 );
 
+
 const CommitteesZone = () => {
     // Data structure for the committee cards
     const committees = [
@@ -43,7 +45,7 @@ const CommitteesZone = () => {
         {
             iconClass: "fas fa-industry",
             name: "Industry Interaction Committee",
-            mentor: "Mr. Prashant Kumar",
+            mentor: "Ms. Muskan Kundalwal",
             achievements: [
                 "Organizing Industrial Visits to Bhabha Atomic Research Centre, Kalpakkam, NALCO (National Aluminium Company Ltd.), and other organizations."
             ],
@@ -52,7 +54,7 @@ const CommitteesZone = () => {
         {
             iconClass: "fas fa-theater-masks",
             name: "Cultural and Extra Curricular Activities Committee",
-            mentor: "Mr. Lalit K Saraogi",
+            mentor: "Dr. Sunita Goyal Rawat",
             achievements: [
                 "Organizing the Technical Fest 'Technotsav' and the Cultural Fest 'Aparoksha' annually.",
                 "All committees, especially the CCA committee, work to fulfill the aim of fostering new relationships with peer engineering students, the community, and the world."
@@ -62,13 +64,14 @@ const CommitteesZone = () => {
         {
             iconClass: "fas fa-laptop-code",
             name: "Learning by Sharing Knowledge (LSK)",
-            mentor: "Mr. Lalit K Saraogi",
+            mentor: "Mr. Inesh Saraogi",
             achievements: [
                 "Accomplished 15 days Computer Awareness Program at Janki Public School, Natata and Abhinav Vidya Bhawan, Kukas."
             ],
             outcomes: "Maturity, Leadership Skills and willingness to teach and sharing knowledge."
         },
     ];
+
 
     return (
         <div className="committees-page">
@@ -129,17 +132,9 @@ const CommitteesZone = () => {
                 </div>
 
                 {/* CTA SECTION */}
-                <div className="cta-section">
-                    <div className="cta-content">
-                        <h2>Ready to Step Up?</h2>
-                        <p>Join a committee to ensure harmony across campus, develop leadership skills, and contribute to the JEC legacy.</p>
-                        <a href="#" className="btn-cta">Apply for Membership</a>
-                    </div>
-                </div>
+                 {/* redy to section removed */}
 
             </div>
-            
-            <LogoCarousel />
         </div>
     );
 };

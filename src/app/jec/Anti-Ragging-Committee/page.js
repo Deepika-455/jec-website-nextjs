@@ -29,6 +29,13 @@ export default function AntiRagging() {
             <li><i className="fas fa-exclamation-triangle"></i> To take immediate and decisive action in case of any ragging complaints, ensuring prompt justice.</li>
             <li><i className="fas fa-campground"></i> To foster a welcoming and inclusive campus culture for freshers and all students.</li>
             <li><i className="fas fa-bullhorn"></i> To educate students about the severe consequences of ragging and promote responsible behavior.</li>
+            
+                        {/* NEW POINTS ADDED */}
+                        <li><i className="fas fa-user-friends"></i> To conduct regular meetings and counseling sessions to address student grievances proactively.</li>
+                        <li><i className="fas fa-eye"></i> To maintain constant vigil and monitoring at hostels, canteens, and common areas.</li>
+                        <li><i className="fas fa-hand-holding-heart"></i> To implement mentoring cells involving senior students to guide and support juniors.</li>
+                        <li><i className="fas fa-balance-scale"></i> To ensure compliance with AICTE and UGC regulations regarding anti-ragging measures.</li>
+                        <li><i className="fas fa-file-contract"></i> To obtain undertakings from students and parents regarding non-involvement in ragging activities.</li>
           </ul>
         </div>
 

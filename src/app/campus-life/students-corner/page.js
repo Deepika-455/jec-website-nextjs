@@ -25,7 +25,7 @@ const StudentsCorner = () => {
                         <div className="stat-label">Departments</div>
                     </div>
                     <div className="stat-card">
-                        <div className="stat-value">1200+</div>
+                        <div className="stat-value">1000+</div>
                         <div className="stat-label">Computers</div>
                     </div>
                     <div className="stat-card">
@@ -45,37 +45,33 @@ const StudentsCorner = () => {
 
                 <div className="dashboard-grid">
                     {/* Updated links to use Next.js Link component where applicable or keep as anchor for external/placeholders */}
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-file-invoice"></i></div>
-                        <div className="dash-title">Forms Links</div>
-                    </a>
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-trophy"></i></div>
-                        <div className="dash-title">RTU Results</div>
-                    </a>
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-pen-nib"></i></div>
-                        <div className="dash-title">Assignments</div>
-                    </a>
-                    <a href="#" className="dash-card">
+                    
+                          {/* 1. Pay Fees */}
+                    <a href="/admission/Fee-Structure" className="dash-card">
                         <div className="dash-icon"><i className="fas fa-rupee-sign"></i></div>
                         <div className="dash-title">Pay Fees</div>
                     </a>
-                    <a href="#" className="dash-card">
+                     {/* 2. Mandatory Disclosure */}
+                    <a href="/admission/Mandatory-Disclosure" className="dash-card">
+                        <div className="dash-icon"><i className="fas fa-file-alt"></i></div>
+                        <div className="dash-title">Mandatory Disclosure</div>
+                    </a>
+                   
+                    {/* 3. Imp. Questions / FAQ */}
+                    <a href="/jec/JEC-FAQ" className="dash-card">
                         <div className="dash-icon"><i className="fas fa-question-circle"></i></div>
                         <div className="dash-title">Imp. Questions</div>
                     </a>
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-bullhorn"></i></div>
-                        <div className="dash-title">Imp. Notices</div>
-                    </a>
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-download"></i></div>
-                        <div className="dash-title">Paper Download</div>
-                    </a>
-                    <a href="#" className="dash-card">
-                        <div className="dash-icon"><i className="fas fa-clock"></i></div>
-                        <div className="dash-title">Time Table</div>
+
+                    {/* 4. RTU Results (External) */}
+                    <a
+                        href="https://www.esuvidha.info/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="dash-card"
+                    >
+                        <div className="dash-icon"><i className="fas fa-trophy"></i></div>
+                        <div className="dash-title">RTU Results</div>
                     </a>
                 </div>
 
@@ -134,11 +130,17 @@ const StudentsCorner = () => {
 
                 <div className="club-section">
                     <div className="club-text">
-                        <h3>Centre for Student Development (CSD)</h3>
+                        <h3>Student Development Cell (SDC)</h3>
                         <p>"One bee cannot build a hive; one ant cannot build a colony." We believe in empowering students with grit and determination.</p>
                         <p>JEC encourages students to engage in more than <strong>30 co-curricular activities</strong> with <strong>7 established clubs</strong> catering to overall development. Inspired by Maharaja Agrasen’s values, we foster leadership, creativity, and community.</p>
-                        <p>Interested to be a member? Fill the form to join.</p>
-                        <a href="#" className="btn-outline" style={{ borderColor:'var(--gold)', color:'var(--gold)', marginTop:'0' }}>Join Student Club</a>
+                        <p>Interested to be a member?</p>
+                         <a
+                            href="mailto:director.marketing@jeckukas.org.in"
+                            className="btn-outline"
+                            style={{ borderColor: 'var(--gold)', color: 'var(--gold)', marginTop: '0' }}
+                        >
+                            Email Us -&gt;
+                        </a>
                     </div>
                     <div className="club-img">
                         {/* Use the public folder path for images */}
@@ -162,7 +164,7 @@ const StudentsCorner = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1</td><td><a href="https://onlinecourses.nptel.ac.in/explorer" target="_blank" rel="noopener noreferrer">onlinecourses.nptel.ac.in</a></td><td>NPTEL online courses conducted by various IITs</td></tr>
+                            <tr><td>1</td><td><a href="https://onlinecourses.nptel.ac.in/" target="_blank" rel="noopener noreferrer">onlinecourses.nptel.ac.in</a></td><td>NPTEL online courses conducted by various IITs</td></tr>
                             <tr><td>2</td><td><a href="http://nptel.ac.in" target="_blank" rel="noopener noreferrer">nptel.ac.in</a></td><td>NPTEL courses materials/videos</td></tr>
                             <tr><td>3</td><td><a href="http://ocw.mit.edu/index.htm" target="_blank" rel="noopener noreferrer">ocw.mit.edu</a></td><td>MIT open course materials</td></tr>
                             <tr><td>4</td><td><a href="http://cec.nic.in/e-Education/Pages/e-Education.aspx" target="_blank" rel="noopener noreferrer">cec.nic.in</a></td><td>E learning portal</td></tr>

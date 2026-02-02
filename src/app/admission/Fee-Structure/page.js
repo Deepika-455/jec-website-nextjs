@@ -11,7 +11,7 @@ export default function FeeStructure() {
       <section className="fee-hero">
         <div className="max-width-container">
             <h1>Fee Structure & Scholarships</h1>
-            <p>Transparent, Government Approved Fees for Academic Session 2025-26.</p>
+            <p>Transparent, Government Approved Fees for Academic Session 2026-27.</p>
         </div>
       </section>
 
@@ -44,7 +44,7 @@ export default function FeeStructure() {
                 <p style={{ maxWidth: '800px', margin: '0 auto', color: '#666' }}>Fees are applicable for all students as per rules of Government of Rajasthan / Rajasthan Technical University, Kota. Mode of payments can be Cash, Demand Drafts, or Online Transfer.</p>
             </div>
 
-            <h2 className="fee-section-title">Fee Structure (Session 2025-26)</h2>
+            <h2 className="fee-section-title">Fee Structure (Session 2026-27)</h2>
             
             <div className="fee-pricing-grid">
                 
@@ -62,7 +62,7 @@ export default function FeeStructure() {
                             <li><span className="fee-label" style={{ color: '#777', fontSize: '12px' }}>(Refundable One Time)</span></li>
                             <li style={{ borderTop: '2px solid #eee', paddingTop: '15px', marginTop: '10px' }}>
                                 {/* CHANGED TO GREY (#777) */}
-                                <span className="fee-label" style={{ color: '#777' }}>Total First Year</span> 
+                                <span className="fee-label" style={{ color: '#777' }}>Total Fees</span> 
                                 <span className="fee-value" style={{ fontSize: '20px' }}>₹1,00,500</span>
                             </li>
                         </ul>
@@ -84,7 +84,7 @@ export default function FeeStructure() {
                             <li><span className="fee-label" style={{ color: '#777', fontSize: '12px' }}>(Refundable One Time)</span></li>
                             <li style={{ borderTop: '2px solid #eee', paddingTop: '15px', marginTop: '10px' }}>
                                 {/* CHANGED TO GREY (#777) */}
-                                <span className="fee-label" style={{ color: '#777' }}>Total First Payment</span> 
+                                <span className="fee-label" style={{ color: '#777' }}>Total Fees</span> 
                                 <span className="fee-value" style={{ fontSize: '20px' }}>₹1,00,000</span>
                             </li>
                         </ul>
@@ -105,7 +105,7 @@ export default function FeeStructure() {
                             <li><span className="fee-label">Frequency</span> <span className="fee-value">Daily</span></li>
                             <li style={{ borderTop: '2px solid #eee', paddingTop: '15px', marginTop: '10px' }}>
                                 {/* CHANGED TO GREY (#777) */}
-                                <span className="fee-label" style={{ color: '#777' }}>Total Cost</span> 
+                                <span className="fee-label" style={{ color: '#777' }}>Total Fees</span> 
                                 <span className="fee-value" style={{ fontSize: '20px' }}>₹38,000</span>
                             </li>
                         </ul>
@@ -148,7 +148,7 @@ export default function FeeStructure() {
                 <h4><i className="fas fa-clipboard-list"></i> Important Notes</h4>
                 <ul className="fee-notes-list">
                     <li>Fee structure is subject to change every academic year.</li>
-                    <li>This fee structure is applicable for students admitted in Academic Year 2025-26 only.</li>
+                    <li>This fee structure is applicable for students admitted in Academic Year 2026-27 only.</li>
                     <li>REAP Charges, University Development Fee, Enrollment Fee & Examination Fee will be charged by Rajasthan Technical University, Kota, additionally as per norms.</li>
                     <li>Hostel security is to be deposited whenever a student opts for the hostel facility.</li>
                 </ul>
