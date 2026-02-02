@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase'; // Updated to use '@' alias
-import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth } from '@/firebase'; // Ensure auth is imported
+import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,14 +11,42 @@ const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // --- PERMISSION STATES ---
+  const [currentUserRole, setCurrentUserRole] = useState(null);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
   // Form State
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserPassword, setNewUserPassword] = useState('');
   const [newUserRole, setNewUserRole] = useState('editor');
   const [isCreating, setIsCreating] = useState(false);
 
-  // --- 1. FETCH USERS ---
-  const fetchUsers = async () => {
+  // --- 1. CHECK PERMISSION & FETCH USERS ---
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          const role = userDoc.exists() ? userDoc.data().role : 'guest';
+          setCurrentUserRole(role);
+
+          // Only fetch users if Admin
+          if (role === 'admin') {
+            fetchUsersList();
+          }
+        } catch (error) {
+          console.error("Auth Check Error", error);
+        }
+      } else {
+        setCurrentUserRole(null);
+      }
+      setCheckingAuth(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const fetchUsersList = async () => {
     setLoading(true);
     try {
       const querySnapshot = await getDocs(collection(db, "users"));
@@ -35,10 +63,6 @@ const UserManagement = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
   // --- 2. ADD USER (Without Logging Out Admin) ---
   const handleAddUser = async (e) => {
     e.preventDefault();
@@ -46,7 +70,6 @@ const UserManagement = () => {
 
     try {
       // TRICK: Initialize a secondary app to create a user without logging out the admin
-      // NOTE: Updated env vars to Next.js format (NEXT_PUBLIC_)
       const firebaseConfig = {
         apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
         authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -71,15 +94,14 @@ const UserManagement = () => {
       });
 
       // 3. Cleanup secondary app
-      await signOut(secondaryAuth); // Just to be safe
-      // Note: We can't easily "delete" the app instance in JS, but it won't interfere.
+      await signOut(secondaryAuth); 
 
       toast.success(`User ${newUserEmail} created as ${newUserRole}!`);
       
       // Reset Form & Refresh List
       setNewUserEmail('');
       setNewUserPassword('');
-      fetchUsers();
+      fetchUsersList();
 
     } catch (error) {
       console.error("Error adding user:", error);
@@ -114,13 +136,29 @@ const UserManagement = () => {
     try {
       await deleteDoc(doc(db, "users", userId));
       toast.success("User access removed.");
-      fetchUsers();
+      fetchUsersList();
     } catch (error) {
       console.error("Delete error:", error);
       toast.error("Failed to delete user.");
     }
   };
 
+  // --- 5. RENDER LOGIC (ACCESS CONTROL) ---
+  if (checkingAuth) {
+    return <div style={{ padding: '50px', textAlign: 'center' }}>Verifying permissions...</div>;
+  }
+
+  if (currentUserRole !== 'admin') {
+    return (
+      <div style={{ padding: '50px', textAlign: 'center', marginTop: '50px' }}>
+        <h1 style={{ color: '#DC2626', fontSize: '2rem', marginBottom: '10px' }}>Access Denied</h1>
+        <p style={{ fontSize: '1.2rem', color: '#666' }}>You do not have permission to view this page.</p>
+        <div style={{ marginTop: '20px', fontSize: '3rem' }}>🚫</div>
+      </div>
+    );
+  }
+
+  // --- ADMIN VIEW ---
   return (
     <div style={{ padding: '30px', maxWidth: '1000px', margin: '0 auto' }}>
       <ToastContainer />
@@ -252,7 +290,7 @@ const styles = {
   td: { padding: '15px', verticalAlign: 'middle' },
   badge: { padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold' },
   select: { padding: '5px', borderRadius: '4px', border: '1px solid #cbd5e1' },
-  deleteBtn: { padding: '5px 10px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }
+  deleteBtn: { padding: '5px 10px', backgroundColor: '#000000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }
 };
 
 export default UserManagement;

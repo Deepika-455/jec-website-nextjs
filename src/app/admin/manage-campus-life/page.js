@@ -1,24 +1,24 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase'; // Updated to use '@' alias
+import { db, storage } from '@/firebase'; 
 import {
     collection,
     getDocs,
     addDoc,
-    updateDoc, // Added for editing
+    updateDoc,
     deleteDoc,
     doc,
     query,
     orderBy
 } from "firebase/firestore";
-import ImageUpload from '@/components/admin/ImageUpload'; // Updated path to components
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ManageCampusLife = () => {
     const [galleryItems, setGalleryItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingId, setEditingId] = useState(null); // Tracks if we are editing an existing item
+    const [editingId, setEditingId] = useState(null); 
 
     // Form State
     const [imageUrl, setImageUrl] = useState('');
@@ -29,6 +29,10 @@ const ManageCampusLife = () => {
     const [isLarge, setIsLarge] = useState(false);
     const [showPlayButton, setShowPlayButton] = useState(false);
     const [linkedAlbumId, setLinkedAlbumId] = useState('');
+
+    // Upload State
+    const [uploading, setUploading] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
 
     const galleryRef = collection(db, "campus_gallery");
 
@@ -48,6 +52,70 @@ const ManageCampusLife = () => {
         }
     };
 
+    // --- NEW UPLOAD LOGIC ---
+    const processUpload = async (file) => {
+        if (!file) return;
+
+        // 1. Check Size (1.00 MB Limit)
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (file.size > 1048576) {
+            alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+            return; 
+        }
+
+        // 2. Upload to Firebase
+        try {
+            setUploading(true);
+            const storageRef = ref(storage, `campus/${Date.now()}-${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                null,
+                (error) => {
+                    console.error(error);
+                    toast.error("Upload failed");
+                    setUploading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    setImageUrl(downloadURL);
+                    setUploading(false);
+                    toast.success("Image uploaded!");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            setUploading(false);
+            toast.error("Something went wrong");
+        }
+    };
+
+    // Drag & Drop Handlers
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processUpload(e.dataTransfer.files[0]);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setImageUrl('');
+    };
+    // ------------------------
+
     // Populates the form with existing data for editing
     const startEdit = (item) => {
         setEditingId(item.id);
@@ -59,7 +127,7 @@ const ManageCampusLife = () => {
         setIsLarge(item.isLarge || false);
         setShowPlayButton(item.showPlayButton || false);
         setLinkedAlbumId(item.linkedAlbumId || '');
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to form
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
     };
 
     const handleSubmit = async (e) => {
@@ -110,7 +178,7 @@ const ManageCampusLife = () => {
     };
 
     const resetForm = () => {
-        setEditingId(null); // Reset editing state
+        setEditingId(null); 
         setImageUrl('');
         setCategory('');
         setOverlayText('');
@@ -134,15 +202,62 @@ const ManageCampusLife = () => {
             <div style={{ background: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', marginBottom: '50px', border: '1px solid #e2e8f0' }}>
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
 
+                    {/* --- IMAGE UPLOAD (UPDATED WITH DRAG & DROP) --- */}
                     <div style={{ gridColumn: 'span 2', background: '#f8fafc', padding: '20px', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
-                        <ImageUpload label="Select Gallery Image" onUploadComplete={setImageUrl} />
-                        {imageUrl && (
-                            <div style={{ marginTop: '15px' }}>
+                        <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold', color: '#475569' }}>Select Gallery Image</label>
+                        
+                        {!imageUrl ? (
+                            <label 
+                                style={{ 
+                                    ...styles.uploadBox, 
+                                    backgroundColor: dragActive ? '#e2e8f0' : 'white',
+                                    borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                }}
+                                onDragEnter={handleDrag}
+                                onDragLeave={handleDrag}
+                                onDragOver={handleDrag}
+                                onDrop={handleDrop}
+                            >
+                                {uploading ? (
+                                    <p style={{ color: '#0072C6', fontWeight: 'bold', margin: 0 }}>Uploading...</p>
+                                ) : (
+                                    <>
+                                        <input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            onChange={(e) => {
+                                                processUpload(e.target.files[0]);
+                                                e.target.value = null; 
+                                            }}
+                                            style={{ display: 'none' }} 
+                                        />
+                                        <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
+                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
+                                            Drag & Drop or Click to Upload
+                                        </div>
+                                        <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                    </>
+                                )}
+                            </label>
+                        ) : (
+                            <div style={{ position: 'relative', marginTop: '15px' }}>
                                 <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '5px' }}>Image Preview:</p>
                                 <img src={imageUrl} alt="Preview" style={{ width: '100%', maxHeight: '250px', objectFit: 'contain', borderRadius: '8px', background: '#fff' }} />
+                                <button 
+                                    type="button" 
+                                    onClick={handleRemoveImage}
+                                    style={{
+                                        position: 'absolute', top: '10px', right: '10px', background: 'rgba(255, 0, 0, 0.9)', color: 'white', 
+                                        border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold', display:'flex', alignItems:'center', justifyContent:'center'
+                                    }}
+                                    title="Remove Image"
+                                >
+                                    &times;
+                                </button>
                             </div>
                         )}
                     </div>
+                    {/* ----------------------------------------------- */}
 
                     <div>
                         <label style={styles.label}>Category</label>
@@ -217,7 +332,17 @@ const styles = {
     gridCard: { background: 'white', borderRadius: '12px', overflow: 'hidden', border: '1px solid #e2e8f0' },
     cardImg: { width: '100%', height: '180px', objectFit: 'cover' },
     editBtn: { flex: 1, padding: '8px', background: '#e0f2fe', color: '#0369a1', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
-    deleteBtn: { flex: 1, padding: '8px', background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' }
+    deleteBtn: { flex: 1, padding: '8px', background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
+    // ADDED STYLE FOR DRAG BOX
+    uploadBox: { 
+        border: '2px dashed #cbd5e1', 
+        borderRadius: '6px', 
+        padding: '30px', 
+        textAlign: 'center', 
+        display: 'block', 
+        cursor: 'pointer', 
+        transition: '0.2s all' 
+    }
 };
 
 export default ManageCampusLife;

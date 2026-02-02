@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '@/firebase'; // Added storage import
+import { db, storage } from '@/firebase'; 
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; // Added storage functions
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,6 +21,7 @@ const EditGallery = () => {
   
   // Uploading State
   const [uploading, setUploading] = useState(false);
+  const [dragActive, setDragActive] = useState(false); // State for drag visual
 
   // --- 1. FETCH ALBUMS ---
   const fetchAlbums = async () => {
@@ -44,7 +45,7 @@ const EditGallery = () => {
     fetchAlbums();
   }, []);
 
-  // --- NEW UPLOAD LOGIC (Replaces ImageUpload Component) ---
+  // --- NEW UPLOAD LOGIC ---
   const processUpload = async (file, onSuccess) => {
     if (!file) return;
 
@@ -81,6 +82,26 @@ const EditGallery = () => {
         console.error(error);
         setUploading(false);
         toast.error("Something went wrong");
+    }
+  };
+
+  // --- DRAG AND DROP HANDLERS ---
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+        setDragActive(true);
+    } else if (e.type === "dragleave") {
+        setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e, onSuccess) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processUpload(e.dataTransfer.files[0], onSuccess);
     }
   };
 
@@ -183,7 +204,6 @@ const EditGallery = () => {
     <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
       <ToastContainer />
       
-      {/* Header logic ... */}
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'20px', borderBottom:'2px solid #eee', paddingBottom:'10px'}}>
         <h2>{selectedAlbum ? `Editing: ${selectedAlbum.title}` : 'Manage Photo Albums'}</h2>
         {selectedAlbum && (
@@ -202,21 +222,35 @@ const EditGallery = () => {
                     
                     <label style={styles.label}>Cover Image</label>
                     
-                    {/* CUSTOM UPLOAD FOR COVER */}
+                    {/* CUSTOM DRAG & DROP BOX FOR COVER */}
                     {!newAlbumCover ? (
-                        <div style={{ border: '2px dashed #ccc', padding: '15px', textAlign: 'center', marginBottom: '15px', borderRadius: '5px' }}>
-                            {uploading ? <p>Uploading...</p> : (
-                                <input 
-                                    type="file" 
-                                    accept="image/*"
-                                    onChange={(e) => {
-                                        processUpload(e.target.files[0], setNewAlbumCover);
-                                        e.target.value = null; // Reset input
-                                    }}
-                                />
+                        <label 
+                            style={{ 
+                                ...styles.uploadBox, 
+                                backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
+                                borderColor: dragActive ? '#0072C6' : '#ccc'
+                            }}
+                            onDragEnter={handleDrag}
+                            onDragLeave={handleDrag}
+                            onDragOver={handleDrag}
+                            onDrop={(e) => handleDrop(e, setNewAlbumCover)}
+                        >
+                            {uploading ? <p style={{color:'#0072C6', margin:0}}>Uploading...</p> : (
+                                <>
+                                    <input 
+                                        type="file" 
+                                        accept="image/*"
+                                        style={{display: 'none'}}
+                                        onChange={(e) => {
+                                            processUpload(e.target.files[0], setNewAlbumCover);
+                                            e.target.value = null; 
+                                        }}
+                                    />
+                                    <span style={{color:'#0072C6', fontWeight:'600'}}>Drag & drop or click to select</span>
+                                </>
                             )}
                             <small style={{display:'block', color:'#666', marginTop:'5px'}}>Max: 1.00 MB</small>
-                        </div>
+                        </label>
                     ) : (
                         <div style={{ position: 'relative', marginBottom: '15px' }}>
                             <img src={newAlbumCover} alt="Preview" style={{width:'100%', height:'150px', objectFit:'cover', borderRadius: '5px'}} />
@@ -229,7 +263,6 @@ const EditGallery = () => {
                             </button>
                         </div>
                     )}
-                    {/* ------------------------- */}
                     
                     <label style={styles.label}>Cover Alt Text</label>
                     <input 
@@ -244,11 +277,10 @@ const EditGallery = () => {
                     <button type="submit" style={styles.saveBtn}>Create Album</button>
                 </form>
             </div>
-            {/* List ... */}
+            {/* List */}
             <div style={styles.grid}>
                 {albums.map(album => (
                     <div key={album.id} style={styles.albumCard}>
-                         {/* Update Alt here too */}
                         <div style={{height:'150px', overflow:'hidden', position:'relative'}} onClick={() => setSelectedAlbum(album)}>
                             <img src={album.cover} alt={album.coverAlt || album.title} style={{width:'100%', height:'100%', objectFit:'cover', cursor:'pointer'}} />
                             <div style={styles.overlay}>Manage Photos</div>
@@ -280,28 +312,39 @@ const EditGallery = () => {
                 
                 <label style={styles.label}>Step 2: Upload Image</label>
                 
-                {/* CUSTOM UPLOAD FOR ALBUM PHOTO */}
-                <div style={{ border: '2px dashed #ccc', padding: '15px', textAlign: 'center', marginBottom: '15px', borderRadius: '5px' }}>
-                    {uploading ? <p>Uploading...</p> : (
-                        <input 
-                            type="file" 
-                            accept="image/*"
-                            onChange={(e) => {
-                                // For photos, we pass the handleAddPhoto function directly as the success callback
-                                processUpload(e.target.files[0], handleAddPhoto);
-                                e.target.value = null; // Reset
-                            }}
-                        />
+                {/* CUSTOM DRAG & DROP BOX FOR PHOTOS */}
+                <label 
+                    style={{ 
+                        ...styles.uploadBox, 
+                        backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
+                        borderColor: dragActive ? '#0072C6' : '#ccc'
+                    }}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={(e) => handleDrop(e, handleAddPhoto)}
+                >
+                    {uploading ? <p style={{color:'#0072C6', margin:0}}>Uploading...</p> : (
+                        <>
+                            <input 
+                                type="file" 
+                                accept="image/*"
+                                style={{display: 'none'}}
+                                onChange={(e) => {
+                                    processUpload(e.target.files[0], handleAddPhoto);
+                                    e.target.value = null; 
+                                }}
+                            />
+                            <span style={{color:'#0072C6', fontWeight:'600'}}>Drag & drop or click to select</span>
+                        </>
                     )}
                     <small style={{display:'block', color:'#666', marginTop:'5px'}}>Max: 1.00 MB</small>
-                </div>
-                {/* ----------------------------- */}
-
+                </label>
+                
             </div>
 
             <div style={styles.photoGrid}>
                 {selectedAlbum.images?.map((imgObj, index) => {
-                    // Handle legacy data (string) vs new data (object)
                     const url = typeof imgObj === 'string' ? imgObj : imgObj.url;
                     const alt = typeof imgObj === 'string' ? "Gallery Photo" : imgObj.alt;
 
@@ -322,7 +365,6 @@ const EditGallery = () => {
   );
 };
 
-// Styles (same as before)
 const styles = {
   card: { background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' },
@@ -335,7 +377,18 @@ const styles = {
   deleteBtn: { marginTop:'10px', padding:'5px 10px', background:'#fee2e2', color:'#ef4444', border:'none', borderRadius:'4px', cursor:'pointer', fontSize:'12px', width:'100%' },
   photoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px' },
   photoCard: { position: 'relative', height: '150px', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' },
-  photoDeleteBtn: { position: 'absolute', top: '5px', right: '5px', background: 'red', color: 'white', border: 'none', width: '24px', height: '24px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' }
+  photoDeleteBtn: { position: 'absolute', top: '5px', right: '5px', background: 'red', color: 'white', border: 'none', width: '24px', height: '24px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' },
+  // ADDED STYLE FOR UPLOAD BOX
+  uploadBox: { 
+    border: '2px dashed #ccc', 
+    padding: '30px', 
+    textAlign: 'center', 
+    marginBottom: '15px', 
+    borderRadius: '5px', 
+    display: 'block', 
+    cursor: 'pointer', 
+    transition: '0.2s all'
+  }
 };
 
 export default EditGallery;

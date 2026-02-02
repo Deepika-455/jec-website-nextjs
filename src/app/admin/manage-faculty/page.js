@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase'; // Updated alias
+import { db, storage } from '@/firebase'; 
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
-import ImageUpload from '@/components/admin/ImageUpload'; // Updated alias
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import Toast CSS
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const departments = [
     { id: 'cse', title: 'Computer Science Engineering' },
@@ -28,7 +28,7 @@ const EditFaculty = () => {
     // Form State
     const [name, setName] = useState('');
     const [role, setRole] = useState('');
-    const [isHod, setIsHod] = useState(false); // HOD Toggle
+    const [isHod, setIsHod] = useState(false); 
     const [qualification, setQualification] = useState('');
     const [experience, setExperience] = useState('');
     const [researchArea, setResearchArea] = useState('');
@@ -40,6 +40,10 @@ const EditFaculty = () => {
     const [image, setImage] = useState('');
     const [imageAlt, setImageAlt] = useState('');
     const [order, setOrder] = useState(1);
+
+    // Upload State
+    const [uploading, setUploading] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
 
     // 1. Fetch Faculty Members
     const fetchMembers = async () => {
@@ -61,6 +65,70 @@ const EditFaculty = () => {
     useEffect(() => {
         fetchMembers();
     }, []);
+
+    // --- NEW UPLOAD LOGIC ---
+    const processUpload = async (file) => {
+        if (!file) return;
+
+        // 1. Check Size (1.00 MB Limit)
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (file.size > 1048576) {
+            alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+            return; 
+        }
+
+        // 2. Upload to Firebase
+        try {
+            setUploading(true);
+            const storageRef = ref(storage, `faculty/${Date.now()}-${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                null,
+                (error) => {
+                    console.error(error);
+                    toast.error("Upload failed");
+                    setUploading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    setImage(downloadURL);
+                    setUploading(false);
+                    toast.success("Photo uploaded!");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            setUploading(false);
+            toast.error("Something went wrong");
+        }
+    };
+
+    // Drag & Drop Handlers
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processUpload(e.dataTransfer.files[0]);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setImage('');
+    };
+    // ------------------------
 
     // Helper: Handle Checkbox Change
     const handleDeptChange = (deptId) => {
@@ -90,7 +158,7 @@ const EditFaculty = () => {
             experience,
             researchArea,
             email,
-            department: selectedDepartments, // Saved as Array
+            department: selectedDepartments, 
             image,
             imageAlt,
             order: Number(order)
@@ -135,7 +203,6 @@ const EditFaculty = () => {
         setResearchArea(member.researchArea);
         setEmail(member.email);
 
-        // Robust check for array vs string
         if (Array.isArray(member.department)) {
             setSelectedDepartments(member.department);
         } else if (member.department) {
@@ -194,16 +261,74 @@ const EditFaculty = () => {
             <div style={styles.card}>
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '30px' }}>
 
-                    {/* Left Column: Image */}
+                    {/* Left Column: Image (UPDATED WITH DRAG & DROP) */}
                     <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                        <ImageUpload label="Profile Photo" onUploadComplete={setImage} />
-                        {image ? (
-                            <img src={image} alt="Preview" style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginTop: '15px', border: '3px solid #ddd' }} />
+                        <label style={styles.label}>Profile Photo</label>
+                        
+                        {!image ? (
+                            // Upload Box
+                            <label 
+                                style={{ 
+                                    ...styles.uploadBox, 
+                                    backgroundColor: dragActive ? '#e2e8f0' : 'white',
+                                    borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                }}
+                                onDragEnter={handleDrag}
+                                onDragLeave={handleDrag}
+                                onDragOver={handleDrag}
+                                onDrop={handleDrop}
+                            >
+                                {uploading ? (
+                                    <p style={{ color: '#0072C6', fontWeight: 'bold' }}>Uploading...</p>
+                                ) : (
+                                    <>
+                                        <input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            onChange={(e) => {
+                                                processUpload(e.target.files[0]);
+                                                e.target.value = null; 
+                                            }}
+                                            style={{ display: 'none' }} 
+                                        />
+                                        <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
+                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
+                                            Drag & drop or click
+                                        </div>
+                                        <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                    </>
+                                )}
+                            </label>
                         ) : (
-                            <div style={{ width: '150px', height: '150px', borderRadius: '50%', background: '#e2e8f0', margin: '15px auto', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
-                                No Image
+                            // Preview with Remove Button
+                            <div style={{ position: 'relative', width: '150px', margin: '0 auto' }}>
+                                <img src={image} alt="Preview" style={{ width: '150px', height: '150px', borderRadius: '50%', objectFit: 'cover', marginTop: '15px', border: '3px solid #ddd' }} />
+                                <button 
+                                    type="button" 
+                                    onClick={handleRemoveImage}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '15px',
+                                        right: '0px',
+                                        background: 'rgba(255, 0, 0, 0.9)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '24px',
+                                        height: '24px',
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                    title="Remove Photo"
+                                >
+                                    &times;
+                                </button>
                             </div>
                         )}
+
                         <div style={{ marginTop: '15px', textAlign: 'left' }}>
                             <label style={styles.label}>Photo Alt Text</label>
                             <input
@@ -383,6 +508,16 @@ const styles = {
     td: { padding: '15px', fontSize: '14px', color: '#333' },
     editBtn: { background: '#FFC107', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', marginRight: '5px', fontWeight: '600' },
     deleteBtn: { background: '#DC3545', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', color: 'white', fontWeight: '600' },
+    // ADDED STYLE FOR DRAG BOX
+    uploadBox: { 
+        border: '2px dashed #cbd5e1', 
+        borderRadius: '6px', 
+        padding: '20px', 
+        textAlign: 'center', 
+        display: 'block', 
+        cursor: 'pointer', 
+        transition: '0.2s all' 
+    }
 };
 
 export default EditFaculty;
