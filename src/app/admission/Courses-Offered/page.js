@@ -108,7 +108,10 @@ function CoursesOffered() {
                 <p>In-depth analysis of power generation, transmission, and distribution.</p>
             </div>
               <div className="course-card mtech">
-                <h3>Environmental Engineering*</h3>
+                <h3>
+  Environmental Engineering
+  <span style={{ color: 'red' }}> *</span>
+</h3>
                 <span className="duration">18 Seats</span>
                 <p>Focuses on sustainable development and managing natural resources. Addresses water, air, and waste management challenges.</p>
             </div>

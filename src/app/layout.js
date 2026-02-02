@@ -4,6 +4,7 @@ import "@/styles/Footer.css";
 import "@/styles/AdmissionPopup.css";
 import ClientLayout from "@/components/ClientLayout"; // Import the wrapper
 import AdmissionPopup from "@/components/AdmissionPopup";
+import Chatbot from "@/components/Chatbot"; // <--- 1. Import the component
 
 export default function RootLayout({ children }) {
   return (
@@ -22,6 +23,8 @@ export default function RootLayout({ children }) {
         </ClientLayout>
 
         <AdmissionPopup /> 
+
+        <Chatbot />
       </body>
     </html>
   );

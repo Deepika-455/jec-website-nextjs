@@ -44,7 +44,7 @@ export default function AntiRagging() {
 
           <div className="committee-member-card">
             <img 
-                src="/images/prof-sunita-rawat.jpg" 
+                src="/images/(Dr.) Sunita Goyal Rawat.jpg" 
                 alt="Prof. Sunita Rawat" 
                 className="member-photo" 
                 onError={(e) => e.target.src = "https://firebasestorage.googleapis.com/v0/b/jec-website-55397.firebasestorage.app/o/images%2F(Dr.)%20Sunita%20Goyal%20Rawat.jpg?alt=media&token=4c2571f6-5711-4c1a-95f8-3885907e22bc"}

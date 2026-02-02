@@ -15,12 +15,13 @@ export default function Employment() {
           <h1>Employment @ JEC</h1>
           <p>Bringing People and Opportunities Together to Build a Better World.</p>
           
-          <button 
-            className="career-apply-btn" 
-            onClick={() => router.push('/admission-enquiry')}
-          >
-            Apply Now
-          </button>
+          <a 
+    href="mailto:director@jeckukas.org.in" 
+    className="career-apply-btn" 
+    style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center' }}
+>
+    Email Us
+</a>
         </div>
       </section>
 

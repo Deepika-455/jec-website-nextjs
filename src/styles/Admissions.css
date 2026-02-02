@@ -1,15 +1,12 @@
 /* ========================================
-   DOCUMENTS REQUIRED PAGE STYLES
-   ========================================
-*/
-/* --- Scope Variables to this Page Container --- */
-/* ========================================
-   ADMISSIONS OPEN PAGE STYLES    admissions-stats-container">
-                <div className="admissions-stat-card
-   ========================================
+   ADMISSIONS OPEN PAGE STYLES
+   ======================================== 
 */
 
-/* --- Scoped Variables --- */
+/* --- Scope Variables to this Page Container --- */
+/* To prevent conflicts with global styles, we scope these variables 
+   if you are not using CSS Modules. Since you requested exact CSS: */
+
 :root {
     --admissions-logo-red: #D62828; 
     --admissions-logo-blue: #0072C6; 
@@ -110,11 +107,10 @@
 }
 .admissions-hero-cta:hover { transform: translateY(-3px) scale(1.02); background: #e63939; box-shadow: 0 15px 35px rgba(214, 40, 40, 0.6); }
 
-/* --- SECTION: THE JEC ADVANTAGE (COMPACT VERSION) --- */
+/* --- SECTION: THE JEC ADVANTAGE --- */
 .admissions-advantage-section {
     background: linear-gradient(135deg, var(--admissions-logo-blue) 0%, var(--admissions-logo-dark-blue) 100%);
-    /* CHANGED: Reduced padding from 80px to 40px to reduce height */
-    padding: 40px 0; 
+    padding: 80px 0;
     color: white;
     text-align: center;
     position: relative;
@@ -133,8 +129,7 @@
 .admissions-advantage-header {
     position: relative;
     z-index: 2;
-    /* CHANGED: Reduced margin from 50px to 25px */
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 .admissions-advantage-header h2 {
     font-size: 42px;
@@ -152,11 +147,11 @@
     border-radius: 2px;
 }
 
+/* UPDATED: Force 3 columns */
 .admissions-stats-container {
     display: grid;
-    /* CHANGED: Reduced gap from 30px to 15px */
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns */
+    gap: 30px;
     position: relative;
     z-index: 2;
 }
@@ -164,8 +159,7 @@
 .admissions-stat-card {
     background: rgba(255, 255, 255, 0.05); /* Glass effect */
     border: 1px solid rgba(255, 255, 255, 0.1);
-    /* CHANGED: Reduced padding from 30px 20px to 15px 10px */
-    padding: 40px 30px;
+    padding: 30px 20px;
     border-radius: 16px;
     transition: transform 0.3s ease, background 0.3s ease;
     backdrop-filter: blur(5px);
@@ -177,12 +171,11 @@
 }
 
 .admissions-stat-number {
-    /* CHANGED: Reduced font size from 42px to 32px to fit height */
-    font-size: 32px;
+    font-size: 42px;
     font-weight: 900;
     color: var(--admissions-logo-gold);
     line-height: 1;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     display: block;
 }
 .admissions-stat-label {
@@ -201,9 +194,7 @@
 }
 
 /* --- Common Section Styling --- */
-.admissions-section-padding { 
-    padding: 100px 0; /* Vertical padding only */
-}
+.admissions-section-padding { padding: 100px 0; }
 
 .admissions-section-title { 
     font-size: 42px; 
@@ -247,7 +238,7 @@
 .admissions-experts-section { background: var(--admissions-color-background-medium); }
 .admissions-expert-card { background: var(--admissions-logo-white); border-radius: 20px; overflow: hidden; box-shadow: var(--admissions-shadow-card); display: grid; grid-template-columns: 350px 1fr; margin-bottom: 50px; transition: transform 0.3s ease; }
 .admissions-expert-card:hover { transform: translateY(-5px); box-shadow: var(--admissions-shadow-hover); }
-.admissions-expert-img-wrapper { width: 100%; height: 100%; position: relative; overflow: hidden; }
+.admissions-expert-img-wrapper { width: 100%; position: relative; overflow: hidden; contain: size; }
 .admissions-expert-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .admissions-expert-card:hover .admissions-expert-img-wrapper img { transform: scale(1.05); }
 .admissions-expert-content { padding: 50px; display: flex; flex-direction: column; justify-content: center; }
@@ -268,40 +259,24 @@
 .admissions-t-info span { font-size: 13px; color: var(--admissions-logo-red); font-weight: 600; }
 
 /* --- Bottom CTA --- */
-.admissions-bottom-cta { 
-    background: #111; 
-    color: white; 
-    padding: 100px 0; /* Let container handle horizontal padding */
-    text-align: center; 
-}
+.admissions-bottom-cta { background: #111; color: white; padding: 100px 0; text-align: center; }
 .admissions-bottom-cta h2 { margin-bottom: 30px; color: var(--admissions-logo-gold); font-size: 48px; font-weight: 800; }
 .admissions-bottom-cta p { margin-bottom: 40px; font-size: 18px; opacity: 0.8; }
 
 /* --- Responsive --- */
 @media (max-width: 992px) {
-    /* Adjust Container Padding for Mobile (Matches Subheader logic) */
-    .admissions-page .max-width-container {
-        padding: 0 20px; /* 20px left/right on mobile */
-    }
-
+    .admissions-page .max-width-container { padding: 0 20px; }
     .admissions-expert-card { grid-template-columns: 1fr; }
     .admissions-expert-img-wrapper { height: 350px; }
     .admissions-hero-content h1 { font-size: 56px; }
+    .admissions-stats-container { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
     .admissions-hero-content h1 { font-size: 42px; }
     .admissions-hero { height: 600px; }
-    
-    .admissions-advantage-section,
-    .admissions-section-padding { 
-        padding: 60px 0; 
-    }
-
+    .admissions-advantage-section, .admissions-section-padding { padding: 60px 0; }
     .admissions-stat-number { font-size: 36px; }
     .admissions-bottom-cta { padding: 80px 0; }
+    .admissions-stats-container { grid-template-columns: 1fr; }
 }
-/* ========================================
-   DOCUMENTS REQUIRED PAGE STYLES
-   ========================================
-*/

@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from '@/firebase'; // Updated alias
-import LogoCarousel from '@/components/LogoCarousel'; // Added LogoCarousel
-import '@/styles/network.css'; // Import CSS
+import { db } from '@/firebase'; 
+import Image from 'next/image'; 
+import LogoCarousel from '@/components/LogoCarousel'; 
+import '@/styles/network.css'; 
 
-// Note: Ensure the image is placed in 'public/images/' for Next.js
-// If you prefer keeping it in assets, import it and use {building.src} in the img tag
+// Image path
 const building = "/images/jec-building.jpeg"; 
 
-// Helper to check if a member is HOD
+// --- Helper Functions ---
 const isHOD = (member) => {
     if (member.isHod === true) return true; 
     if (!member.role) return false;
@@ -17,28 +17,42 @@ const isHOD = (member) => {
     return r.includes('hod') || r.includes('head of department') || r.includes('head of dept');
 };
 
-// Helper to extract numeric years from experience string
 const getExperienceYears = (expString) => {
     if (!expString) return 0;
     const match = expString.toString().match(/(\d+)/);
     return match ? parseInt(match[0], 10) : 0;
 };
 
-// Helper Component for a single card
+// --- Sub-Component: Faculty Card ---
 const FacultyCard = ({ member }) => {
     const isHead = isHOD(member);
 
     return (
-        <div className={`faculty-card ${isHead ? 'hod-card' : ''}`}>
-            {/* HOD BADGE */}
+        <div 
+            className={`faculty-card ${isHead ? 'hod-card' : ''}`}
+            // Force relative positioning to contain badges/shadows correctly from the start
+            style={{ position: 'relative', overflow: 'visible' }} 
+        >
             {isHead && <div className="hod-badge">HOD</div>}
 
             <div className="card-header">
-                <img
-                    src={member.image || "https://www.w3schools.com/howto/img_avatar.png"}
-                    alt={member.name}
-                    className="avatar"
-                />
+                {/* Avatar Wrapper with Inline Styles to prevent layout shift */}
+                <div className="avatar-wrapper" style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 15px' }}>
+                    <img
+                        src={member.image || "https://www.w3schools.com/howto/img_avatar.png"}
+                        alt={member.name}
+                        className="avatar"
+                        style={{ 
+                            width: '100%', 
+                            height: '100%', 
+                            objectFit: 'cover', 
+                            borderRadius: '25%', 
+                            border: '3px solid white',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            display: 'block' // Prevents inline-block spacing issues
+                        }}
+                    />
+                </div>
                 <div className="faculty-name">{member.name}</div>
                 <div className="faculty-role">{member.role}</div>
             </div>
@@ -62,12 +76,12 @@ const FacultyCard = ({ member }) => {
     );
 };
 
+// --- Main Component ---
 function HumanNetwork() {
     const [activeFilter, setActiveFilter] = useState('all');
     const [faculty, setFaculty] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Definition of departments
     const departments = [
         { id: 'cse', title: 'Computer Science Engineering' },
         { id: 'ee', title: 'Electrical Engineering' },
@@ -90,9 +104,9 @@ function HumanNetwork() {
                 }));
 
                 setFaculty(data);
-                setLoading(false);
             } catch (error) {
                 console.error("Error fetching faculty:", error);
+            } finally {
                 setLoading(false);
             }
         };
@@ -104,28 +118,69 @@ function HumanNetwork() {
         setActiveFilter(dept);
     };
 
+    // --- Loading View ---
     if (loading) {
         return (
             <div className="human-network-page">
-                <section className="faculty-hero">
-                    <img src={building} alt="Campus Building" className="hero-bg-img" />
-                    <div className="hero-overlay">
-                        <div className="max-width-container">
-                            <h1>Loading Network...</h1>
-                        </div>
+                <section 
+                    className="faculty-hero" 
+                    style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        position: 'relative', 
+                        height: '400px',
+                        backgroundColor: '#003366' 
+                    }}
+                >
+                    <div style={{ zIndex: 3, position: 'relative', color: 'white' }}>
+                        <h1>Loading Network...</h1>
                     </div>
                 </section>
             </div>
         );
     }
 
+    // --- Main View ---
     return (
         <div className="human-network-page">
 
-            {/* HERO SECTION */}
-            <section className="faculty-hero">
-                <img src={building} alt="Campus Building" className="hero-bg-img" />
-                <div className="hero-overlay">
+            {/* HERO SECTION - With Priority Loading & Inline Styles */}
+            <section 
+                className="faculty-hero"
+                style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    position: 'relative', 
+                    height: '400px', 
+                    textAlign: 'center',
+                    marginBottom: '2rem',
+                    backgroundColor: '#003366',
+                    overflow: 'hidden'
+                }}
+            >
+                <Image 
+                    src={building} 
+                    alt="Campus Building" 
+                    fill
+                    priority={true} 
+                    style={{ objectFit: 'cover', zIndex: 1 }}
+                />
+                
+                <div 
+                    style={{ 
+                        position: 'absolute', 
+                        top: 0, 
+                        left: 0, 
+                        width: '100%', 
+                        height: '100%', 
+                        background: 'rgba(0, 0, 0, 0.6)', 
+                        zIndex: 2 
+                    }}
+                ></div>
+
+                <div className="hero-overlay" style={{ zIndex: 3, position: 'relative', width: '100%' }}>
                     <div className="max-width-container">
                         <h1>Human Network @ JEC</h1>
                         <p>Meet the dedicated minds shaping the future of engineering.</p>
@@ -145,40 +200,27 @@ function HumanNetwork() {
             </div>
 
             <div className="max-width-container faculty-section">
-
-                {/* Loop through defined departments */}
                 {departments.map((dept) => {
-                    // 1. Check if we should show this department based on user click
                     if (activeFilter !== 'all' && activeFilter !== dept.id) return null;
 
-                    // 2. Filter data for this department (UPDATED LOGIC HERE)
                     const rawMembers = faculty.filter(m => {
                         if (Array.isArray(m.department)) {
-                            // New Format: Check if the list contains this department ID
                             return m.department.includes(dept.id);
                         } else {
-                            // Old Format: Check if the string matches exactly
                             return m.department === dept.id;
                         }
                     });
 
-                    // 3. SORTING LOGIC: HOD first -> Then Experience (High to Low)
                     const deptMembers = [...rawMembers].sort((a, b) => {
                         const aIsHod = isHOD(a);
                         const bIsHod = isHOD(b);
-
-                        // If one is HOD and the other isn't, HOD wins (return -1)
                         if (aIsHod && !bIsHod) return -1;
                         if (!aIsHod && bIsHod) return 1;
-
-                        // If both are HOD or neither is HOD, sort by Experience
                         const expA = getExperienceYears(a.experience);
                         const expB = getExperienceYears(b.experience);
-
                         return expB - expA;
                     });
 
-                    // If no members found for this department, don't render the header
                     if (deptMembers.length === 0) return null;
 
                     return (
@@ -193,14 +235,11 @@ function HumanNetwork() {
                     );
                 })}
 
-                {/* Fallback if no data found */}
                 {faculty.length === 0 && (
                     <p style={{ textAlign: 'center' }}>No faculty members found. Please check your database connection.</p>
                 )}
-
             </div>
 
-            {/* --- LOGO CAROUSEL --- */}
             <LogoCarousel />
         </div>
     );

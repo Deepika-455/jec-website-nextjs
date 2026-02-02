@@ -37,7 +37,7 @@
 /* =========================================
    HERO SECTION
    ========================================= */
-.testimonial-hero {
+.testimonials-page .testimonial-hero {
     position: relative;
     width: 100%;
     height: 400px; /* Fixed height for the banner */
@@ -53,7 +53,7 @@
 }
 
 /* The Background Image */
-.hero-bg-img {
+.testimonials-page .hero-bg-img {
     position: absolute;
     top: 0;
     left: 0;
@@ -76,7 +76,7 @@
 }
 
 /* The Content Wrapper */
-.hero-overlay {
+.testimonials-page .hero-overlay {
     position: relative;
     z-index: 3; 
     width: 100%;
@@ -84,7 +84,7 @@
 }
 
 /* Typography for the Hero Section */
-.hero-overlay h1 {
+.testimonials-page .hero-overlay h1 {
     font-size: 3rem; 
     margin-bottom: 15px;
     font-weight: 700;
@@ -92,7 +92,7 @@
     color: #fff;
 }
 
-.hero-overlay p {
+.testimonials-page .hero-overlay p {
     font-size: 1.2rem;
     font-weight: 500;
     color: #f0f0f0;

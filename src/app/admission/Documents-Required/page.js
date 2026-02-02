@@ -18,7 +18,7 @@ function DocumentsRequired() {
             <div className="docs-container-layout">
                 <div className="docs-hero-content">
                     <h1>Documents Required for Admission</h1>
-                    <p>Essential checklist for B.Tech and M.Tech reporting candidates for Session 2025-26.</p>
+                    <p>Essential checklist for B.Tech and M.Tech reporting candidates for Session 2026-27.</p>
                 </div>
             </div>
         </div>
