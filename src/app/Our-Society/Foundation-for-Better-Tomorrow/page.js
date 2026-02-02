@@ -1,6 +1,7 @@
 import React from 'react';
 // FIXED: Explicitly import the CSS file here so Next.js loads the styles
 import '@/styles/Foundation.css'; 
+import LogoCarousel from '@/components/LogoCarousel';
 
 export default function Foundation() {
   return (
@@ -85,7 +86,7 @@ export default function Foundation() {
             </div>
             <div className="fbt-text-block">
                 <h3>The JEC Edge</h3>
-                <p>Today, the JEC Group showcases AIATERF’s commitment to excel not only in engineering but also in Skill Development, PMKVY, UG Programs, and Teacher’s Training. Our focus has expanded to School Education with <strong>Jayesh International School</strong>.</p>
+                <p>Today, the JEC Group showcases AIATERF’s commitment to excel not only in engineering but also in Skill Development, PMKVY, UG Programs, and Teacher’s Training. Our focus has expanded to School Education with <strong>Sanctum World School</strong>.</p>
             </div>
         </div>
 
@@ -128,17 +129,19 @@ export default function Foundation() {
             <a href="http://www.jaipurcollege.org" target="_blank" rel="noreferrer" className="fbt-link-card">
                 <i className="fas fa-chalkboard-teacher"></i> Jaipur College of Edu.
             </a>
-            <a href="http://www.jayeshschool.com" target="_blank" rel="noreferrer" className="fbt-link-card">
-                <i className="fas fa-school"></i> Jayesh Intl. School
+            <a href="https://sanctumgroupofschools.org/" target="_blank" rel="noreferrer" className="fbt-link-card">
+                <i className="fas fa-school"></i> Sanctum
+                      World School
             </a>
         </div>
 
         <div style={{textAlign:'center', marginTop:'3rem', padding:'2rem', background:'#F8FAFC', border: '1px solid var(--fbt-border)', borderRadius:'12px'}}>
             <p style={{marginBottom:'5px', color:'var(--fbt-text-main)'}}><strong>We believe that a diverse community results in better outcomes for all.</strong></p>
-            <p>Email us: <a href="mailto:directorjecjiet@gmail.com" style={{color:'var(--fbt-red)', fontWeight:'700'}}>directorjecjiet@gmail.com</a></p>
+            <p>Email us: <a href="mailto:director@jeckukas.org.in" style={{color:'var(--fbt-red)', fontWeight:'700'}}>director@jeckukas.org.in</a></p>
         </div>
 
       </div>
+      <LogoCarousel />
     </div>
   );
 }

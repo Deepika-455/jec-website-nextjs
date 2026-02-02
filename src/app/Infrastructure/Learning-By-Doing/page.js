@@ -91,7 +91,7 @@ function LearningByDoing() {
                 <div className="learning-lab-card"><i className="fas fa-terminal"></i> <span className="learning-lab-name">Shell Programming</span></div>
                 <div className="learning-lab-card"><i className="fas fa-brain"></i> <span className="learning-lab-name">Artificial Intelligence</span></div>
                 <div className="learning-lab-card"><i className="fas fa-code-branch"></i> <span className="learning-lab-name">Advanced OOPs</span></div>
-                <div className="learning-lab-card"><i className="fas fa-chart-network"></i> <span className="learning-lab-name">Data Science</span></div>
+                <div className="learning-lab-card"><i className="fas fa-bar-chart"></i> <span className="learning-lab-name">Data Science</span></div>
                 
                 <div className="learning-lab-card"><i className="fas fa-bolt"></i> <span className="learning-lab-name">Industrial Electronics</span></div>
                 <div className="learning-lab-card"><i className="fas fa-microchip"></i> <span className="learning-lab-name">Microprocessor</span></div>

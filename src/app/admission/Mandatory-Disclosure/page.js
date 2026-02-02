@@ -22,7 +22,7 @@ function MandatoryDisclosure() {
         <div className="md-stats-grid">
             <div className="md-stat-item">
                 <h3>2000</h3>
-                <p>Established</p>
+                <p>Yr. of Estd</p>
             </div>
             <div className="md-stat-item">
                 <h3>RTU</h3>
@@ -83,7 +83,7 @@ function MandatoryDisclosure() {
                         </tr>
                         <tr>
                             <th>AICTE Approval</th>
-                            <td>Since 2000 to till date</td>
+                            <td>Since 2000 </td>
                         </tr>
                         <tr>
                             <th>Type & Category</th>
@@ -134,7 +134,7 @@ function MandatoryDisclosure() {
                             <td>Electronics & Comm. Engineering</td>
                             <td>B.Tech</td>
                             <td>4 Years</td>
-                            <td>60</td>
+                            <td>30</td>
                         </tr>
                         <tr>
                             <td>Mechanical Engineering</td>

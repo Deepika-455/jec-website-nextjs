@@ -1,5 +1,7 @@
 import React from 'react';
 import '@/styles/JCES.css';
+import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
+
 
 export default function JCES() {
   return (
@@ -96,6 +98,8 @@ export default function JCES() {
         </div>
 
       </div>
+     <LogoCarousel />
+
     </div>
   );
 }

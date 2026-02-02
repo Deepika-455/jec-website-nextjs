@@ -205,7 +205,7 @@ function Reap2025() {
 
             <h3 style={{ margin: '2rem 0 1rem 0' }}>Documents Required</h3>
             <ul className="reap-checklist">
-                <li>Provisional Seat Allotment Letter (REAP-2025)</li>
+                <li>Provisional Seat Allotment Letter </li>
                 <li>Aadhar Card / Receipt</li>
                 <li>Class X Mark sheet (DOB Proof)</li>
                 <li>Class XII Science Mark sheet or Diploma</li>
