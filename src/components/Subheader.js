@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import '@/styles/Navigation.css';
 
+
 // Full list of menu items
 const menuData = [
     { name: "Home", link: "/" },
@@ -18,6 +19,7 @@ function Subheader() {
     const [searchResults, setSearchResults] = useState([]);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
+    const inputRef = useRef(null);  // added recently
 
     const pathname = usePathname();
 
@@ -25,6 +27,7 @@ function Subheader() {
     useEffect(() => {
         setIsMobileMenuOpen(false);
         setActiveDropdown(null);
+        setSearchQuery(""); // Clear search on page change  added recently
     }, [pathname]);
 
     const toggleDropdown = (e, menuName) => {
@@ -32,6 +35,31 @@ function Subheader() {
             e.preventDefault();
             setActiveDropdown(activeDropdown === menuName ? null : menuName);
         }
+    };
+    // added recently
+    // --- NEW: SEARCH FUNCTION ---
+    const handleSearch = (query, findNext = false) => {
+        if (!query || !query.trim()) return;
+
+        // 1. If we are NOT clicking "Next" (Enter key), reset to top
+        // This makes "Letter by Letter" searching work naturally
+        if (!findNext) {
+            if (window.getSelection) {
+                window.getSelection().removeAllRanges(); // Clear previous selection
+            }
+            window.scrollTo(0, 0); // Reset scroll to top to find the first match
+        }
+
+        // 2. Perform the find
+        const found = window.find(query, false, false, true, false, false, false);
+        
+        // 3. IMPORTANT: Refocus the input so user can keep typing!
+        // (window.find moves focus to the found text, so we must pull it back)
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, 0);
     };
 
     return (
@@ -167,53 +195,78 @@ function Subheader() {
                                     <li><Link href="/Our-Society/Other-Institutes-Jaipur-College-of-Education-and-Science" className="jec-dropdown-link">Jaipur College of Ed & Sci</Link></li>
                                 </ul>
                             </li>
+                            {/* --- MOBILE ONLY: CONTACT INFO (Issue 2 Fix) --- */}
+                            <div className="jec-mobile-contact-info">
+                                <h4>GET IN TOUCH</h4>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-map-marker-alt"></i>
+                                    <span>SP-43, RIICO Ind. Area, Kukas, Jaipur - 302028</span>
+                                </div>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-phone-alt"></i>
+                                    <a href="tel:+918875071333">+91-88750 71333</a>
+                                </div>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-envelope"></i>
+                                    <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
+                                </div>
+                            </div>
                             
                             {/* SEARCH ICON REMOVED FROM HERE */}
 
 
-                            {/* SEARCH ICON */}
+ {/* SEARCH ICON (Desktop Only) */}
+                            <li className="jec-menu-item jec-desktop-search" ref={searchRef}>
+                               {/* SEARCH ICON (Desktop Only) - IN-PAGE SEARCH */}
 <li className="jec-menu-item jec-desktop-search" ref={searchRef}>
     <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
         <input
             type="text"
-            placeholder="Search..."
+            placeholder="Find on page..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             autoFocus={isSearchOpen}
             onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchQuery.trim()) {
-                    // Navigate to a search page on Enter
-                    window.location.href = `/search?q=${searchQuery}`;
+                // If user hits ENTER
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Stop form submit
+                    if (searchQuery.trim()) {
+                        // The Native Browser "Find" Function
+                        const found = window.find(searchQuery);
+                        if (!found) {
+                            alert("Text not found on this page.");
+                        }
+                    }
                 }
             }}
         />
         <button 
             type="button" 
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            aria-label="Toggle Search"
+            onClick={() => {
+                // Logic: 
+                // 1. If closed -> Open it.
+                // 2. If open AND has text -> Run Search.
+                // 3. If open AND empty -> Close it.
+                
+                if (!isSearchOpen) {
+                    setIsSearchOpen(true);
+                } 
+                else if (searchQuery.trim()) {
+                    const found = window.find(searchQuery);
+                    if (!found) {
+                        alert("Text not found on this page.");
+                    }
+                } 
+                else {
+                    setIsSearchOpen(false);
+                }
+            }}
+            aria-label="Find on Page"
         >
             <i className="fas fa-search"></i>
         </button>
-
-        {showSuggestions && searchResults.length > 0 && isSearchOpen && (
-            <ul className="jec-search-suggestions">
-                {searchResults.map((res, i) => (
-                    <li key={i}>
-                        {/* Using Link instead of <a> for client-side navigation */}
-                        <Link 
-                            href={res.link} 
-                            onClick={() => {
-                                setSearchQuery('');
-                                setIsSearchOpen(false);
-                            }}
-                        >
-                            {res.name}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        )}
     </div>
+</li>
 </li>
 
                         </ul>
