@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/Courses.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 

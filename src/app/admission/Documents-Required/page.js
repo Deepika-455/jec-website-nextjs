@@ -1,6 +1,6 @@
-"use client";
-import React from 'react';
+// "use client";
 import '@/styles/DocumentsRequired.css';
+import React from 'react';
 import LogoCarousel from '@/components/LogoCarousel'; 
 
 function DocumentsRequired() {

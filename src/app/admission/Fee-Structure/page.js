@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/FeeStructure.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; // Added this import

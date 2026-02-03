@@ -39,7 +39,7 @@ export default function Header() {
 
           {/* 2. Virtual Tour */}
           <Link href="/virtual-tour" className="jec-top-link">
-             <i className="fas fa-vr-cardboard"></i> Virtual Tour
+             <i className="fas fa-vr-cardboard"></i> Virtual Tour 
           </Link>
 
           {/* 3. Grievance Form */}

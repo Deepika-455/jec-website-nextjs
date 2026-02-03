@@ -2,9 +2,11 @@ import "@/styles/globals.css";
 import "@/styles/Navigation.css";
 import "@/styles/Footer.css";
 import "@/styles/AdmissionPopup.css";
-import ClientLayout from "@/components/ClientLayout"; // Import the wrapper
+import "@/styles/Sidebar.css"; // <--- 1. Import your Sidebar CSS
+import ClientLayout from "@/components/ClientLayout"; 
 import AdmissionPopup from "@/components/AdmissionPopup";
-import Chatbot from "@/components/Chatbot"; // <--- 1. Import the component
+import Chatbot from "@/components/Chatbot"; 
+import Sidebar from "@/components/Sidebar"; // <--- 2. Import the Sidebar component
 
 export default function RootLayout({ children }) {
   return (
@@ -23,6 +25,8 @@ export default function RootLayout({ children }) {
         </ClientLayout>
 
         <AdmissionPopup /> 
+
+        <Sidebar /> {/* <--- 3. Add Sidebar here */}
 
         <Chatbot />
       </body>

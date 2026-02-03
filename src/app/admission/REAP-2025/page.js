@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/REAP.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; // 1. Import Added

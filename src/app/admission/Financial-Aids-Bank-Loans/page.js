@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/FinancialAids.css'; // Import the specific CSS file
 import LogoCarousel from '@/components/LogoCarousel'; // Added for consistency across all pages
