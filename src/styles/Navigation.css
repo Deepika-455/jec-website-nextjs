@@ -87,6 +87,7 @@ body {
     font-weight: 500;
     text-decoration: underline;
     text-underline-offset: 4px; /* Makes it look cleaner */
+
 }
 
 .jec-info-item i {
@@ -110,6 +111,7 @@ body {
     align-items: center;
     text-decoration: underline;
     text-underline-offset: 4px; /* Makes it look cleaner */
+
 }
 
 .jec-top-link {
@@ -335,6 +337,9 @@ body {
     align-items: center;
     gap: 5px;
     height: 100%;
+    width: 100%; /* Ensure it fills the available space */
+    justify-content: flex-end;
+
 }
 
 .jec-menu-item {
@@ -342,12 +347,14 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
+     flex-shrink: 1; /* Allows the item to shrink */
+    min-width: 0;
 }
 
 .jec-nav-link {
     color: var(--jec-dark);
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -591,3 +598,27 @@ body {
 }
 
 
+.jec-search-suggestions {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    width: 250px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 0;
+    z-index: 999;
+}
+
+.jec-search-suggestions li a {
+    display: block;
+    padding: 10px 15px;
+    color: #333 !important;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.jec-search-suggestions li a:hover {
+    background-color: #f1f4f9;
+}

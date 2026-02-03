@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import '@/styles/Navigation.css';
@@ -11,6 +11,11 @@ const menuData = [
 ];
 
 function Subheader() {
+    const searchRef = useRef(null); 
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -51,7 +56,9 @@ function Subheader() {
                         <Link href="/virtual-tour" className="jec-top-link"><i className="fas fa-vr-cardboard"></i> Virtual Tour</Link>
                         <Link href="/grievance" className="jec-top-link"><i className="fas fa-file-alt"></i> Grievance Form</Link>
                         <Link href="/blog" className="jec-top-link"><i className="fas fa-blog"></i> Blog</Link>
-                        <Link href="/contact" className="jec-contact-btn">CONTACT US</Link>
+                        <Link href="/contact" className="jec-top-cta">
+             CONTACT US
+          </Link>
                     </div>
                 </div>
             </div>
@@ -162,6 +169,52 @@ function Subheader() {
                             </li>
                             
                             {/* SEARCH ICON REMOVED FROM HERE */}
+
+
+                            {/* SEARCH ICON */}
+<li className="jec-menu-item jec-desktop-search" ref={searchRef}>
+    <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
+        <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            autoFocus={isSearchOpen}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                    // Navigate to a search page on Enter
+                    window.location.href = `/search?q=${searchQuery}`;
+                }
+            }}
+        />
+        <button 
+            type="button" 
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            aria-label="Toggle Search"
+        >
+            <i className="fas fa-search"></i>
+        </button>
+
+        {showSuggestions && searchResults.length > 0 && isSearchOpen && (
+            <ul className="jec-search-suggestions">
+                {searchResults.map((res, i) => (
+                    <li key={i}>
+                        {/* Using Link instead of <a> for client-side navigation */}
+                        <Link 
+                            href={res.link} 
+                            onClick={() => {
+                                setSearchQuery('');
+                                setIsSearchOpen(false);
+                            }}
+                        >
+                            {res.name}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        )}
+    </div>
+</li>
 
                         </ul>
                     </div>
