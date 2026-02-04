@@ -3,6 +3,13 @@ import React, { useState, useRef } from 'react';
 import '@/styles/Faq.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+// export const metadata = {
+//   title: "JEC: FAQ– Jaipur Engineering College | Best Engineering College",
+//   description: "Jaipur Engineering College , A best college where people and ideas come together in new ways, Illuminating turnarounds, igniting sparks that fuel new ventures.",
+//   keywords: "About us, JEC, Jaipur, Engineering, College, Top, Rajasthan, JEC Group of Colleges",
+// };
+
+
 // Reusable Accordion Item Component
 function AccordionItem({ title, children }) {
   const [isOpen, setIsOpen] = useState(false);

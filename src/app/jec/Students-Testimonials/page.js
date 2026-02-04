@@ -5,6 +5,14 @@ import { db } from '@/firebase';
 import '@/styles/Testimonials.css';
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+
+//  export const metadata = {
+//   title: "Students Testimonials",
+//   description: "Students Testimonials",
+//   keywords: "Students Testimonials",
+// };
+
 // Sub-component for individual cards
 const TestimonialCard = ({ item }) => {
   const [isExpanded, setIsExpanded] = useState(false);

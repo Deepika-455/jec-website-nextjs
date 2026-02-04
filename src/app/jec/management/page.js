@@ -3,8 +3,9 @@ import '@/styles/Management.css';
 import LogoCarousel from '@/components/LogoCarousel'; // Import the EXISTING working component
 
 export const metadata = {
-  title: 'Management Team | JEC Kukas',
-  description: 'Meet the visionary leadership team behind Jaipur Engineering College (JEC).',
+  title: "Leadership - Jaipur Engineering College | JEC Management I Administration I BOG",
+  description: "Know about the management team at jaipur engineering college. Check the names who are leading top engineering college in Jaipur, Rajasthan.",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
 };
 
 export default function Management() {

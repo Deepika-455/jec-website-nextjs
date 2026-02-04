@@ -3,6 +3,14 @@ import React from 'react';
 import '@/styles/IIC.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; // <--- IMPORT ADDED
 
+// export const metadata = {
+//   title: "Institution Innovation Council | Jaipur Engineering College " ,
+//   description: "Ministry of Human Resource Development (MHRD), Govt. of India has established ‘MHRD’s Innovation Cell (MIC)’ to systematically foster...",
+//   keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+
+// };
+
+
 export default function IIC() {
   return (
     <div className="iic-page">
