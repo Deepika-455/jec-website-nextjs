@@ -3,6 +3,14 @@ import React from 'react';
 import '@/styles/REAP.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; // 1. Import Added
 
+
+
+export const metadata = {
+  title: "Rajasthan Engineering Admission Process (REAP)-2021 | JEC Jaipur",
+  description: "Know about Rajasthan Engineering Admission Process (REAP)-2021 with Jaipur Engineering College. Check details of taking admission in B.Tech courses and...",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
 function Reap2025() {
   return (
     <div className="reap-page">

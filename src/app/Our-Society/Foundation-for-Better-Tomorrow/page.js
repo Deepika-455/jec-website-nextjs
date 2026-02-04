@@ -3,6 +3,13 @@ import React from 'react';
 import '@/styles/Foundation.css'; 
 import LogoCarousel from '@/components/LogoCarousel';
 
+// ✅ UNIQUE METADATA FOR HOME PAGE
+export const metadata = {
+  title: "All India Agrasen Technical Education and Research Foundation | JEC Kukas",
+  description: "Welcome to JEC, the top engineering collegThe aim of Education in India is to provide access, equity, quality with accountability at affordable cost to all aspiring Citizens with utmost...",
+  keywords: "EC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
 export default function Foundation() {
   return (
     <div className="fbt-page">

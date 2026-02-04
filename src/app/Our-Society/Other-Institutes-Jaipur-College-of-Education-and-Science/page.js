@@ -3,6 +3,12 @@ import '@/styles/JCES.css';
 import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
 
 
+export const metadata = {
+  title: "Other Institutes Jaipur College of Education and Science",
+  description: "Know about Jaipur Engineering college Linkages and collaboration with National &amp; International Associations and Societies.",
+  keywords: "Other Institutes JCES College",
+};
+
 export default function JCES() {
   return (
     <div className="jces-page">

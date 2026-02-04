@@ -37,30 +37,71 @@ function Subheader() {
         }
     };
     // added recently
-    // --- NEW: SEARCH FUNCTION ---
-    const handleSearch = (query, findNext = false) => {
-        if (!query || !query.trim()) return;
+  const handleSearch = (query) => {
+    setSearchQuery(query);
 
-        // 1. If we are NOT clicking "Next" (Enter key), reset to top
-        // This makes "Letter by Letter" searching work naturally
-        if (!findNext) {
-            if (window.getSelection) {
-                window.getSelection().removeAllRanges(); // Clear previous selection
-            }
-            window.scrollTo(0, 0); // Reset scroll to top to find the first match
+    // 1. Remove any old highlights first to avoid infinite loops/messy DOM
+    const oldMarks = document.querySelectorAll('.jec-page-highlight');
+    oldMarks.forEach(mark => {
+        const parent = mark.parentNode;
+        if (parent) {
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize(); 
         }
+    });
 
-        // 2. Perform the find
-        const found = window.find(query, false, false, true, false, false, false);
-        
-        // 3. IMPORTANT: Refocus the input so user can keep typing!
-        // (window.find moves focus to the found text, so we must pull it back)
-        setTimeout(() => {
-            if (inputRef.current) {
-                inputRef.current.focus();
+    if (!query || query.trim().length < 2) return;
+
+    // 2. Function to crawl the text and wrap matches
+    const walkAndMark = (node) => {
+        if (node.nodeType === 3) { // It's a Text Node
+            const text = node.textContent;
+            const lowerText = text.toLowerCase();
+            const lowerQuery = query.toLowerCase();
+            const index = lowerText.indexOf(lowerQuery);
+
+            if (index >= 0) {
+                const range = document.createRange();
+                range.setStart(node, index);
+                range.setEnd(node, index + query.length);
+
+                const mark = document.createElement('mark');
+                mark.className = 'jec-page-highlight';
+                range.surroundContents(mark);
+                return true; // Match found
             }
-        }, 0);
+        } else if (node.nodeType === 1 && 
+                   node.childNodes && 
+                   !['SCRIPT', 'STYLE', 'HEADER', 'NAV', 'INPUT'].includes(node.tagName)) {
+            // Traverse children but skip UI elements
+            for (let i = 0; i < node.childNodes.length; i++) {
+                if (walkAndMark(node.childNodes[i])) i++; // Increment skip for the new mark tag
+            }
+        }
     };
+
+    // 3. Highlight inside the main content area
+    const mainContent = document.querySelector('main') || document.body;
+    walkAndMark(mainContent);
+};
+
+    const highlightText = (text, query) => {
+  if (!query) return text;
+
+  // Escape special characters and create a global, case-insensitive regex
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  
+  // Split the text into an array of matching and non-matching parts
+  const parts = text.split(regex);
+
+  return parts.map((part, index) => 
+    regex.test(part) ? (
+      <span key={index} className="jec-search-match">{part}</span>
+    ) : (
+      part
+    )
+  );
+};
 
     return (
         <div className="jec-master-header">
@@ -158,7 +199,9 @@ function Subheader() {
                                 </ul>
                             </li>
 
-                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">Placement</Link></li>
+                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">
+    {highlightText("Placement", searchQuery)}
+</Link></li>
 
                             <li className={`jec-menu-item ${activeDropdown === 'infra' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'infra')}>Infrastructure <i className="fas fa-chevron-down"></i></a>
@@ -196,6 +239,7 @@ function Subheader() {
                                 </ul>
                             </li>
                             {/* --- MOBILE ONLY: CONTACT INFO (Issue 2 Fix) --- */}
+                            <li className="jec-mobile-contact-wrapper"> {/* Add this line */}
                             <div className="jec-mobile-contact-info">
                                 <h4>GET IN TOUCH</h4>
                                 <div className="jec-contact-row">
@@ -211,31 +255,29 @@ function Subheader() {
                                     <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
                                 </div>
                             </div>
+                            </li>
                             
                             {/* SEARCH ICON REMOVED FROM HERE */}
 
 
  {/* SEARCH ICON (Desktop Only) */}
-                            <li className="jec-menu-item jec-desktop-search" ref={searchRef}>
                                {/* SEARCH ICON (Desktop Only) - IN-PAGE SEARCH */}
+{/* --- SEARCH ICON (Desktop Only) --- */}
 <li className="jec-menu-item jec-desktop-search" ref={searchRef}>
     <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
         <input
+            ref={inputRef}
             type="text"
             placeholder="Find on page..." 
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             autoFocus={isSearchOpen}
             onKeyDown={(e) => {
-                // If user hits ENTER
                 if (e.key === 'Enter') {
-                    e.preventDefault(); // Stop form submit
+                    e.preventDefault();
                     if (searchQuery.trim()) {
-                        // The Native Browser "Find" Function
                         const found = window.find(searchQuery);
-                        if (!found) {
-                            alert("Text not found on this page.");
-                        }
+                        if (!found) alert("Text not found on this page.");
                     }
                 }
             }}
@@ -243,31 +285,20 @@ function Subheader() {
         <button 
             type="button" 
             onClick={() => {
-                // Logic: 
-                // 1. If closed -> Open it.
-                // 2. If open AND has text -> Run Search.
-                // 3. If open AND empty -> Close it.
-                
                 if (!isSearchOpen) {
                     setIsSearchOpen(true);
-                } 
-                else if (searchQuery.trim()) {
-                    const found = window.find(searchQuery);
-                    if (!found) {
-                        alert("Text not found on this page.");
-                    }
-                } 
-                else {
+                } else if (searchQuery.trim()) {
+                    window.find(searchQuery);
+                } else {
                     setIsSearchOpen(false);
                 }
             }}
-            aria-label="Find on Page"
         >
             <i className="fas fa-search"></i>
         </button>
     </div>
 </li>
-</li>
+
 
                         </ul>
                     </div>

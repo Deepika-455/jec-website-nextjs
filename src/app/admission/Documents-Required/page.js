@@ -3,6 +3,13 @@ import '@/styles/DocumentsRequired.css';
 import React from 'react';
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+export const metadata = {
+  title: "Documents Required",
+  description: "Documents Required",
+  keywords: "Documents Required",
+};
+
 function DocumentsRequired() {
   return (
     // FIX: Added style={{ paddingBottom: 0 }} to remove gap before footer
