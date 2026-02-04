@@ -1,7 +1,15 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/AdmissionProcedure.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; // 1. IMPORT ADDED
+
+
+
+export const metadata = {
+  title: "Jaipur Engineering College Admission 2025 Procedure",
+  description: "Know how to take admission in Jaipur Engineering College (JEC Kukas), the best engineering college in jaipur.",
+  keywords: "Best engineering colleges in Jaipur, jec kukas, jec jaipur, b.tech admission, jaipur top engineering colleges",
+};
 
 export default function AdmissionProcedure() {
   return (

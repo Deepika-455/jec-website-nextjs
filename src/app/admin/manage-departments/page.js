@@ -4,14 +4,12 @@ import dynamic from 'next/dynamic';
 import { db, storage } from '@/firebase'; 
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import ImageUpload from '@/components/admin/ImageUpload';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
 import { v4 as uuidv4 } from 'uuid';
 
 // --- FIX FOR REACT 19 / NEXT.JS 15 ---
-// Polyfill findDOMNode which was removed in React 19 but is required by react-quill
 import ReactDOM from 'react-dom';
 if (typeof window !== 'undefined' && !ReactDOM.findDOMNode) {
     // @ts-ignore
@@ -23,12 +21,9 @@ if (typeof window !== 'undefined' && !ReactDOM.findDOMNode) {
 // --- DYNAMIC QUILL IMPORT ---
 const ReactQuill = dynamic(async () => {
   const { default: RQ } = await import('react-quill');
-  
-  // Dynamically import extra modules to avoid SSR issues
   const { default: BlotFormatter } = await import('quill-blot-formatter');
   const { default: htmlEditButton } = await import('quill-html-edit-button');
 
-  // Register Modules
   const Quill = RQ.Quill;
   if (!Quill.imports['modules/blotFormatter']) {
     Quill.register('modules/blotFormatter', BlotFormatter);
@@ -37,7 +32,6 @@ const ReactQuill = dynamic(async () => {
     Quill.register("modules/htmlEditButton", htmlEditButton);
   }
 
-  // Register Styles
   const AlignStyle = Quill.import('attributors/style/align');
   Quill.register(AlignStyle, true);
   const SizeStyle = Quill.import('attributors/style/size');
@@ -47,7 +41,6 @@ const ReactQuill = dynamic(async () => {
   const BackgroundStyle = Quill.import('attributors/style/background');
   Quill.register(BackgroundStyle, true);
 
-  // Return the component ensuring ref passing works
   return ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
 }, { ssr: false });
 
@@ -70,6 +63,10 @@ const ManageDepartments = () => {
     const [hodImage, setHodImage] = useState('');
     const [eligibility, setEligibility] = useState('');
 
+    // Upload States
+    const [uploading, setUploading] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
+
     const DEFAULT_ELIGIBILITY = `<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;"><tr style="background: #f3f4f6;"><th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Program</th><th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Eligibility Criteria</th></tr><tr><td style="border: 1px solid #ccc; padding: 10px;">B.Tech</td><td style="border: 1px solid #ccc; padding: 10px;">10+2 with Physics, Maths and 45% Marks</td></tr></table>`;
 
     useEffect(() => { fetchDepartments(); }, []);
@@ -83,7 +80,66 @@ const ManageDepartments = () => {
         setLoading(false);
     };
 
-    // --- TOOLBAR CONFIGURATION ---
+    // --- NEW UPLOAD LOGIC (Shared for Banner & HOD) ---
+    const processUpload = async (file, setUrlFunction) => {
+        if (!file) return;
+
+        // 1. Check Size (1.00 MB Limit)
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (file.size > 1048576) {
+            alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+            return;
+        }
+
+        // 2. Upload to Firebase
+        try {
+            setUploading(true);
+            const storageRef = ref(storage, `departments/${Date.now()}-${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                null,
+                (error) => {
+                    console.error(error);
+                    toast.error("Upload failed");
+                    setUploading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    setUrlFunction(downloadURL); // Update the specific state passed
+                    setUploading(false);
+                    toast.success("Image uploaded!");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            setUploading(false);
+            toast.error("Something went wrong");
+        }
+    };
+
+    // Drag & Drop Handlers
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e, setUrlFunction) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processUpload(e.dataTransfer.files[0], setUrlFunction);
+        }
+    };
+    // ------------------------------------------
+
     const modules = useMemo(() => ({
         toolbar: {
             container: [
@@ -93,7 +149,7 @@ const ManageDepartments = () => {
                 [{ 'color': [] }, { 'background': [] }],
                 [{ 'align': [] }],
                 ['link', 'image', 'video'],
-                ['table'], // Custom table button handler below
+                ['table'],
                 ['clean']
             ],
             handlers: { 
@@ -112,7 +168,6 @@ const ManageDepartments = () => {
                                 uploadTask.on('state_changed', null, null, async () => {
                                     const url = await getDownloadURL(uploadTask.snapshot.ref);
                                     toast.dismiss(toastId);
-                                    // DOM Hack to find the focused editor instance
                                     const quill = document.querySelector('.ql-editor:focus')?.parentElement?.__quill;
                                     if (quill) {
                                         const range = quill.getSelection(true);
@@ -177,7 +232,6 @@ const ManageDepartments = () => {
 
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-            {/* CSS FIX FOR EDITOR UI */}
             <style>{`
                 .quill-wrapper { background: white; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; }
                 .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #cbd5e1 !important; background: #f8fafc; }
@@ -205,8 +259,56 @@ const ManageDepartments = () => {
                         </div>
                         <div>
                             <h3 style={styles.head}>2. Banner</h3>
-                            <ImageUpload label="Banner Image" onUploadComplete={setBannerImage} />
-                            {bannerImage && <img src={bannerImage} alt="Preview" style={{ width: '100%', height: '80px', objectFit: 'cover', marginTop: '10px', borderRadius: '4px' }} />}
+                            
+                            {/* --- BANNER UPLOAD --- */}
+                            <label style={styles.label}>Banner Image</label>
+                            {!bannerImage ? (
+                                <label 
+                                    style={{ 
+                                        ...styles.uploadBox, 
+                                        backgroundColor: dragActive ? '#e2e8f0' : 'white',
+                                        borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                    }}
+                                    onDragEnter={handleDrag}
+                                    onDragLeave={handleDrag}
+                                    onDragOver={handleDrag}
+                                    onDrop={(e) => handleDrop(e, setBannerImage)}
+                                >
+                                    {uploading ? (
+                                        <p style={{ color: '#0072C6', fontWeight: 'bold' }}>Uploading...</p>
+                                    ) : (
+                                        <>
+                                            <input 
+                                                type="file" 
+                                                accept="image/*" 
+                                                onChange={(e) => {
+                                                    processUpload(e.target.files[0], setBannerImage);
+                                                    e.target.value = null; 
+                                                }}
+                                                style={{ display: 'none' }} 
+                                            />
+                                            <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
+                                                <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
+                                                Drag & Drop or Click
+                                            </div>
+                                            <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                        </>
+                                    )}
+                                </label>
+                            ) : (
+                                <div style={{ position: 'relative', marginTop: '10px' }}>
+                                    <img src={bannerImage} alt="Banner" style={{ width: '100%', height: '80px', objectFit: 'cover', borderRadius: '4px' }} />
+                                    <button 
+                                        type="button"
+                                        onClick={() => setBannerImage('')}
+                                        style={{ position: 'absolute', top: 5, right: 5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '24px', height: '24px', cursor: 'pointer' }}
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            )}
+                            {/* ------------------- */}
+
                         </div>
                     </div>
 
@@ -227,8 +329,52 @@ const ManageDepartments = () => {
                         <h3 style={styles.head}>4. HOD Section</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px' }}>
                             <div>
-                                <ImageUpload label="HOD Photo" onUploadComplete={setHodImage} />
-                                {hodImage && <img src={hodImage} alt="HOD" style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', marginTop: '10px' }} />}
+                                {/* --- HOD IMAGE UPLOAD --- */}
+                                <label style={styles.label}>HOD Photo</label>
+                                {!hodImage ? (
+                                    <label 
+                                        style={{ 
+                                            ...styles.uploadBox, 
+                                            backgroundColor: dragActive ? '#e2e8f0' : 'white',
+                                            borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                        }}
+                                        onDragEnter={handleDrag}
+                                        onDragLeave={handleDrag}
+                                        onDragOver={handleDrag}
+                                        onDrop={(e) => handleDrop(e, setHodImage)}
+                                    >
+                                        {uploading ? (
+                                            <p style={{ color: '#0072C6', fontWeight: 'bold' }}>Uploading...</p>
+                                        ) : (
+                                            <>
+                                                <input 
+                                                    type="file" 
+                                                    accept="image/*" 
+                                                    onChange={(e) => {
+                                                        processUpload(e.target.files[0], setHodImage);
+                                                        e.target.value = null; 
+                                                    }}
+                                                    style={{ display: 'none' }} 
+                                                />
+                                                <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600', fontSize:'12px' }}>
+                                                    Upload Photo
+                                                </div>
+                                            </>
+                                        )}
+                                    </label>
+                                ) : (
+                                    <div style={{ position: 'relative', width: '120px' }}>
+                                        <img src={hodImage} alt="HOD" style={{ width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover', marginTop: '10px' }} />
+                                        <button 
+                                            type="button"
+                                            onClick={() => setHodImage('')}
+                                            style={{ position: 'absolute', top: 10, right: 0, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                )}
+                                {/* ----------------------- */}
                             </div>
                             <div>
                                 <label style={styles.label}>HOD Name</label>
@@ -288,7 +434,17 @@ const styles = {
     cancelBtn: { padding: '15px 30px', background: '#94a3b8', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
     listItem: { padding: '15px', background: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
     editBtn: { padding: '6px 15px', background: '#e0f2fe', color: '#0369a1', border: 'none', borderRadius: '4px', cursor: 'pointer' },
-    deleteBtn: { padding: '6px 15px', background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '4px', cursor: 'pointer' }
+    deleteBtn: { padding: '6px 15px', background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '4px', cursor: 'pointer' },
+    // ADDED STYLE FOR DRAG BOX
+    uploadBox: { 
+        border: '2px dashed #cbd5e1', 
+        borderRadius: '6px', 
+        padding: '15px', 
+        textAlign: 'center', 
+        display: 'block', 
+        cursor: 'pointer', 
+        transition: '0.2s all' 
+    }
 };
 
 export default ManageDepartments;

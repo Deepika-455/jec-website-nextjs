@@ -1,7 +1,14 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/Courses.css'; 
-import LogoCarousel from '@/components/LogoCarousel'; 
+import LogoCarousel from '@/components/LogoCarousel';
+
+
+export const metadata = {
+  title: "Best Courses in Engineering | B. Tech, M. Tech, Karma Courses | JEC Kukas",
+  description: "Find Best courses in engineering like B. Tech, M. Tech, B. Voc with thier Fees Structure. Jaipur Engineering College is Top college for engineering.",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
 
 function CoursesOffered() {
   return (
@@ -108,7 +115,10 @@ function CoursesOffered() {
                 <p>In-depth analysis of power generation, transmission, and distribution.</p>
             </div>
               <div className="course-card mtech">
-                <h3>Environmental Engineering*</h3>
+                <h3>
+  Environmental Engineering
+  <span style={{ color: 'red' }}> *</span>
+</h3>
                 <span className="duration">18 Seats</span>
                 <p>Focuses on sustainable development and managing natural resources. Addresses water, air, and waste management challenges.</p>
             </div>

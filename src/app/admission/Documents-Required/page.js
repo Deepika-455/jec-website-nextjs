@@ -1,7 +1,14 @@
-"use client";
-import React from 'react';
+// "use client";
 import '@/styles/DocumentsRequired.css';
+import React from 'react';
 import LogoCarousel from '@/components/LogoCarousel'; 
+
+
+export const metadata = {
+  title: "Documents Required",
+  description: "Documents Required",
+  keywords: "Documents Required",
+};
 
 function DocumentsRequired() {
   return (
@@ -18,7 +25,7 @@ function DocumentsRequired() {
             <div className="docs-container-layout">
                 <div className="docs-hero-content">
                     <h1>Documents Required for Admission</h1>
-                    <p>Essential checklist for B.Tech and M.Tech reporting candidates for Session 2025-26.</p>
+                    <p>Essential checklist for B.Tech and M.Tech reporting candidates for Session 2026-27.</p>
                 </div>
             </div>
         </div>

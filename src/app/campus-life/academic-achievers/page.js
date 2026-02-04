@@ -1,7 +1,15 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/AcademicAchievers.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
+
+
+
+export const metadata = {
+  title: "Academic Achievers of Jaipur Engineering College",
+  description: "Know about Academic Achievers of Jaipur Engineering College. Academic achievement is defined as working at grade level in writing, reading, and speaking skills..",
+  keywords: "Academic achievement achieved by Jec student in various fields of engineering &amp; sports",
+};
 
 const AcademicAchievers = () => {
   return (

@@ -4,6 +4,13 @@ import '@/styles/CommitteesZone.css'; // Import the CSS
 
 // Note: Ensure you have Font Awesome icons set up in your project (e.g., using react-icons/fa or a global CDN/package)
 
+
+export const metadata = {
+  title: "JAIPUR ENGINEERING COLLEGE | student committees | tudent fraternity | JEC Group of College",
+  description: "The presence of student committees in the campus has given a real and different identity to the college. They stand out amongst their student fraternity by offering best possible contributions to the Institute.",
+  keywords: "The presence of student committees in the campus has given a real and different identity to the college. They stand out amongst their student fraternity by offering best possible contributions to the Institute.",
+};
+
 const CommitteeCard = ({ iconClass, name, mentor, achievements, outcomes }) => (
     <div className="comm-card">
         <div className="comm-header">

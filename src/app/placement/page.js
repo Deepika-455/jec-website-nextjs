@@ -105,7 +105,7 @@ function Placements() {
                         <div className="pg-stat-label">Highest Package</div>
                     </div>
                     <div className="pg-stat-card">
-                        <div className="pg-stat-value">4300+</div>
+                        <div className="pg-stat-value">9000+</div>
                         <div className="pg-stat-label">Total Placements</div>
                     </div>
                     <div className="pg-stat-card">
@@ -121,7 +121,7 @@ function Placements() {
                 <div className="pg-content-grid">
                     <div className="pg-narrative-text">
                         <h2>Catapulting Careers</h2>
-                        <p>As hard as it might be to imagine sometimes, there is life after JEC, as shown by the <strong>~10,000+ JEC alumni</strong> living around the world.</p>
+                        <p>As hard as it might be to imagine sometimes, there is life after JEC, as shown by the <strong>~12,000+ JEC alumni</strong> living around the world.</p>
                         <p>For the last three years, JEC has set the highest placement record.</p>
                         <div className="pg-chairman-quote">
                             <i className="fas fa-quote-left" style={{ fontSize: '1.5rem', marginBottom: '10px', display: 'block' }}></i>

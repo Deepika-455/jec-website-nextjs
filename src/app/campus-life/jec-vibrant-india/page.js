@@ -2,6 +2,13 @@ import React from 'react';
 import '@/styles/jec-vibrant-india.css'; // Importing the preserved CSS
 import LogoCarousel from '@/components/LogoCarousel';
 
+
+export const metadata = {
+  title: "JEC: Vibrant India | Jaipur Engineering College I Incredible India I Incredible Rajasthan",
+  description: "Engineering affects virtually every aspect of our society and engages a substantial set of the population in carrying out engineers' plans and...",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
 const VibrantIndia = () => {
   return (
     <div className="vibrant-page">

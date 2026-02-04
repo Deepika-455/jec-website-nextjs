@@ -1,7 +1,14 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/EngineeringProjects.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
+
+
+export const metadata = {
+  title: "Engineering Projects: Jaipur Engineering College",
+  description: "Engineering projects offer students with a platform to apply engineering to the real world, discover the joy of working in a team",
+  keywords: "JIET focuses on meaningful education and prepares students to think beyond a degree. Engineering projects offer students with a platform to apply engineering to the real world, discover the joy of working in a team and extend the experience to new domains",
+};
 
 const EngineeringProjects = () => {
   return (

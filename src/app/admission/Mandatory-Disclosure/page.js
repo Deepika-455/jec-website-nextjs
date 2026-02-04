@@ -1,7 +1,15 @@
-"use client";
+// "use client";
 import React from 'react';
 import '@/styles/MandatoryDisclosure.css'; 
 import LogoCarousel from '@/components/LogoCarousel';
+
+
+
+export const metadata = {
+  title: "Mandatory Disclosure",
+  description: "Mandatory Disclosure",
+  keywords: "Mandatory Disclosure",
+};
 
 function MandatoryDisclosure() {
   return (

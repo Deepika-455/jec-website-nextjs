@@ -1,16 +1,16 @@
 "use client";
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-// import { auth } from '@/lib/firebase'; // Updated path for Next.js
-import { useRouter } from 'next/navigation'; // Changed from react-router-dom
+import { auth } from '@/firebase'; // Check if your path is '@/firebase' or '../firebase'
+import { useRouter } from 'next/navigation'; // Updated for Next.js App Router
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Ensure styles are imported
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // Changed from useNavigate
+  const router = useRouter(); // Next.js router hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,7 +19,9 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("Login Successful!");
-      router.push('/admin'); // Redirect using Next.js router
+      
+      // Redirect to Admin Dashboard
+      router.push('/admin'); 
     } catch (error) {
       console.error("Login Error:", error);
       toast.error("Invalid Email or Password");

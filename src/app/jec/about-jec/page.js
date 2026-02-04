@@ -4,8 +4,10 @@ import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
 
 // Next.js Metadata
 export const metadata = {
-  title: 'About JEC | 25 Years of Engineering Excellence in Jaipur',
-  description: 'Discover Jaipur Engineering College (JEC), established in 2000. A hub for innovation, research, and holistic development with 12,000+ global alumni and state-of-the-art infrastructure in Kukas, Jaipur.',
+  title: "About – Jaipur Engineering College | Best Engineering College",
+  description: "Jaipur Engineering College , A best college where people and ideas come together in new ways, Illuminating turnarounds, igniting sparks that fuel new ventures.",
+  keywords:"About us, JEC, Jaipur, Engineering, College, Top, Rajasthan, JEC Group of Colleges",
+
 };
 
 export default function About() {

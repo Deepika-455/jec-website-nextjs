@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import '@/styles/Navigation.css';
+
 
 // Full list of menu items
 const menuData = [
@@ -11,8 +12,14 @@ const menuData = [
 ];
 
 function Subheader() {
+    const searchRef = useRef(null); 
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
+    const inputRef = useRef(null);  // added recently
 
     const pathname = usePathname();
 
@@ -20,6 +27,7 @@ function Subheader() {
     useEffect(() => {
         setIsMobileMenuOpen(false);
         setActiveDropdown(null);
+        setSearchQuery(""); // Clear search on page change  added recently
     }, [pathname]);
 
     const toggleDropdown = (e, menuName) => {
@@ -28,6 +36,72 @@ function Subheader() {
             setActiveDropdown(activeDropdown === menuName ? null : menuName);
         }
     };
+    // added recently
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+
+    // 1. Remove any old highlights first to avoid infinite loops/messy DOM
+    const oldMarks = document.querySelectorAll('.jec-page-highlight');
+    oldMarks.forEach(mark => {
+        const parent = mark.parentNode;
+        if (parent) {
+            parent.replaceChild(document.createTextNode(mark.textContent), mark);
+            parent.normalize(); 
+        }
+    });
+
+    if (!query || query.trim().length < 2) return;
+
+    // 2. Function to crawl the text and wrap matches
+    const walkAndMark = (node) => {
+        if (node.nodeType === 3) { // It's a Text Node
+            const text = node.textContent;
+            const lowerText = text.toLowerCase();
+            const lowerQuery = query.toLowerCase();
+            const index = lowerText.indexOf(lowerQuery);
+
+            if (index >= 0) {
+                const range = document.createRange();
+                range.setStart(node, index);
+                range.setEnd(node, index + query.length);
+
+                const mark = document.createElement('mark');
+                mark.className = 'jec-page-highlight';
+                range.surroundContents(mark);
+                return true; // Match found
+            }
+        } else if (node.nodeType === 1 && 
+                   node.childNodes && 
+                   !['SCRIPT', 'STYLE', 'HEADER', 'NAV', 'INPUT'].includes(node.tagName)) {
+            // Traverse children but skip UI elements
+            for (let i = 0; i < node.childNodes.length; i++) {
+                if (walkAndMark(node.childNodes[i])) i++; // Increment skip for the new mark tag
+            }
+        }
+    };
+
+    // 3. Highlight inside the main content area
+    const mainContent = document.querySelector('main') || document.body;
+    walkAndMark(mainContent);
+};
+
+    const highlightText = (text, query) => {
+  if (!query) return text;
+
+  // Escape special characters and create a global, case-insensitive regex
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  
+  // Split the text into an array of matching and non-matching parts
+  const parts = text.split(regex);
+
+  return parts.map((part, index) => 
+    regex.test(part) ? (
+      <span key={index} className="jec-search-match">{part}</span>
+    ) : (
+      part
+    )
+  );
+};
 
     return (
         <div className="jec-master-header">
@@ -51,7 +125,9 @@ function Subheader() {
                         <Link href="/virtual-tour" className="jec-top-link"><i className="fas fa-vr-cardboard"></i> Virtual Tour</Link>
                         <Link href="/grievance" className="jec-top-link"><i className="fas fa-file-alt"></i> Grievance Form</Link>
                         <Link href="/blog" className="jec-top-link"><i className="fas fa-blog"></i> Blog</Link>
-                        <Link href="/contact" className="jec-contact-btn">CONTACT US</Link>
+                        <Link href="/contact" className="jec-top-cta">
+             CONTACT US
+          </Link>
                     </div>
                 </div>
             </div>
@@ -123,7 +199,9 @@ function Subheader() {
                                 </ul>
                             </li>
 
-                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">Placement</Link></li>
+                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">
+    {highlightText("Placement", searchQuery)}
+</Link></li>
 
                             <li className={`jec-menu-item ${activeDropdown === 'infra' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'infra')}>Infrastructure <i className="fas fa-chevron-down"></i></a>
@@ -160,8 +238,67 @@ function Subheader() {
                                     <li><Link href="/Our-Society/Other-Institutes-Jaipur-College-of-Education-and-Science" className="jec-dropdown-link">Jaipur College of Ed & Sci</Link></li>
                                 </ul>
                             </li>
+                            {/* --- MOBILE ONLY: CONTACT INFO (Issue 2 Fix) --- */}
+                            <li className="jec-mobile-contact-wrapper"> {/* Add this line */}
+                            <div className="jec-mobile-contact-info">
+                                <h4>GET IN TOUCH</h4>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-map-marker-alt"></i>
+                                    <span>SP-43, RIICO Ind. Area, Kukas, Jaipur - 302028</span>
+                                </div>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-phone-alt"></i>
+                                    <a href="tel:+918875071333">+91-88750 71333</a>
+                                </div>
+                                <div className="jec-contact-row">
+                                    <i className="fas fa-envelope"></i>
+                                    <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
+                                </div>
+                            </div>
+                            </li>
                             
                             {/* SEARCH ICON REMOVED FROM HERE */}
+
+
+ {/* SEARCH ICON (Desktop Only) */}
+                               {/* SEARCH ICON (Desktop Only) - IN-PAGE SEARCH */}
+{/* --- SEARCH ICON (Desktop Only) --- */}
+<li className="jec-menu-item jec-desktop-search" ref={searchRef}>
+    <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
+        <input
+            ref={inputRef}
+            type="text"
+            placeholder="Find on page..." 
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            autoFocus={isSearchOpen}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (searchQuery.trim()) {
+                        const found = window.find(searchQuery);
+                        if (!found) alert("Text not found on this page.");
+                    }
+                }
+            }}
+        />
+        <button 
+            type="button" 
+            onClick={() => {
+                if (!isSearchOpen) {
+                    setIsSearchOpen(true);
+                } else if (searchQuery.trim()) {
+                    window.find(searchQuery);
+                } else {
+                    setIsSearchOpen(false);
+                }
+            }}
+        >
+            <i className="fas fa-search"></i>
+        </button>
+    </div>
+</li>
+
 
                         </ul>
                     </div>

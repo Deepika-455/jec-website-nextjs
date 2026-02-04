@@ -5,6 +5,13 @@ import { db } from '@/firebase';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import '@/styles/VideoGallery.css'; 
 
+
+// export const metadata = {
+//   title: "JEC: Video Gallery",
+//   description: "",
+//   keywords: "",
+// };
+
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase'; 
+import { db, storage } from '@/firebase'; 
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
-import ImageUpload from '@/components/admin/ImageUpload'; 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,6 +28,10 @@ const EditPlacements = () => {
     const [drives, setDrives] = useState([]);
     const [driveForm, setDriveForm] = useState({ year: '', date: '', company: '', ctc: '', branch: '' });
     const [editDriveId, setEditDriveId] = useState(null);
+
+    // --- UPLOAD STATE ---
+    const [uploading, setUploading] = useState(false);
+    const [dragActive, setDragActive] = useState(false);
 
     // --- FETCH DATA ---
     const fetchData = async () => {
@@ -60,6 +64,66 @@ const EditPlacements = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    // --- NEW UPLOAD LOGIC ---
+    const processUpload = async (file, onSuccess) => {
+        if (!file) return;
+
+        // 1. Check Size (1.00 MB Limit)
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (file.size > 1048576) {
+            alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
+            return;
+        }
+
+        // 2. Upload to Firebase
+        try {
+            setUploading(true);
+            const storageRef = ref(storage, `placements/${Date.now()}-${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                "state_changed",
+                null,
+                (error) => {
+                    console.error(error);
+                    toast.error("Upload failed");
+                    setUploading(false);
+                },
+                async () => {
+                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                    onSuccess(downloadURL);
+                    setUploading(false);
+                    toast.success("Photo uploaded!");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            setUploading(false);
+            toast.error("Something went wrong");
+        }
+    };
+
+    // Drag & Drop Handlers
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e, onSuccess) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processUpload(e.dataTransfer.files[0], onSuccess);
+        }
+    };
+    // ------------------------
 
     // --- YEAR HANDLERS ---
     const handleYearSubmit = async (e) => {
@@ -222,10 +286,60 @@ const EditPlacements = () => {
                             <input placeholder="Student Name" value={starForm.name} onChange={e => setStarForm({ ...starForm, name: e.target.value })} style={styles.input} />
                             <input placeholder="Company" value={starForm.company} onChange={e => setStarForm({ ...starForm, company: e.target.value })} style={styles.input} />
                             <input placeholder="Package (e.g. 1.56 Cr)" value={starForm.package} onChange={e => setStarForm({ ...starForm, package: e.target.value })} style={styles.input} />
+                            
+                            {/* --- STAR IMAGE UPLOAD --- */}
                             <div style={{ gridColumn: '1 / -1' }}>
-                                <ImageUpload label="Student Photo" onUploadComplete={(url) => setStarForm({ ...starForm, image: url })} />
-                                {starForm.image && <small>Image Uploaded</small>}
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Student Photo</label>
+                                {!starForm.image ? (
+                                    <label 
+                                        style={{ 
+                                            ...styles.uploadBox, 
+                                            backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
+                                            borderColor: dragActive ? '#0072C6' : '#ccc'
+                                        }}
+                                        onDragEnter={handleDrag}
+                                        onDragLeave={handleDrag}
+                                        onDragOver={handleDrag}
+                                        onDrop={(e) => handleDrop(e, (url) => setStarForm({ ...starForm, image: url }))}
+                                    >
+                                        {uploading ? (
+                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin:0 }}>Uploading...</p>
+                                        ) : (
+                                            <>
+                                                <input 
+                                                    type="file" 
+                                                    accept="image/*" 
+                                                    onChange={(e) => {
+                                                        processUpload(e.target.files[0], (url) => setStarForm({ ...starForm, image: url }));
+                                                        e.target.value = null; 
+                                                    }}
+                                                    style={{ display: 'none' }} 
+                                                />
+                                                <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
+                                                    Drag & Drop or Click to Upload
+                                                </div>
+                                                <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                            </>
+                                        )}
+                                    </label>
+                                ) : (
+                                    <div style={{ position: 'relative', width: '100px' }}>
+                                        <img src={starForm.image} alt="Preview" style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '5px' }} />
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setStarForm({ ...starForm, image: '' })}
+                                            style={{
+                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', 
+                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display:'flex', alignItems:'center', justifyContent:'center'
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                )}
                             </div>
+                            {/* ------------------------- */}
+
                             <button type="submit" style={editStarId ? styles.updateBtn : styles.btn}>
                                 {editStarId ? "Update Achiever" : "Add Achiever"}
                             </button>
@@ -261,9 +375,60 @@ const EditPlacements = () => {
                                 <input type="checkbox" checked={galleryForm.isPremium} onChange={e => setGalleryForm({ ...galleryForm, isPremium: e.target.checked })} />
                                 Is Premium?
                             </label>
+                            
+                            {/* --- GALLERY IMAGE UPLOAD --- */}
                             <div style={{ gridColumn: '1 / -1' }}>
-                                <ImageUpload label="Student Photo" onUploadComplete={(url) => setGalleryForm({ ...galleryForm, image: url })} />
+                                <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Student Photo</label>
+                                {!galleryForm.image ? (
+                                    <label 
+                                        style={{ 
+                                            ...styles.uploadBox, 
+                                            backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
+                                            borderColor: dragActive ? '#0072C6' : '#ccc'
+                                        }}
+                                        onDragEnter={handleDrag}
+                                        onDragLeave={handleDrag}
+                                        onDragOver={handleDrag}
+                                        onDrop={(e) => handleDrop(e, (url) => setGalleryForm({ ...galleryForm, image: url }))}
+                                    >
+                                        {uploading ? (
+                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin:0 }}>Uploading...</p>
+                                        ) : (
+                                            <>
+                                                <input 
+                                                    type="file" 
+                                                    accept="image/*" 
+                                                    onChange={(e) => {
+                                                        processUpload(e.target.files[0], (url) => setGalleryForm({ ...galleryForm, image: url }));
+                                                        e.target.value = null; 
+                                                    }}
+                                                    style={{ display: 'none' }} 
+                                                />
+                                                <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
+                                                    Drag & Drop or Click to Upload
+                                                </div>
+                                                <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
+                                            </>
+                                        )}
+                                    </label>
+                                ) : (
+                                    <div style={{ position: 'relative', width: '100px' }}>
+                                        <img src={galleryForm.image} alt="Preview" style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '5px' }} />
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setGalleryForm({ ...galleryForm, image: '' })}
+                                            style={{
+                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', 
+                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display:'flex', alignItems:'center', justifyContent:'center'
+                                            }}
+                                        >
+                                            &times;
+                                        </button>
+                                    </div>
+                                )}
                             </div>
+                            {/* --------------------------- */}
+
                             <button type="submit" style={editGalleryId ? styles.updateBtn : styles.btn}>
                                 {editGalleryId ? "Update Student" : "Add Student"}
                             </button>
@@ -285,7 +450,7 @@ const EditPlacements = () => {
                 </div>
             )}
 
-            {/* --- DRIVES TAB (FIXED KEY ERROR) --- */}
+            {/* --- DRIVES TAB --- */}
             {activeTab === 'drives' && (
                 <div>
                     <div style={styles.card}>
@@ -319,7 +484,6 @@ const EditPlacements = () => {
                             const yearDrives = drives.filter(d => d.year === year);
                             if (yearDrives.length === 0) return null;
                             return (
-                                // UPDATED KEY: Uses ID to prevent duplicate key errors
                                 <div key={yearObj.id} style={{ marginBottom: '30px' }}>
                                     <h4 style={{ borderBottom: '2px solid #0072C6', display: 'inline-block' }}>{year}</h4>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
@@ -372,7 +536,17 @@ const styles = {
     cancelBtn: { padding: '10px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' },
     itemCard: { background: 'white', padding: '10px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0,0,0,0.1)', textAlign: 'center' },
     editBtn: { padding: '5px 10px', background: '#e0f2fe', color: '#0072C6', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' },
-    delBtn: { padding: '5px 10px', background: '#fee2e2', color: 'red', border: 'none', borderRadius: '4px', cursor: 'pointer' }
+    delBtn: { padding: '5px 10px', background: '#fee2e2', color: 'red', border: 'none', borderRadius: '4px', cursor: 'pointer' },
+    // ADDED STYLE FOR DRAG BOX
+    uploadBox: { 
+        border: '2px dashed #cbd5e1', 
+        borderRadius: '6px', 
+        padding: '20px', 
+        textAlign: 'center', 
+        display: 'block', 
+        cursor: 'pointer', 
+        transition: '0.2s all' 
+    }
 };
 
 export default EditPlacements;

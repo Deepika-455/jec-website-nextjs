@@ -3,6 +3,13 @@ import React from 'react';
 import '@/styles/PreparePresent.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+// export const metadata = {
+//   title: "Library: Top Engineering College with Library in Jaipur | JEC Kukas",
+//   description: "Jaipur Engineering College is best with its Library. The vast reservoir of knowledge at JEC Library is a source of constant value addition for the knowledge seekers.",
+//   keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+// };
+
 function PrepareAndPresent() {
   return (
     <div className="prepare-page">
@@ -122,34 +129,42 @@ function PrepareAndPresent() {
         </div>
 
         {/* Auditorium Section */}
-        <div className="prepare-auditorium-section">
-            <div className="prepare-audi-content">
-                <span style={{ color: 'var(--prepare-primary)', fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>Present</span>
-                <h2>The Grand Auditorium</h2>
-                <p>Students must get to interact with the outer world. JEC houses a spacious auditorium with good seating and air conditioning. The ideal acoustic environment in JEC auditorium is one where the visual and auditory experiences are captivating, intimate, and efficient.</p>
-                <p>As such our auditorium has witnessed a large number of International and National Conferences, Cultural events and Technical Workshops hosted by Jaipur Engineering College.</p>
-                <p>There are seminar halls for each department as well. Departments use them for Guest Lectures, Inter-Department Events, and Presentations etc. to take students beyond curriculum and keep the spirit of learning alive.</p>
-                
-                <div className="prepare-audi-features">
-                    <div className="prepare-af-item">
-                        <i className="fas fa-chair"></i>
-                        <span>1000+ Seater</span>
-                    </div>
-                    <div className="prepare-af-item">
-                        <i className="fas fa-snowflake"></i>
-                        <span>Air Conditioned</span>
-                    </div>
-                    <div className="prepare-af-item">
-                        <i className="fas fa-microphone-alt"></i>
-                        <span>Advanced Acoustics</span>
-                    </div>
-                    <div className="prepare-af-item">
-                        <i className="fas fa-video"></i>
-                        <span>Conference Ready</span>
-                    </div>
+        {/* updated Auditorium Section */}
+<div className="prepare-auditorium-section">
+    <div className="prepare-audi-content-wrapper">
+        <div className="prepare-audi-content">
+            <span style={{ color: 'var(--prepare-primary)', fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', display: 'block', marginBottom: '10px' }}>Present</span>
+            <h2>The Grand Auditorium</h2>
+            <p>Students must get to interact with the outer world. JEC houses a spacious auditorium with good seating and air conditioning. The ideal acoustic environment in JEC auditorium is one where the visual and auditory experiences are captivating, intimate, and efficient.</p>
+            <p>As such our auditorium has witnessed a large number of International and National Conferences, Cultural events and Technical Workshops hosted by Jaipur Engineering College.</p>
+            <p>There are seminar halls for each department as well. Departments use them for Guest Lectures, Inter-Department Events, and Presentations etc. to take students beyond curriculum and keep the spirit of learning alive.</p>
+            
+            <div className="prepare-audi-features">
+                <div className="prepare-af-item">
+                    <i className="fas fa-chair"></i>
+                    <span>1000+ Seater</span>
+                </div>
+                <div className="prepare-af-item">
+                    <i className="fas fa-snowflake"></i>
+                    <span>Air Conditioned</span>
+                </div>
+                <div className="prepare-af-item">
+                    <i className="fas fa-microphone-alt"></i>
+                    <span>Advanced Acoustics</span>
+                </div>
+                <div className="prepare-af-item">
+                    <i className="fas fa-video"></i>
+                    <span>Conference Ready</span>
                 </div>
             </div>
         </div>
+
+        {/* NEW: Image Frame */}
+        <div className="prepare-audi-image">
+            <img src="https://firebasestorage.googleapis.com/v0/b/jec-website-55397.firebasestorage.app/o/Untitled%20design.png?alt=media&token=e73a0858-28ce-476c-9a8f-a7c8b21054cd" alt="JEC Auditorium" />
+        </div>
+    </div>
+</div>
 
       </div>
       

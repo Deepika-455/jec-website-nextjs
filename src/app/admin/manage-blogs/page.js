@@ -47,6 +47,7 @@ const ManageBlogs = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
     const [uploading, setUploading] = useState(false); // State for upload spinner
+    const [dragActive, setDragActive] = useState(false); // State for drag visual
 
     // Form State
     const [title, setTitle] = useState('');
@@ -97,16 +98,14 @@ const ManageBlogs = () => {
 
     useEffect(() => { fetchPosts(); }, []);
 
-    // --- NEW IMAGE UPLOAD LOGIC (Replaces Component) ---
-    const handleImageChange = async (e) => {
-        const file = e.target.files[0];
+    // --- NEW IMAGE UPLOAD LOGIC (Centralized) ---
+    const processFile = async (file) => {
         if (!file) return;
 
         // 1. Check File Size (1.00 MB = 1048576 bytes)
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
         if (file.size > 1048576) {
             alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
-            e.target.value = null; // Reset input
             return;
         }
 
@@ -140,10 +139,28 @@ const ManageBlogs = () => {
         }
     };
 
+    // DRAG AND DROP HANDLERS
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            processFile(e.dataTransfer.files[0]);
+        }
+    };
+
     const handleRemoveImage = () => {
         setImage('');
-        // Optional: If you want to delete from Firebase Storage, you'd need the ref here.
-        // For now, we just clear the link from the form.
     };
     // ---------------------------------------------------
 
@@ -218,12 +235,22 @@ const ManageBlogs = () => {
                         {/* Right Column */}
                         <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', border: '1px solid #e2e8f0', height: 'fit-content' }}>
                             
-                            {/* --- CUSTOM IMAGE UPLOAD UI --- */}
+                            {/* --- CUSTOM IMAGE UPLOAD UI (UPDATED FOR DRAG & DROP) --- */}
                             <label style={styles.label}>Cover Image</label>
                             
                             {!image ? (
-                                // Upload State
-                                <div style={{ border: '2px dashed #cbd5e1', borderRadius: '6px', padding: '20px', textAlign: 'center', background: 'white' }}>
+                                // Upload State (Drag & Drop + Click)
+                                <label 
+                                    style={{ 
+                                        ...styles.uploadBox, 
+                                        backgroundColor: dragActive ? '#e2e8f0' : 'white',
+                                        borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                    }}
+                                    onDragEnter={handleDrag}
+                                    onDragLeave={handleDrag}
+                                    onDragOver={handleDrag}
+                                    onDrop={handleDrop}
+                                >
                                     {uploading ? (
                                         <p style={{ color: '#0072C6', fontWeight: 'bold' }}>Uploading...</p>
                                     ) : (
@@ -231,18 +258,20 @@ const ManageBlogs = () => {
                                             <input 
                                                 type="file" 
                                                 accept="image/*" 
-                                                onChange={handleImageChange} 
-                                                id="file-upload"
+                                                onChange={(e) => {
+                                                    processFile(e.target.files[0]);
+                                                    e.target.value = null; // Reset
+                                                }}
                                                 style={{ display: 'none' }} 
                                             />
-                                            <label htmlFor="file-upload" style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600', display: 'block' }}>
+                                            <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
                                                 <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
-                                                Click to Upload
-                                            </label>
+                                                Drag & Drop or Click to Upload
+                                            </div>
                                             <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
                                         </>
                                     )}
-                                </div>
+                                </label>
                             ) : (
                                 // Preview State with Remove Button
                                 <div style={{ position: 'relative', border: '1px solid #e2e8f0', borderRadius: '6px', overflow: 'hidden' }}>
@@ -363,6 +392,16 @@ const styles = {
     thumb: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '6px' },
     editBtn: { padding: '6px 12px', background: '#E0F2FE', color: '#0284C7', border: 'none', borderRadius: '5px', cursor: 'pointer', marginRight: '5px', fontWeight: '600' },
     deleteBtn: { padding: '6px 12px', background: '#FEE2E2', color: '#DC2626', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: '600' },
+    // ADDED STYLE FOR DRAG BOX
+    uploadBox: { 
+        border: '2px dashed #cbd5e1', 
+        borderRadius: '6px', 
+        padding: '20px', 
+        textAlign: 'center', 
+        display: 'block', 
+        cursor: 'pointer', 
+        transition: '0.2s all' 
+    }
 };
 
 export default ManageBlogs;

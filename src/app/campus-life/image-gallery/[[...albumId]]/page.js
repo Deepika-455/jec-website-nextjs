@@ -6,6 +6,13 @@ import LogoCarousel from '@/components/LogoCarousel';
 import { db } from '@/firebase'; 
 import { collection, getDocs } from 'firebase/firestore';
 
+
+// export const metadata = {
+//   title: "JEC: Photo Gallery",
+//   description: "",
+//   keywords: "",
+// };
+
 function Gallery() {
     const [galleryData, setGalleryData] = useState([]);
     const [selectedAlbum, setSelectedAlbum] = useState(null);
