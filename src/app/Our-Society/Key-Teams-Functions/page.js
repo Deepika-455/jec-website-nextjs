@@ -3,6 +3,13 @@ import '@/styles/KeyTeams.css';
 import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
 
 
+export const metadata = {
+  title: "Jaipur Engineering college Team and Key Functions",
+  description: "Know about Jaipur Engineering college Team and Key Functions. Team work in essence requires not only people skills but also a sense of maturity...",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
+
 export default function KeyTeamsFunctions() {
   return (
     <div className="kt-page">

@@ -1,6 +1,13 @@
 import React from 'react';
 import '@/styles/AgrasenCollege.css';
 
+
+export const metadata = {
+  title: "Other Institutes Agrasen College",
+  description: "Know about Jaipur Engineering college Linkages and collaboration with National &amp; International Associations and Societies." ,
+  keywords: "Other Institutes JCES College",
+};
+
 export default function AgrasenCollege() {
   return (
     <div className="ac-page">

@@ -3,6 +3,12 @@ import React from 'react';
 import '@/styles/FinancialAids.css'; // Import the specific CSS file
 import LogoCarousel from '@/components/LogoCarousel'; // Added for consistency across all pages
 
+export const metadata = {
+  title: "Jaipur Engineering College – Scholarships, Bank Loan, Financial Aids, Finance",
+  description: "Know about available Scholarships, Bank Loan, Financial Aids options in Jaipur Engineering College (JEC Kukas).",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
 function FinancialAids() {
   return (
     <div className="finaid-page">

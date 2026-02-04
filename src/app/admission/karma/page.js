@@ -3,6 +3,14 @@ import React from 'react';
 import '@/styles/Skill.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+
+export const metadata = {
+  title: "AICTE Karma Courses : Certificate / Diploma / B.Voc. programmes | Jaipur Engineering College",
+  description: "Check details about AICTE Karma Scheme Certificate / Diploma / Bachelor of Vocation (B.Voc) programmes in Jaipur Engineering College. The AICTE has launched a scheme on skills development....",
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+};
+
 function KarmaCourses() {
   return (
     <div className="karma-page">

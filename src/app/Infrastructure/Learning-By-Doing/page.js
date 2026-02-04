@@ -3,6 +3,13 @@ import React from 'react';
 import '@/styles/LearningByDoing.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+// export const metadata = {
+//   title: "Best Engineering College with Labs in Jaipur | JEC Jaipur",
+//   description: "Jaipur Engineering College is the Best Engineering College with Labs in Jaipur. Engineering is incomplete without DOING what is being taught in the classrooms.",
+//   keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+// };
+
 function LearningByDoing() {
   return (
     <div className="learning-page">

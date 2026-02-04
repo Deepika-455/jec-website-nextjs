@@ -3,6 +3,13 @@ import React from 'react';
 import '@/styles/MentalHealth.css'; 
 import LogoCarousel from '@/components/LogoCarousel'; 
 
+
+// export const metadata = {
+//   title: ,
+//   description: ,
+//   keywords: ,
+// };
+
 const MentalHealth = () => {
   return (
     <div className="mental-health-page">

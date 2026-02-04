@@ -571,3 +571,27 @@ body {
         text-decoration: none;
     }
 }
+
+
+/* --- SEARCH HIGHLIGHT STYLE --- */
+.jec-search-match {
+    background-color: var(--jec-gold) !important; /* Matches your theme gold */
+    color: #000 !important;
+    font-weight: bold;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+/* Fix for the mobile wrapper we added in step 2 */
+.jec-mobile-li {
+    list-style: none !important;
+    width: 100%;
+}
+
+/* This replaces the pseudo-element that failed */
+.jec-page-highlight {
+    background-color: #FCA311 !important; /* Your JEC Gold */
+    color: #000 !important;
+    padding: 0;
+    border-radius: 2px;
+}

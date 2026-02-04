@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/Navigation.css";
+// import Header from './components/Header';
 import "@/styles/Footer.css";
 import "@/styles/AdmissionPopup.css";
 import "@/styles/Sidebar.css"; // <--- 1. Import your Sidebar CSS
