@@ -3,6 +3,7 @@ import "@/styles/Navigation.css";
 // import Header from './components/Header';
 import "@/styles/Footer.css";
 import "@/styles/AdmissionPopup.css";
+import { Suspense } from 'react'; // 1. Import Suspense
 import "@/styles/Sidebar.css"; // <--- 1. Import your Sidebar CSS
 import ClientLayout from "@/components/ClientLayout"; 
 import AdmissionPopup from "@/components/AdmissionPopup";
@@ -58,9 +59,11 @@ export default function RootLayout({ children }) {
         {/* --- GOOGLE SCRIPTS END --- */}
         
         {/* ClientLayout now handles the Header (Subheader) and Footer visibility logic */}
-        <ClientLayout>
-            {children}
-        </ClientLayout>
+        <Suspense fallback={null}>
+         <ClientLayout>
+             {children}
+         </ClientLayout>
+        </Suspense>
 
         <AdmissionPopup /> 
 
