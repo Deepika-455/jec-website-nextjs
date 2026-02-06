@@ -325,6 +325,7 @@ body {
     height: 100%;
     width: 100%;
     justify-content: flex-end;
+    -webkit-text-size-adjust: 40px; 
 }
 
 .jec-menu-item {
@@ -346,6 +347,7 @@ body {
     padding: 10px 12px;
     transition: all 0.3s ease;
     cursor: pointer;
+    min-height: 40px;
 }
 
 .jec-nav-link:hover {
@@ -526,6 +528,7 @@ body {
     .jec-dropdown-link {
         padding: 15px 25px 15px 40px;
         white-space: normal;
+        min-height: 40px;
     }
 
     /* --- MOBILE CONTACT INFO STYLES (Issue 2 Fix) --- */

@@ -91,11 +91,11 @@
 }
 
 .finaid-quick-link-item { 
-    text-align: center; 
-    position: relative;
-    transition: transform 0.3s ease;
-    padding: 10px;
-    border-radius: 8px;
+     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .finaid-quick-link-item:hover {
@@ -127,6 +127,7 @@
     font-size: 1.1rem; 
     color: var(--finaid-logo-black); 
     font-weight: 700; 
+    position: center;
 }
 
 /* --- Intro & Objectives --- */
