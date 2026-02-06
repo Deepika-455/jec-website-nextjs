@@ -20,7 +20,7 @@ const EngineeringProjects = () => {
         <h1>Engineering Projects</h1>
         <p>Students Learn, Innovate, Create & Demonstrate Themselves</p>
         <a
-                        href="mailto:Examination@jeckukas.org.in"
+                        href="mailto:info@jeckukas.org.in"
                         className="hero-apply-btn" >
                         Email us 
                     </a>

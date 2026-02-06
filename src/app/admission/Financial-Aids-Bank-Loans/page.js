@@ -86,12 +86,12 @@ function FinancialAids() {
                         <tr>
                             <td>Chief Minister Scholarship Scheme (Samajik Nyay Vibhag)</td>
                             <td>Jaipur (Rajasthan)</td>
-                            <td>Advertisement in leading dailies at academic year start. Visit <a href="https://www.collegeeducation.rajasthan.gov.in/" target="_blank" rel="noreferrer">Dept Website</a></td>
+                            <td>Advertisement in leading dailies at academic year start. Visit <a href="https://sje.rajasthan.gov.in/Default.aspx?PageID=198" target="_blank" rel="noreferrer">Dept Website</a></td>
                         </tr>
                         <tr>
                             <td>District Minority Welfare Officer</td>
                             <td>All Districts, Rajasthan</td>
-                            <td>Contact relevant office. Visit <a href="https://www.sje.rajasthan.gov.in/About%20Deptt/Phone.htm" target="_blank" rel="noreferrer">SJE Website</a></td>
+                            <td>Contact relevant office. Visit <a href="https://www.minorityaffairs.gov.in/show_content.php?lang=1&level=2&ls_id=661&lid=823" target="_blank" rel="noreferrer">SJE Website</a></td>
                         </tr>
                         <tr>
                             <td>Jharkhand State Tribal Coop. Dev. Corp.</td>
@@ -101,7 +101,7 @@ function FinancialAids() {
                         <tr>
                             <td>District Welfare Officers (Zila Kalyan)</td>
                             <td>All Bihar Districts</td>
-                            <td>Contact relevant office. Visit <a href="http://www.educationbihar.gov.in/" target="_blank" rel="noreferrer">Education Bihar</a></td>
+                            <td>Contact relevant office. Visit <a href="https://sje.rajasthan.gov.in/" target="_blank" rel="noreferrer">Education Bihar</a></td>
                         </tr>
                         
                         <tr>
