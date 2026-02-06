@@ -595,3 +595,118 @@ body {
     padding: 0;
     border-radius: 2px;
 }
+
+
+/* --- SEARCH RESULTS DROPDOWN (Add this to the end of your file) --- */
+.jec-search-modal {
+    position: absolute;
+    top: 120%; /* Pushes it just below the search bar */
+    right: 0;
+    width: 320px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    text-align: left;
+    z-index: 10001; /* Higher than nav wrapper */
+}
+
+.jec-modal-header {
+    background: #f8f9fa;
+    padding: 8px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    color: #555;
+}
+
+.jec-results-list {
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.jec-results-list li {
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+}
+
+.jec-results-list li a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none !important;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.jec-results-list li a:hover {
+    background: #f0f7ff;
+    color: #007bff;
+}
+
+.jec-results-list strong {
+    display: block;
+    font-size: 14px;
+    color: #0056b3;
+    margin-bottom: 4px;
+}
+
+.jec-results-list small {
+    font-size: 11px;
+    color: #666;
+    display: block;
+    line-height: 1.4;
+}
+
+/* Scrollbar styling */
+.jec-results-list::-webkit-scrollbar {
+    width: 6px;
+}
+.jec-results-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.jec-results-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* Highlighter Yellow (For Search Matches) */
+.jec-highlight {
+    background-color: #FFFF00 !important;
+    color: black !important;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+
+/* --- SEARCH RESULTS DROPDOWN (Landscape/Longer Version) --- */
+.jec-search-modal {
+    position: fixed;       /* Detach from the search button so it can be huge */
+    top: 125px;            /* Position it just below your header (48px top + 76px nav) */
+    right: 5%;             /* Keep it aligned towards the right side of the screen */
+    width: 700px;          /* WIDE Landscape width */
+    max-width: 90vw;       /* Safety for mobile screens */
+    max-height: 60vh;      /* Use 60% of the screen height */
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25); /* Big shadow to show it's floating */
+    z-index: 10002;        /* Ensure it sits on top of everything */
+    overflow: hidden;
+}
+
+.jec-results-list {
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+    max-height: 100%;      /* Fill the container */
+    overflow-y: auto;      /* Scroll inside the box */
+}
+
+/* Make the links bigger and cleaner */
+.jec-results-list li a {
+    padding: 15px 20px;
+}

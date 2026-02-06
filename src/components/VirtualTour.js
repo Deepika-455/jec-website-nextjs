@@ -1,40 +1,38 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import '@/styles/VirtualTour.css'; // Updated import path for Next.js
+import '@/styles/VirtualTour.css'; 
 
 function VirtualTour() {
     const [isMuted, setIsMuted] = useState(true);
     const playerRef = useRef(null);
-
-    // The specific Campus Tour Video ID from your link
     const videoId = '3JjaFQSvtZU';
 
     useEffect(() => {
-        // 1. Load the YouTube IFrame API script if it doesn't exist
+        // This stops the build from crashing on the server
+        if (typeof window === 'undefined') return;
+
         if (!window.YT) {
             const tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
             document.head.appendChild(tag);
         }
 
-        // 2. Use an interval to safely check for API readiness
-        // This prevents 'onYouTubeIframeAPIReady' conflicts with other components.
         const checkYTReady = setInterval(() => {
             if (window.YT && window.YT.Player && !playerRef.current) {
                 playerRef.current = new window.YT.Player('virtual-tour-player', {
                     videoId: videoId,
-                    host: 'https://www.youtube.com', // Explicitly set for Vercel security
+                    host: 'https://www.youtube.com',
                     playerVars: {
                         autoplay: 1,
                         mute: 1,
                         loop: 1,
-                        playlist: videoId, // Required for the loop to function
+                        playlist: videoId,
                         controls: 0,
                         modestbranding: 1,
-                        playsinline: 1, // Crucial for mobile autoplay
+                        playsinline: 1,
                         rel: 0,
                         enablejsapi: 1,
-                        origin: typeof window !== 'undefined' ? window.location.origin : '' // Fixes the 'postMessage' error safely
+                        origin: window.location.origin
                     },
                     events: {
                         onReady: (event) => {
@@ -42,21 +40,20 @@ function VirtualTour() {
                             event.target.playVideo();
                         },
                         onStateChange: (event) => {
-                            // Instant restart when the 1:25 video ends
                             if (event.data === window.YT.PlayerState.ENDED) {
                                 event.target.playVideo();
                             }
                         }
                     },
                 });
-
-                // Once initialized, stop checking
                 clearInterval(checkYTReady);
             }
-        }, 500); // Check every 0.5 seconds
+        }, 500);
 
         return () => clearInterval(checkYTReady);
     }, [videoId]);
+
+    // ... (rest of your handleToggleMute and return JSX)
 
     const handleToggleMute = (e) => {
         // Stop events to prevent mobile taps from being swallowed

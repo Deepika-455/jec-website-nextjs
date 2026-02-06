@@ -1,34 +1,142 @@
 "use client";
-import React, { useState, useEffect,useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useState, useEffect, useRef } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Fuse from 'fuse.js';
 import '@/styles/Navigation.css';
-
 
 // Full list of menu items
 const menuData = [
     { name: "Home", link: "/" },
-    // ... (Your menu data remains the same)
+    // ... 
 ];
 
 function Subheader() {
-    const searchRef = useRef(null); 
+    // --- 1. SEARCH STATES ---
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [showSuggestions, setShowSuggestions] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
+    const [query, setQuery] = useState(""); 
+    const [results, setResults] = useState([]);
+    const [searchIndex, setSearchIndex] = useState([]);
+    
+    // UI States
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
-    const inputRef = useRef(null);  // added recently
 
+    const inputRef = useRef(null);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    // Close menu on navigate
+    // --- 2. LOAD SEARCH DATA ---
     useEffect(() => {
+        fetch('/search.json')
+            .then(res => res.json())
+            .then(data => setSearchIndex(data))
+            .catch(err => console.error("Search index missing."));
+    }, []);
+
+    // --- 3. HIGHLIGHTER LOGIC ---
+    useEffect(() => {
+        // Clear old highlights
+        const marks = document.querySelectorAll('mark.jec-highlight');
+        marks.forEach(m => {
+            const parent = m.parentNode;
+            if (parent) {
+                parent.replaceChild(document.createTextNode(m.textContent), m);
+                parent.normalize();
+            }
+        });
+
+        // Check URL for ?highlight=word
+        const highlightParam = searchParams.get('highlight');
+        if (highlightParam && highlightParam.length > 2) {
+            setTimeout(() => highlightTextOnPage(highlightParam), 500);
+        }
+
+        // Reset Menu on page change
         setIsMobileMenuOpen(false);
         setActiveDropdown(null);
-        setSearchQuery(""); // Clear search on page change  added recently
-    }, [pathname]);
+        setIsSearchOpen(false);
+        setQuery(""); 
+        setResults([]);
+    }, [pathname, searchParams]);
+
+    // --- 4. HIGHLIGHT FUNCTION (FIXED: NUCLEAR BLOCK) ---
+    const highlightTextOnPage = (searchText) => {
+        const root = document.querySelector('main') || document.body;
+        const terms = searchText.toLowerCase().split(' ').filter(t => t.length > 2);
+        
+        if (terms.length === 0) return;
+
+        const walk = (node) => {
+            // 1. BLOCK ENTIRE SECTIONS (Nuclear Option)
+            // If the code sees these classes, it stops immediately.
+            if (node.nodeType === 1 && (
+                node.classList.contains('jec-master-header') || 
+                node.classList.contains('jec-nav-wrapper') || 
+                node.classList.contains('jec-top-bar')
+            )) return;
+
+            // 2. Text Node Matching
+            if (node.nodeType === 3) { 
+                const text = node.textContent.toLowerCase();
+                const matchedTerm = terms.find(term => text.includes(term));
+                
+                if (matchedTerm) {
+                    // Double Safety: Check parents
+                    if (node.parentElement && (
+                        node.parentElement.closest('header') || 
+                        node.parentElement.closest('nav') ||
+                        node.parentElement.closest('.jec-nav-wrapper')
+                    )) return;
+
+                    const idx = text.indexOf(matchedTerm);
+                    if (idx >= 0) {
+                        const range = document.createRange();
+                        range.setStart(node, idx);
+                        range.setEnd(node, idx + matchedTerm.length);
+                        
+                        const mark = document.createElement('mark');
+                        mark.className = 'jec-highlight';
+                        range.surroundContents(mark);
+                        return true; 
+                    }
+                }
+            } 
+            // 3. TRAVERSAL (The Critical Fix)
+            // We added 'HEADER' and 'NAV' here. The code will NOT enter them.
+            else if (node.nodeType === 1 && node.childNodes && !['SCRIPT','STYLE','INPUT','TEXTAREA','MARK','HEADER','NAV','FOOTER'].includes(node.tagName)) {
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    if (walk(node.childNodes[i])) break; 
+                }
+            }
+        };
+        walk(root);
+        
+        // Scroll to match
+        const first = document.querySelector('.jec-highlight');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    // --- 5. SEARCH HANDLER ---
+    const handleSearch = (e) => {
+        const text = e.target.value;
+        setQuery(text);
+
+        if (!text || text.length < 2) {
+            setResults([]);
+            return;
+        }
+
+        const fuse = new Fuse(searchIndex, {
+            keys: ['title', 'content'],
+            threshold: 0.1, // Strict matching
+            ignoreLocation: true,
+            minMatchCharLength: 3
+        });
+
+        const matches = fuse.search(text);
+        setResults(matches.map(m => m.item).slice(0, 8));
+    };
 
     const toggleDropdown = (e, menuName) => {
         if (window.innerWidth <= 1024) {
@@ -36,77 +144,11 @@ function Subheader() {
             setActiveDropdown(activeDropdown === menuName ? null : menuName);
         }
     };
-    // added recently
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-
-    // 1. Remove any old highlights first to avoid infinite loops/messy DOM
-    const oldMarks = document.querySelectorAll('.jec-page-highlight');
-    oldMarks.forEach(mark => {
-        const parent = mark.parentNode;
-        if (parent) {
-            parent.replaceChild(document.createTextNode(mark.textContent), mark);
-            parent.normalize(); 
-        }
-    });
-
-    if (!query || query.trim().length < 2) return;
-
-    // 2. Function to crawl the text and wrap matches
-    const walkAndMark = (node) => {
-        if (node.nodeType === 3) { // It's a Text Node
-            const text = node.textContent;
-            const lowerText = text.toLowerCase();
-            const lowerQuery = query.toLowerCase();
-            const index = lowerText.indexOf(lowerQuery);
-
-            if (index >= 0) {
-                const range = document.createRange();
-                range.setStart(node, index);
-                range.setEnd(node, index + query.length);
-
-                const mark = document.createElement('mark');
-                mark.className = 'jec-page-highlight';
-                range.surroundContents(mark);
-                return true; // Match found
-            }
-        } else if (node.nodeType === 1 && 
-                   node.childNodes && 
-                   !['SCRIPT', 'STYLE', 'HEADER', 'NAV', 'INPUT'].includes(node.tagName)) {
-            // Traverse children but skip UI elements
-            for (let i = 0; i < node.childNodes.length; i++) {
-                if (walkAndMark(node.childNodes[i])) i++; // Increment skip for the new mark tag
-            }
-        }
-    };
-
-    // 3. Highlight inside the main content area
-    const mainContent = document.querySelector('main') || document.body;
-    walkAndMark(mainContent);
-};
-
-    const highlightText = (text, query) => {
-  if (!query) return text;
-
-  // Escape special characters and create a global, case-insensitive regex
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  
-  // Split the text into an array of matching and non-matching parts
-  const parts = text.split(regex);
-
-  return parts.map((part, index) => 
-    regex.test(part) ? (
-      <span key={index} className="jec-search-match">{part}</span>
-    ) : (
-      part
-    )
-  );
-};
 
     return (
         <div className="jec-master-header">
             
-            {/* --- 1. TOP BLACK BAR --- */}
+            {/* --- TOP BLACK BAR --- */}
             <div className="jec-top-bar">
                 <div className="jec-container jec-top-container">
                     <div className="jec-top-left">
@@ -119,35 +161,29 @@ function Subheader() {
                             <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
                         </div>
                     </div>
-                    
                     <div className="jec-top-right">
                         <Link href="/admission-enquiry" className="jec-top-link"><i className="far fa-edit"></i> Admission Enquiry 2026</Link>
                         <Link href="/virtual-tour" className="jec-top-link"><i className="fas fa-vr-cardboard"></i> Virtual Tour</Link>
                         <Link href="/grievance" className="jec-top-link"><i className="fas fa-file-alt"></i> Grievance Form</Link>
                         <Link href="/blog" className="jec-top-link"><i className="fas fa-blog"></i> Blog</Link>
-                        <Link href="/contact" className="jec-top-cta">
-             CONTACT US
-          </Link>
+                        <Link href="/contact" className="jec-top-cta">CONTACT US</Link>
                     </div>
                 </div>
             </div>
 
-            {/* --- 2. MAIN WHITE NAVIGATION --- */}
+            {/* --- MAIN NAVIGATION --- */}
             <div className="jec-nav-wrapper">
                 <header className="jec-header">
                     <div className="jec-container">
 
-                        {/* LOGO */}
                         <Link href="/" className="jec-logo-link">
                             <img src="/JEC-LOGO.png" alt="JEC Logo" className="jec-logo-img" />
                         </Link>
 
-                        {/* HAMBURGER */}
                         <div className="jec-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                             <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
                         </div>
 
-                        {/* MENU ITEMS */}
                         <ul className={`jec-menu-list ${isMobileMenuOpen ? 'jec-active' : ''}`}>
                             <li className="jec-menu-item"><Link href="/" className="jec-nav-link">Home</Link></li>
 
@@ -169,7 +205,7 @@ function Subheader() {
                             <li className={`jec-menu-item ${activeDropdown === 'admission' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'admission')}>Admission <i className="fas fa-chevron-down"></i></a>
                                 <ul className={`jec-dropdown jec-mega jec-cols-3 ${activeDropdown === 'admission' ? 'jec-show' : ''}`}>
-                                    <li><Link href="/admission/Admission-Open" className="jec-dropdown-link jec-highlight">Admission Open 2026</Link></li>
+                                    <li><Link href="/admission/Admission-Open" className="jec-dropdown-link">Admission Open 2026</Link></li>
                                     <li><Link href="/admission/Admission-Procedure" className="jec-dropdown-link">Admission Procedure</Link></li>
                                     <li><Link href="/admission/Fee-Structure" className="jec-dropdown-link">Fee Structure</Link></li>
                                     <li><Link href="/admission/Documents-Required" className="jec-dropdown-link">Documents Required</Link></li>
@@ -199,9 +235,7 @@ function Subheader() {
                                 </ul>
                             </li>
 
-                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">
-    {highlightText("Placement", searchQuery)}
-</Link></li>
+                            <li className="jec-menu-item"><Link href="/placement" className="jec-nav-link">Placement</Link></li>
 
                             <li className={`jec-menu-item ${activeDropdown === 'infra' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'infra')}>Infrastructure <i className="fas fa-chevron-down"></i></a>
@@ -216,7 +250,6 @@ function Subheader() {
                             <li className={`jec-menu-item ${activeDropdown === 'campus' ? 'jec-open' : ''}`}>
                                 <a href="#!" className="jec-nav-link" onClick={(e) => toggleDropdown(e, 'campus')}>Campus Life <i className="fas fa-chevron-down"></i></a>
                                 <ul className={`jec-dropdown jec-mega jec-cols-3 ${activeDropdown === 'campus' ? 'jec-show' : ''}`}>
-                                  
                                     <li><Link href="/campus-life/academic-achievers" className="jec-dropdown-link">Academic Achievers</Link></li>
                                     <li><Link href="/campus-life/engineering-projects" className="jec-dropdown-link">Engineering Projects</Link></li>
                                     <li><Link href="/campus-life/games-and-sports" className="jec-dropdown-link">Games and Sports</Link></li>
@@ -238,72 +271,96 @@ function Subheader() {
                                     <li><Link href="/Our-Society/Other-Institutes-Jaipur-College-of-Education-and-Science" className="jec-dropdown-link">Jaipur College of Ed & Sci</Link></li>
                                 </ul>
                             </li>
-                            {/* --- MOBILE ONLY: CONTACT INFO (Issue 2 Fix) --- */}
-                            <li className="jec-mobile-contact-wrapper"> {/* Add this line */}
-                            <div className="jec-mobile-contact-info">
-                                <h4>GET IN TOUCH</h4>
-                                <div className="jec-contact-row">
-                                    <i className="fas fa-map-marker-alt"></i>
-                                    <span>SP-43, RIICO Ind. Area, Kukas, Jaipur - 302028</span>
+
+                            <li className="jec-mobile-contact-wrapper">
+                                <div className="jec-mobile-contact-info">
+                                    <h4>GET IN TOUCH</h4>
+                                    <div className="jec-contact-row">
+                                        <i className="fas fa-map-marker-alt"></i>
+                                        <span>SP-43, RIICO Ind. Area, Kukas, Jaipur - 302028</span>
+                                    </div>
+                                    <div className="jec-contact-row">
+                                        <i className="fas fa-phone-alt"></i>
+                                        <a href="tel:+918875071333">+91-88750 71333</a>
+                                    </div>
+                                    <div className="jec-contact-row">
+                                        <i className="fas fa-envelope"></i>
+                                        <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
+                                    </div>
                                 </div>
-                                <div className="jec-contact-row">
-                                    <i className="fas fa-phone-alt"></i>
-                                    <a href="tel:+918875071333">+91-88750 71333</a>
-                                </div>
-                                <div className="jec-contact-row">
-                                    <i className="fas fa-envelope"></i>
-                                    <a href="mailto:admission@jeckukas.org.in">admission@jeckukas.org.in</a>
-                                </div>
-                            </div>
                             </li>
-                            
-                            {/* SEARCH ICON REMOVED FROM HERE */}
 
+                            <li className="jec-menu-item jec-desktop-search">
+                                <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
+                                    <input
+                                        ref={inputRef}
+                                        type="text"
+                                        placeholder="Search JEC..."
+                                        value={query}
+                                        onChange={handleSearch}
+                                        autoFocus={isSearchOpen}
+                                    />
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            setIsSearchOpen(!isSearchOpen);
+                                            if(!isSearchOpen) setTimeout(() => inputRef.current?.focus(), 100);
+                                        }}
+                                    >
+                                        <i className="fas fa-search"></i>
+                                    </button>
 
- {/* SEARCH ICON (Desktop Only) */}
-                               {/* SEARCH ICON (Desktop Only) - IN-PAGE SEARCH */}
-{/* --- SEARCH ICON (Desktop Only) --- */}
-<li className="jec-menu-item jec-desktop-search" ref={searchRef}>
-    <div className={`jec-search-inline ${isSearchOpen ? 'active' : ''}`}>
-        <input
-            ref={inputRef}
-            type="text"
-            placeholder="Find on page..." 
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            autoFocus={isSearchOpen}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (searchQuery.trim()) {
-                        const found = window.find(searchQuery);
-                        if (!found) alert("Text not found on this page.");
-                    }
-                }
-            }}
-        />
-        <button 
-            type="button" 
-            onClick={() => {
-                if (!isSearchOpen) {
-                    setIsSearchOpen(true);
-                } else if (searchQuery.trim()) {
-                    window.find(searchQuery);
-                } else {
-                    setIsSearchOpen(false);
-                }
-            }}
-        >
-            <i className="fas fa-search"></i>
-        </button>
-    </div>
-</li>
-
+                                    {isSearchOpen && query.length > 1 && (
+                                        <div className="jec-search-modal">
+                                            <div className="jec-modal-header">Found {results.length} results</div>
+                                            <ul className="jec-results-list">
+                                                {results.length === 0 ? (
+                                                    <li style={{padding:'15px', color:'#777'}}>No results found.</li>
+                                                ) : (
+                                                    results.map((res, idx) => (
+                                                        <li key={idx}>
+                                                            <Link href={`${res.path}?highlight=${encodeURIComponent(query)}`}>
+                                                                <strong>{res.title}</strong>
+                                                                <small>
+                                                                    {res.content.substring(0, 60)}...
+                                                                </small>
+                                                            </Link>
+                                                        </li>
+                                                    ))
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            </li>
 
                         </ul>
                     </div>
                 </header>
             </div>
+            
+            <style jsx>{`
+                :global(.jec-highlight) {
+                    background-color: #FFFF00;
+                    color: black;
+                    padding: 0 2px;
+                    border-radius: 2px;
+                }
+                .jec-search-modal {
+                    position: absolute; top: 120%; right: 0; width: 320px;
+                    background: white; border: 1px solid #ddd; border-radius: 6px;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.15); overflow: hidden;
+                    text-align: left;
+                    z-index: 10001;
+                }
+                .jec-modal-header { background: #f8f9fa; padding: 8px 15px; font-weight: bold; border-bottom: 1px solid #eee; font-size: 12px; color: #555; }
+                .jec-results-list { list-style: none; margin: 0; padding: 0; max-height: 350px; overflow-y: auto; }
+                .jec-results-list li { border-bottom: 1px solid #f0f0f0; }
+                .jec-results-list li a { display: block; padding: 12px 15px; text-decoration: none; color: #333; }
+                .jec-results-list li a:hover { background: #f0f7ff; color: #007bff; }
+                .jec-results-list strong { display: block; font-size: 14px; color: #0056b3; }
+                .jec-results-list small { font-size: 11px; color: #666; display: block; margin-top: 2px; }
+            `}</style>
         </div>
     );
 }
