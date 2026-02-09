@@ -43,7 +43,8 @@ export default function Hero() {
                         <h1>{banner.heading}</h1>
                         <div className="hero-underline"></div>
                         {banner.subheading && <p>{banner.subheading}</p>}
-                        <Link href="/admission-enquiry" className="apply-btn">Apply for Admission</Link>
+                        
+                        <Link href="https://admission.jeckukas.org.in/" className="apply-btn" target="_blank">Apply for Admission</Link>
                     </div>
                 </div>
             ))}

@@ -3,6 +3,13 @@ import React from 'react';
 import '@/styles/AntiRagging.css';
 import LogoCarousel from '@/components/LogoCarousel'; // Added Missing Import
 
+// export const metadata = {
+//   title: "Anti-Ragging Policy | Jaipur Engineering College (JEC) Kukas | Zero Tolerance Campus",
+//   description: "Jaipur Engineering College maintains a ragging-free campus. Read our strict anti-ragging policies, UGC guidelines, and contact the grievance cell for assistance.",
+//   keywords: "Anti-Ragging JEC, Jaipur Engineering College anti-ragging cell, UGC ragging guidelines, campus safety JEC Kukas, student grievance cell Jaipur, engineering college safety Rajasthan",
+// };
+
+
 export default function AntiRagging() {
   return (
     <div className="anti-ragging-page-new">
