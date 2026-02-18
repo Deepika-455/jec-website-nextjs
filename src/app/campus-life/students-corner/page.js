@@ -174,10 +174,10 @@ const StudentsCorner = () => {
                             <tr><td>1</td><td><a href="https://onlinecourses.nptel.ac.in/" target="_blank" rel="noopener noreferrer">onlinecourses.nptel.ac.in</a></td><td>NPTEL online courses conducted by various IITs</td></tr>
                             <tr><td>2</td><td><a href="http://nptel.ac.in" target="_blank" rel="noopener noreferrer">nptel.ac.in</a></td><td>NPTEL courses materials/videos</td></tr>
                             <tr><td>3</td><td><a href="http://ocw.mit.edu/index.htm" target="_blank" rel="noopener noreferrer">ocw.mit.edu</a></td><td>MIT open course materials</td></tr>
-                            <tr><td>4</td><td><a href="http://cec.nic.in/e-Education/Pages/e-Education.aspx" target="_blank" rel="noopener noreferrer">cec.nic.in</a></td><td>E learning portal</td></tr>
+                            <tr><td>4</td><td><a href="https://cec.nic.in/" target="_blank" rel="noopener noreferrer">cec.nic.in</a></td><td>E learning portal</td></tr>
                             <tr><td>5</td><td><a href="http://www.gian.iitkgp.ac.in/" target="_blank" rel="noopener noreferrer">gian.iitkgp.ac.in</a></td><td>Global initiative for Academic Network</td></tr>
                             <tr><td>6</td><td><a href="https://ndl.iitkgp.ac.in/index.php" target="_blank" rel="noopener noreferrer">ndl.iitkgp.ac.in</a></td><td>NDL resource portal</td></tr>
-                            <tr><td>7</td><td><a href="https://www.edx.org/course/subject" target="_blank" rel="noopener noreferrer">edx.org/course/subject</a></td><td>MIT open course ware</td></tr>
+                            <tr><td>7</td><td><a href="https://www.edx.org/school/mitx" target="_blank" rel="noopener noreferrer">edx.org/course/subject</a></td><td>MIT open course ware</td></tr>
                             <tr><td>8</td><td><a href="https://www.oeconsortium.org/" target="_blank" rel="noopener noreferrer">oeconsortium.org</a></td><td>The Open Education Consortium (OEC)</td></tr>
                             <tr><td>9</td><td><a href="https://oyc.yale.edu/" target="_blank" rel="noopener noreferrer">oyc.yale.edu</a></td><td>Open Yale Courses</td></tr>
                             <tr><td>10</td><td><a href="https://open.umich.edu/" target="_blank" rel="noopener noreferrer">open.umich.edu</a></td><td>Open Michigan</td></tr>

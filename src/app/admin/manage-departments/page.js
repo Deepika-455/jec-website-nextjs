@@ -65,7 +65,8 @@ const ManageDepartments = () => {
 
     // Upload States
     const [uploading, setUploading] = useState(false);
-    const [dragActive, setDragActive] = useState(false);
+    const [dragActiveBanner, setDragActiveBanner] = useState(false);
+    const [dragActiveHod, setDragActiveHod] = useState(false);
 
     const DEFAULT_ELIGIBILITY = `<table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;"><tr style="background: #f3f4f6;"><th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Program</th><th style="border: 1px solid #ccc; padding: 10px; text-align: left;">Eligibility Criteria</th></tr><tr><td style="border: 1px solid #ccc; padding: 10px;">B.Tech</td><td style="border: 1px solid #ccc; padding: 10px;">10+2 with Physics, Maths and 45% Marks</td></tr></table>`;
 
@@ -120,20 +121,20 @@ const ManageDepartments = () => {
     };
 
     // Drag & Drop Handlers
-    const handleDrag = (e) => {
+    const handleDrag = (e, setDragState) => {
         e.preventDefault();
         e.stopPropagation();
         if (e.type === "dragenter" || e.type === "dragover") {
-            setDragActive(true);
+            setDragState(true);
         } else if (e.type === "dragleave") {
-            setDragActive(false);
+            setDragState(false);
         }
     };
 
-    const handleDrop = (e, setUrlFunction) => {
+    const handleDrop = (e, setUrlFunction, setDragState) => {
         e.preventDefault();
         e.stopPropagation();
-        setDragActive(false);
+        setDragState(false);
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             processUpload(e.dataTransfer.files[0], setUrlFunction);
         }
@@ -266,13 +267,13 @@ const ManageDepartments = () => {
                                 <label
                                     style={{
                                         ...styles.uploadBox,
-                                        backgroundColor: dragActive ? '#e2e8f0' : 'white',
-                                        borderColor: dragActive ? '#0072c6' : '#cbd5e1'
+                                        backgroundColor: dragActiveBanner ? '#e2e8f0' : 'white',
+                                        borderColor: dragActiveBanner ? '#0072c6' : '#cbd5e1'
                                     }}
-                                    onDragEnter={handleDrag}
-                                    onDragLeave={handleDrag}
-                                    onDragOver={handleDrag}
-                                    onDrop={(e) => handleDrop(e, setBannerImage)}
+                                    onDragEnter={(e) => handleDrag(e, setDragActiveBanner)}
+                                    onDragLeave={(e) => handleDrag(e, setDragActiveBanner)}
+                                    onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); handleDrag(e, setDragActiveBanner); }}
+                                    onDrop={(e) => handleDrop(e, setBannerImage, setDragActiveBanner)}
                                 >
                                     {uploading ? (
                                         <p style={{ color: '#0072c6', fontWeight: 'bold' }}>Uploading...</p>
@@ -335,13 +336,13 @@ const ManageDepartments = () => {
                                     <label
                                         style={{
                                             ...styles.uploadBox,
-                                            backgroundColor: dragActive ? '#e2e8f0' : 'white',
-                                            borderColor: dragActive ? '#0072c6' : '#cbd5e1'
+                                            backgroundColor: dragActiveHod ? '#e2e8f0' : 'white',
+                                            borderColor: dragActiveHod ? '#0072c6' : '#cbd5e1'
                                         }}
-                                        onDragEnter={handleDrag}
-                                        onDragLeave={handleDrag}
-                                        onDragOver={handleDrag}
-                                        onDrop={(e) => handleDrop(e, setHodImage)}
+                                        onDragEnter={(e) => handleDrag(e, setDragActiveHod)}
+                                        onDragLeave={(e) => handleDrag(e, setDragActiveHod)}
+                                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); handleDrag(e, setDragActiveHod); }}
+                                        onDrop={(e) => handleDrop(e, setHodImage, setDragActiveHod)}
                                     >
                                         {uploading ? (
                                             <p style={{ color: '#0072c6', fontWeight: 'bold' }}>Uploading...</p>
@@ -356,9 +357,11 @@ const ManageDepartments = () => {
                                                     }}
                                                     style={{ display: 'none' }}
                                                 />
-                                                <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600', fontSize: '12px' }}>
-                                                    Upload Photo
+                                                <div style={{ cursor: 'pointer', color: '#0072c6', fontWeight: '600' }}>
+                                                    <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br />
+                                                    Drag & Drop or Click
                                                 </div>
+                                                <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
                                             </>
                                         )}
                                     </label>
