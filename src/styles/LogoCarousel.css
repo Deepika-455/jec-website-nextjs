@@ -3,7 +3,7 @@
 /* Note: Assuming global colors are already defined in index.css.
   If not, the variables below ensure this component works standalone.
 */
-:root {
+.logo-carousel-section {
     --logo-red: #D62828;
     --logo-blue: #0072C6;
     --logo-gold: #FCA311;
@@ -52,7 +52,8 @@
        28 slides * 200px each.
     */
     width: calc(200px * 28);
-    animation: scroll 40s linear infinite; /* Slower speed for more logos */
+    animation: scroll 40s linear infinite;
+    /* Slower speed for more logos */
 }
 
 .logo-slide {
@@ -61,7 +62,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 30px; /* Spacing between logos */
+    padding: 0 30px;
+    /* Spacing between logos */
 }
 
 .logo-slide img {

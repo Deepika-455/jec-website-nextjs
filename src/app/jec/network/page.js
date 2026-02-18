@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from '@/firebase'; 
-import Image from 'next/image'; 
-import LogoCarousel from '@/components/LogoCarousel'; 
-import '@/styles/network.css'; 
+import { db } from '@/firebase';
+import Image from 'next/image';
+import LogoCarousel from '@/components/LogoCarousel';
+import '@/styles/network.css';
 
 // export const metadata = {
 //   title: "JAIPUR ENGINEERING COLLEGE | Human-Network",
@@ -13,11 +13,11 @@ import '@/styles/network.css';
 // };
 
 // Image path
-const building = "/images/jec-building.jpeg"; 
+const building = "/images/jec-building.jpeg";
 
 // --- Helper Functions ---
 const isHOD = (member) => {
-    if (member.isHod === true) return true; 
+    if (member.isHod === true) return true;
     if (!member.role) return false;
     const r = member.role.toLowerCase();
     return r.includes('hod') || r.includes('head of department') || r.includes('head of dept');
@@ -34,10 +34,10 @@ const FacultyCard = ({ member }) => {
     const isHead = isHOD(member);
 
     return (
-        <div 
+        <div
             className={`faculty-card ${isHead ? 'hod-card' : ''}`}
             // Force relative positioning to contain badges/shadows correctly from the start
-            style={{ position: 'relative', overflow: 'visible' }} 
+            style={{ position: 'relative', overflow: 'visible' }}
         >
             {isHead && <div className="hod-badge">HOD</div>}
 
@@ -48,11 +48,11 @@ const FacultyCard = ({ member }) => {
                         src={member.image || "https://www.w3schools.com/howto/img_avatar.png"}
                         alt={member.name}
                         className="avatar"
-                        style={{ 
-                            width: '100%', 
-                            height: '100%', 
-                            objectFit: 'cover', 
-                            borderRadius: '25%', 
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '25%',
                             border: '3px solid white',
                             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                             display: 'block' // Prevents inline-block spacing issues
@@ -128,15 +128,15 @@ function HumanNetwork() {
     if (loading) {
         return (
             <div className="human-network-page">
-                <section 
-                    className="faculty-hero" 
-                    style={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        position: 'relative', 
+                <section
+                    className="faculty-hero"
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative',
                         height: '400px',
-                        backgroundColor: '#003366' 
+                        backgroundColor: '#0072c6'
                     }}
                 >
                     <div style={{ zIndex: 3, position: 'relative', color: 'white' }}>
@@ -152,41 +152,41 @@ function HumanNetwork() {
         <div className="human-network-page">
 
             {/* HERO SECTION - With Priority Loading & Inline Styles */}
-            <section 
+            <section
                 className="faculty-hero"
-                style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    position: 'relative', 
-                    height: '400px', 
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    height: '400px',
                     textAlign: 'center',
                     marginBottom: '2rem',
-                    backgroundColor: '#003366',
+                    backgroundColor: '#0072c6',
                     overflow: 'hidden'
                 }}
             >
-                <Image 
-                    src={building} 
-                    alt="Campus Building" 
+                <Image
+                    src={building}
+                    alt="Campus Building"
                     fill
-                    priority={true} 
+                    priority={true}
                     style={{ objectFit: 'cover', zIndex: 1 }}
                 />
-                
-                <div 
-                    style={{ 
-                        position: 'absolute', 
-                        top: 0, 
-                        left: 0, 
-                        width: '100%', 
-                        height: '100%', 
-                        background: 'rgba(0, 0, 0, 0.6)', 
-                        zIndex: 2 
+
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        zIndex: 2
                     }}
                 ></div>
 
-                <div className="hero-overlay" style={{ zIndex: 3, position: 'relative', width: '100%' }}>
+                <div className="network-hero-overlay" style={{ zIndex: 3, position: 'relative', width: '100%' }}>
                     <div className="max-width-container">
                         <h1>Human Network @ JEC</h1>
                         <p>Meet the dedicated minds shaping the future of engineering.</p>

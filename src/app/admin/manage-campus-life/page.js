@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '@/firebase'; 
+import { db, storage } from '@/firebase';
 import {
     collection,
     getDocs,
@@ -11,14 +11,14 @@ import {
     query,
     orderBy
 } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ManageCampusLife = () => {
     const [galleryItems, setGalleryItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingId, setEditingId] = useState(null); 
+    const [editingId, setEditingId] = useState(null);
 
     // Form State
     const [imageUrl, setImageUrl] = useState('');
@@ -60,7 +60,7 @@ const ManageCampusLife = () => {
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
         if (file.size > 1048576) {
             alert(`File is too large (${fileSizeMB}MB). Max allowed: 1.00MB`);
-            return; 
+            return;
         }
 
         // 2. Upload to Firebase
@@ -127,7 +127,7 @@ const ManageCampusLife = () => {
         setIsLarge(item.isLarge || false);
         setShowPlayButton(item.showPlayButton || false);
         setLinkedAlbumId(item.linkedAlbumId || '');
-        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleSubmit = async (e) => {
@@ -178,7 +178,7 @@ const ManageCampusLife = () => {
     };
 
     const resetForm = () => {
-        setEditingId(null); 
+        setEditingId(null);
         setImageUrl('');
         setCategory('');
         setOverlayText('');
@@ -194,7 +194,7 @@ const ManageCampusLife = () => {
     return (
         <div style={{ padding: '30px', maxWidth: '1200px', margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
             <ToastContainer />
-            <h2 style={{ color: '#0072C6', marginBottom: '30px', fontWeight: '700' }}>
+            <h2 style={{ color: '#0072c6', marginBottom: '30px', fontWeight: '700' }}>
                 {editingId ? "Edit Gallery Item" : "Manage Campus Life Gallery"}
             </h2>
 
@@ -205,13 +205,13 @@ const ManageCampusLife = () => {
                     {/* --- IMAGE UPLOAD (UPDATED WITH DRAG & DROP) --- */}
                     <div style={{ gridColumn: 'span 2', background: '#f8fafc', padding: '20px', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
                         <label style={{ display: 'block', marginBottom: '10px', fontWeight: 'bold', color: '#475569' }}>Select Gallery Image</label>
-                        
+
                         {!imageUrl ? (
-                            <label 
-                                style={{ 
-                                    ...styles.uploadBox, 
+                            <label
+                                style={{
+                                    ...styles.uploadBox,
                                     backgroundColor: dragActive ? '#e2e8f0' : 'white',
-                                    borderColor: dragActive ? '#0072C6' : '#cbd5e1'
+                                    borderColor: dragActive ? '#0072c6' : '#cbd5e1'
                                 }}
                                 onDragEnter={handleDrag}
                                 onDragLeave={handleDrag}
@@ -219,20 +219,20 @@ const ManageCampusLife = () => {
                                 onDrop={handleDrop}
                             >
                                 {uploading ? (
-                                    <p style={{ color: '#0072C6', fontWeight: 'bold', margin: 0 }}>Uploading...</p>
+                                    <p style={{ color: '#0072c6', fontWeight: 'bold', margin: 0 }}>Uploading...</p>
                                 ) : (
                                     <>
-                                        <input 
-                                            type="file" 
-                                            accept="image/*" 
+                                        <input
+                                            type="file"
+                                            accept="image/*"
                                             onChange={(e) => {
                                                 processUpload(e.target.files[0]);
-                                                e.target.value = null; 
+                                                e.target.value = null;
                                             }}
-                                            style={{ display: 'none' }} 
+                                            style={{ display: 'none' }}
                                         />
-                                        <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
-                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br/>
+                                        <div style={{ cursor: 'pointer', color: '#0072c6', fontWeight: '600' }}>
+                                            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '24px', marginBottom: '5px' }}></i><br />
                                             Drag & Drop or Click to Upload
                                         </div>
                                         <small style={{ color: '#64748B', display: 'block', marginTop: '5px' }}>Max: 1.00 MB</small>
@@ -243,12 +243,12 @@ const ManageCampusLife = () => {
                             <div style={{ position: 'relative', marginTop: '15px' }}>
                                 <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '5px' }}>Image Preview:</p>
                                 <img src={imageUrl} alt="Preview" style={{ width: '100%', maxHeight: '250px', objectFit: 'contain', borderRadius: '8px', background: '#fff' }} />
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={handleRemoveImage}
                                     style={{
-                                        position: 'absolute', top: '10px', right: '10px', background: 'rgba(255, 0, 0, 0.9)', color: 'white', 
-                                        border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold', display:'flex', alignItems:'center', justifyContent:'center'
+                                        position: 'absolute', top: '10px', right: '10px', background: 'rgba(255, 0, 0, 0.9)', color: 'white',
+                                        border: 'none', borderRadius: '50%', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center'
                                     }}
                                     title="Remove Image"
                                 >
@@ -304,13 +304,13 @@ const ManageCampusLife = () => {
             </div>
 
             {/* --- GALLERY LIST --- */}
-            <h3 style={{ marginBottom: '25px', color: '#1e293b', borderLeft: '5px solid #0072C6', paddingLeft: '15px' }}>Current Live Gallery</h3>
+            <h3 style={{ marginBottom: '25px', color: '#1e293b', borderLeft: '5px solid #0072c6', paddingLeft: '15px' }}>Current Live Gallery</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '25px' }}>
                 {galleryItems.map(item => (
                     <div key={item.id} style={styles.gridCard}>
                         <img src={item.imageUrl} alt={item.alt} style={styles.cardImg} />
                         <div style={{ padding: '15px' }}>
-                            <span style={{ fontSize: '11px', color: '#0072C6', fontWeight: '800' }}>{item.category || 'General'}</span>
+                            <span style={{ fontSize: '11px', color: '#0072c6', fontWeight: '800' }}>{item.category || 'General'}</span>
                             <h4 style={{ margin: '5px 0', fontSize: '16px' }}>{item.overlayText || 'JEC Campus'}</h4>
                             <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
                                 <button onClick={() => startEdit(item)} style={styles.editBtn}>Edit</button>
@@ -327,21 +327,21 @@ const ManageCampusLife = () => {
 const styles = {
     label: { display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px', color: '#475569' },
     input: { width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '6px' },
-    submitBtn: { flex: 1, padding: '16px', background: '#0072C6', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700' },
+    submitBtn: { flex: 1, padding: '16px', background: '#0072c6', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700' },
     cancelBtn: { padding: '16px', background: '#64748b', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '700' },
     gridCard: { background: 'white', borderRadius: '12px', overflow: 'hidden', border: '1px solid #e2e8f0' },
     cardImg: { width: '100%', height: '180px', objectFit: 'cover' },
     editBtn: { flex: 1, padding: '8px', background: '#e0f2fe', color: '#0369a1', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
     deleteBtn: { flex: 1, padding: '8px', background: '#fee2e2', color: '#b91c1c', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '700' },
     // ADDED STYLE FOR DRAG BOX
-    uploadBox: { 
-        border: '2px dashed #cbd5e1', 
-        borderRadius: '6px', 
-        padding: '30px', 
-        textAlign: 'center', 
-        display: 'block', 
-        cursor: 'pointer', 
-        transition: '0.2s all' 
+    uploadBox: {
+        border: '2px dashed #cbd5e1',
+        borderRadius: '6px',
+        padding: '30px',
+        textAlign: 'center',
+        display: 'block',
+        cursor: 'pointer',
+        transition: '0.2s all'
     }
 };
 

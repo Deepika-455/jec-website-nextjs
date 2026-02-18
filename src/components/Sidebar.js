@@ -1,11 +1,19 @@
 'use client'; // Required for useState and event listeners
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Ensure icons are loaded
-import '@/styles/Sidebar.css'; 
+import '@/styles/Sidebar.css';
 
 function Sidebar() {
     const [hoveredItem, setHoveredItem] = useState(null);
+
+    const pathname = usePathname();
+
+    // Check if the current route is an admin page
+    if (pathname && pathname.startsWith('/admin')) {
+        return null;
+    }
 
     const menuLinks = [
         { id: 'helpline', icon: 'fas fa-phone', label: 'Helpline', path: 'tel:+918875071333' },

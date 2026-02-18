@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link'; 
+import Link from 'next/link';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "@/firebase";
 import '@/styles/HeroSlider.css'; // Importing the CSS file
@@ -30,20 +30,20 @@ export default function Hero() {
     return (
         <section className="hero-slider">
             {banners.map((banner, index) => (
-                <div 
-                    key={index} 
+                <div
+                    key={index}
                     className={`hero-slide ${index === currentIndex ? 'active' : ''}`}
                     // FIX: Use backgroundImage so text sits on top (Matches your CSS rules)
                     style={{ backgroundImage: `url(${banner.imageUrl})` }}
                 >
                     {/* Removed the <img> tag because it was blocking the text */}
-                    
+
                     <div className="hero-overlay"></div>
                     <div className="hero-content">
                         <h1>{banner.heading}</h1>
                         <div className="hero-underline"></div>
                         {banner.subheading && <p>{banner.subheading}</p>}
-                        
+
                         <Link href="https://admission.jeckukas.org.in/" className="apply-btn" target="_blank">Apply for Admission</Link>
                     </div>
                 </div>

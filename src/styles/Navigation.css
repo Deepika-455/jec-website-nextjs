@@ -3,18 +3,19 @@
 :root {
     --jec-blue: #0072C6;
     --jec-red: #D62828;
-    --jec-gold: #FCA311; 
+    --jec-gold: #FCA311;
     --jec-dark: #1e293b;
     --jec-light: #64748b;
     --jec-white: #ffffff;
     --jec-bg-hover: #f1f8fc;
-    --jec-height: 76px; 
-    --jec-top-bar-height: 48px; 
+    --jec-height: 76px;
+    --jec-top-bar-height: 48px;
 }
 
 /* --- GLOBAL LAYOUT FIX (Issue 3 Fix) --- */
 /* Prevent horizontal scrollbar causing shifts */
-html, body {
+html,
+body {
     overflow-x: hidden;
     width: 100%;
 }
@@ -46,10 +47,10 @@ body {
 
 /* --- TOP BAR STYLES --- */
 .jec-top-bar {
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     z-index: 10001;
     background: #0f1724;
     color: white;
@@ -146,16 +147,20 @@ body {
     justify-content: center !important;
     line-height: 1 !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none !important;
+    width: 100px !important;
+    /* Adjust as needed */
+    height: 22px !important;
+    /* Adjust as needed */
 }
 
 .jec-top-right .jec-top-cta:hover {
-    background-color: #b32121 !important;
+    background-color: #fca311 !important;
     color: #ffffff !important;
     text-decoration: none !important;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .jec-top-link {
@@ -165,7 +170,7 @@ body {
 /* --- MAIN NAVIGATION --- */
 .jec-nav-wrapper {
     width: 100%;
-    position: fixed; 
+    position: fixed;
     top: var(--jec-top-bar-height);
     left: 0;
     z-index: 10000;
@@ -183,8 +188,8 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .jec-container {
@@ -202,6 +207,7 @@ body {
     .jec-container {
         padding: 0 15px;
     }
+
     .jec-logo-img {
         max-width: 220px;
         height: auto;
@@ -313,7 +319,8 @@ body {
 /* --- HIDE SEARCH ON MOBILE (Issue 1 Fix) --- */
 @media (max-width: 1024px) {
     .jec-desktop-search {
-        display: none !important; /* Force hide */
+        display: none !important;
+        /* Force hide */
     }
 }
 
@@ -325,7 +332,7 @@ body {
     height: 100%;
     width: 100%;
     justify-content: flex-end;
-    -webkit-text-size-adjust: 40px; 
+    -webkit-text-size-adjust: 40px;
 }
 
 .jec-menu-item {
@@ -363,7 +370,8 @@ body {
 /* DESKTOP DROPDOWN LOGIC */
 @media (min-width: 1025px) {
     .jec-mobile-contact-info {
-        display: none; /* Hide mobile contact info on desktop */
+        display: none;
+        /* Hide mobile contact info on desktop */
     }
 
     .jec-dropdown {
@@ -372,7 +380,7 @@ body {
         left: 50%;
         transform: translateX(-50%) translateY(15px);
         background: white;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         border-top: 4px solid var(--jec-gold);
         border-radius: 8px;
         opacity: 0;
@@ -474,17 +482,20 @@ body {
         position: fixed;
         top: var(--jec-height);
         left: -100%;
-        width: 300px; /* Issue 3 Fix: ensure this width doesn't cause overflow */
-        max-width: 80vw; /* Safety check for smaller phones */
+        width: 300px;
+        /* Issue 3 Fix: ensure this width doesn't cause overflow */
+        max-width: 80vw;
+        /* Safety check for smaller phones */
         height: calc(100vh - var(--jec-height));
         background: white;
         flex-direction: column;
         transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-        box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
         overflow-y: auto;
         align-items: flex-start;
         padding-bottom: 0px;
-        justify-content: flex-start; /* Reset align */
+        justify-content: flex-start;
+        /* Reset align */
     }
 
     .jec-menu-list.jec-active {
@@ -495,16 +506,17 @@ body {
         width: 100%;
         border-bottom: 1px solid #f1f5f9;
         display: block;
-        height: auto; /* Reset height */
+        height: auto;
+        /* Reset height */
     }
 
     .jec-nav-link {
         width: 100%;
         /* Increased padding top/bottom to make items taller */
-        padding: 22px 25px; 
+        padding: 22px 25px;
         justify-content: space-between;
         /* Increased font size for better visibility */
-        font-size: 1.15rem; 
+        font-size: 1.15rem;
         font-weight: 700;
         color: var(--jec-dark);
     }
@@ -536,8 +548,10 @@ body {
         display: block;
         width: 100%;
         padding: 25px;
-        background: #f1f5f9; /* Light Gray Background */
-        margin-top: auto; /* Push to bottom if flex container has space */
+        background: #f1f5f9;
+        /* Light Gray Background */
+        margin-top: auto;
+        /* Push to bottom if flex container has space */
         border-top: 1px solid #e2e8f0;
     }
 
@@ -558,7 +572,7 @@ body {
         color: var(--jec-dark);
         align-items: flex-start;
     }
-    
+
     .jec-contact-row:last-child {
         margin-bottom: 0;
     }
@@ -568,7 +582,7 @@ body {
         margin-top: 4px;
         width: 16px;
     }
-    
+
     .jec-contact-row a {
         color: blue;
         text-decoration: none;
@@ -578,7 +592,8 @@ body {
 
 /* --- SEARCH HIGHLIGHT STYLE --- */
 .jec-search-match {
-    background-color: var(--jec-gold) !important; /* Matches your theme gold */
+    background-color: var(--jec-gold) !important;
+    /* Matches your theme gold */
     color: #000 !important;
     font-weight: bold;
     padding: 0 2px;
@@ -593,7 +608,8 @@ body {
 
 /* This replaces the pseudo-element that failed */
 .jec-page-highlight {
-    background-color: #FCA311 !important; /* Your JEC Gold */
+    background-color: #FCA311 !important;
+    /* Your JEC Gold */
     color: #000 !important;
     padding: 0;
     border-radius: 2px;
@@ -603,16 +619,18 @@ body {
 /* --- SEARCH RESULTS DROPDOWN (Add this to the end of your file) --- */
 .jec-search-modal {
     position: absolute;
-    top: 120%; /* Pushes it just below the search bar */
+    top: 120%;
+    /* Pushes it just below the search bar */
     right: 0;
     width: 320px;
     background: white;
     border: 1px solid #ddd;
     border-radius: 6px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     text-align: left;
-    z-index: 10001; /* Higher than nav wrapper */
+    z-index: 10001;
+    /* Higher than nav wrapper */
 }
 
 .jec-modal-header {
@@ -668,9 +686,11 @@ body {
 .jec-results-list::-webkit-scrollbar {
     width: 6px;
 }
+
 .jec-results-list::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
+
 .jec-results-list::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 3px;
@@ -687,17 +707,25 @@ body {
 
 /* --- SEARCH RESULTS DROPDOWN (Landscape/Longer Version) --- */
 .jec-search-modal {
-    position: fixed;       /* Detach from the search button so it can be huge */
-    top: 125px;            /* Position it just below your header (48px top + 76px nav) */
-    right: 5%;             /* Keep it aligned towards the right side of the screen */
-    width: 700px;          /* WIDE Landscape width */
-    max-width: 90vw;       /* Safety for mobile screens */
-    max-height: 60vh;      /* Use 60% of the screen height */
+    position: fixed;
+    /* Detach from the search button so it can be huge */
+    top: 125px;
+    /* Position it just below your header (48px top + 76px nav) */
+    right: 5%;
+    /* Keep it aligned towards the right side of the screen */
+    width: 700px;
+    /* WIDE Landscape width */
+    max-width: 90vw;
+    /* Safety for mobile screens */
+    max-height: 60vh;
+    /* Use 60% of the screen height */
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.25); /* Big shadow to show it's floating */
-    z-index: 10002;        /* Ensure it sits on top of everything */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    /* Big shadow to show it's floating */
+    z-index: 10002;
+    /* Ensure it sits on top of everything */
     overflow: hidden;
 }
 
@@ -705,8 +733,10 @@ body {
     list-style: none !important;
     margin: 0;
     padding: 0;
-    max-height: 100%;      /* Fill the container */
-    overflow-y: auto;      /* Scroll inside the box */
+    max-height: 100%;
+    /* Fill the container */
+    overflow-y: auto;
+    /* Scroll inside the box */
 }
 
 /* Make the links bigger and cleaner */

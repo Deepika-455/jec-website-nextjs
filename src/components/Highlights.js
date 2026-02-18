@@ -10,10 +10,10 @@ function Highlights() {
     <section className="highlights">
       <div className="highlights-content">
         <div className="highlight-cards">
-          
-          <div 
-            className="highlight-card" 
-            onClick={() => router.push('/admission/btech-admissions')}
+
+          <div
+            className="highlight-card"
+            onClick={() => router.push('/admission/Admission-Open')}
             style={{ cursor: 'pointer' }}
           >
             <div className="card-graphic-top-blue"></div>
@@ -22,7 +22,7 @@ function Highlights() {
             <span className="card-arrow">→</span>
           </div>
 
-          <div 
+          <div
             className="highlight-card"
             onClick={() => router.push('/placement')}
             style={{ cursor: 'pointer' }}
@@ -33,9 +33,9 @@ function Highlights() {
             <span className="card-arrow">→</span>
           </div>
 
-          <div 
+          <div
             className="highlight-card"
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/virtual-tour')}
             style={{ cursor: 'pointer' }}
           >
             <div className="card-graphic-top-pink"></div>
@@ -45,10 +45,7 @@ function Highlights() {
           </div>
 
         </div>
-        <div className="carousel-nav">
-          <span className="nav-dot active"></span>
-          <span className="nav-dot"></span>
-        </div>
+
       </div>
     </section>
   );

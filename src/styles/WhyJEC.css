@@ -4,7 +4,7 @@
    WHY CHOOSE JEC COMPONENT
    ========================================================================== */
 
-.faculty {
+.why-jec-section {
     /* --- JEC Theme Variables --- */
     --logo-blue: #0072C6;
     --logo-red: #D62828;
@@ -21,7 +21,7 @@
 }
 
 /* Background Pattern */
-.faculty::before {
+.why-jec-section::before {
     content: '';
     position: absolute;
     top: 0;
@@ -35,7 +35,7 @@
     z-index: 0;
 }
 
-.faculty-content {
+.why-jec-content {
     max-width: 1300px;
     margin: 0 auto;
     padding: 0 40px;
@@ -44,7 +44,7 @@
 }
 
 /* --- Typography --- */
-.faculty-title {
+.why-jec-title {
     font-size: 42px;
     font-weight: 700;
     margin-bottom: 20px;
@@ -54,7 +54,7 @@
     animation: jec-fade-down 0.8s ease-out;
 }
 
-.faculty-title::after {
+.why-jec-title::after {
     content: '';
     display: block;
     width: 100px;
@@ -64,7 +64,7 @@
     border-radius: 2px;
 }
 
-.faculty-subtitle {
+.why-jec-subtitle {
     font-size: 18px;
     color: var(--color-text-secondary);
     text-align: center;
@@ -76,20 +76,20 @@
 }
 
 /* --- Grid Layout --- */
-.faculty-grid {
+.why-jec-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
 
 /* --- Card Styling --- */
-.faculty-card {
+.why-jec-card {
     background: var(--logo-white);
     padding: 40px 30px;
     border-radius: 16px;
     text-align: center;
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
@@ -99,22 +99,39 @@
 }
 
 /* Staggered Animation */
-.faculty-card:nth-child(1) { animation-delay: 0.1s; }
-.faculty-card:nth-child(2) { animation-delay: 0.2s; }
-.faculty-card:nth-child(3) { animation-delay: 0.3s; }
-.faculty-card:nth-child(4) { animation-delay: 0.4s; }
-.faculty-card:nth-child(5) { animation-delay: 0.5s; }
-.faculty-card:nth-child(6) { animation-delay: 0.6s; }
+.why-jec-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.why-jec-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.why-jec-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.why-jec-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.why-jec-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.why-jec-card:nth-child(6) {
+    animation-delay: 0.6s;
+}
 
 /* Hover Effects */
-.faculty-card:hover {
+.why-jec-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
     border-color: transparent;
 }
 
 /* Pseudo-element animation */
-.faculty-card::before {
+.why-jec-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -126,13 +143,13 @@
     z-index: 0;
 }
 
-.faculty-card:hover::before {
+.why-jec-card:hover::before {
     height: 100%;
-    opacity: 0.03; 
+    opacity: 0.03;
 }
 
 /* --- Icon --- */
-.faculty-icon {
+.why-jec-icon {
     width: 70px;
     height: 70px;
     margin: 0 auto 20px;
@@ -145,80 +162,94 @@
     font-size: 24px;
     transition: all 0.3s ease;
     position: relative;
-    z-index: 1; 
+    z-index: 1;
 }
 
-.faculty-card:hover .faculty-icon {
+.why-jec-card:hover .why-jec-icon {
     background: var(--logo-blue);
     transform: scale(1.1);
 }
 
-.faculty-icon svg {
+.why-jec-icon svg {
     width: 32px;
     height: 32px;
     stroke: var(--logo-blue);
     transition: stroke 0.3s ease;
 }
 
-.faculty-card:hover .faculty-icon svg {
+.why-jec-card:hover .why-jec-icon svg {
     stroke: var(--logo-white);
 }
 
 /* --- Text --- */
-.faculty-card h3 {
+.why-jec-card h3 {
     font-size: 20px;
     font-weight: 700;
     color: var(--logo-black);
     margin-bottom: 10px;
     transition: color 0.3s ease;
     position: relative;
-    z-index: 1; 
+    z-index: 1;
 }
 
-.faculty-card:hover h3 {
+.why-jec-card:hover h3 {
     color: var(--logo-blue);
 }
 
-.faculty-card p {
+.why-jec-card p {
     font-size: 15px;
     color: var(--color-text-secondary);
     line-height: 1.6;
     margin-bottom: 0;
     position: relative;
-    z-index: 1; 
+    z-index: 1;
 }
 
 /* --- Shared Animations --- */
 @keyframes jec-fade-down {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes jec-fade-up {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .faculty {
+    .why-jec-section {
         padding: 60px 0;
     }
 
-    .faculty-content {
+    .why-jec-content {
         padding: 0 20px;
     }
 
-    .faculty-grid {
+    .why-jec-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    .faculty-title {
+    .why-jec-title {
         font-size: 32px;
     }
 
-    .faculty-card {
+    .why-jec-card {
         padding: 30px 20px;
     }
 }

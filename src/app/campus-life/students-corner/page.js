@@ -1,21 +1,21 @@
 // "use client";
 import React from 'react';
-import Link from 'next/link'; 
-import '@/styles/StudentsCorner.css'; 
-import LogoCarousel from '@/components/LogoCarousel'; 
+import Link from 'next/link';
+import '@/styles/StudentsCorner.css';
+import LogoCarousel from '@/components/LogoCarousel';
 
 
 export const metadata = {
-  title: "JAIPUR ENGINEERING COLLEGE | Students Corner",
-  description: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
-  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+    title: "JAIPUR ENGINEERING COLLEGE | Students Corner",
+    description: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
+    keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
 };
 
 const StudentsCorner = () => {
     return (
         // The main container for the page
-        <div className="students-corner-page"> 
-            
+        <div className="students-corner-page">
+
             <header className="hero">
                 <h1>JEC Students Corner</h1>
                 <p>Stay Updated. Stay Connected. Stay Ahead.</p>
@@ -52,18 +52,18 @@ const StudentsCorner = () => {
 
                 <div className="dashboard-grid">
                     {/* Updated links to use Next.js Link component where applicable or keep as anchor for external/placeholders */}
-                    
-                          {/* 1. Pay Fees */}
+
+                    {/* 1. Pay Fees */}
                     <a href="/admission/Fee-Structure" className="dash-card">
                         <div className="dash-icon"><i className="fas fa-rupee-sign"></i></div>
                         <div className="dash-title">Pay Fees</div>
                     </a>
-                     {/* 2. Mandatory Disclosure */}
+                    {/* 2. Mandatory Disclosure */}
                     <a href="/admission/Mandatory-Disclosure" className="dash-card">
                         <div className="dash-icon"><i className="fas fa-file-alt"></i></div>
                         <div className="dash-title">Mandatory Disclosure</div>
                     </a>
-                   
+
                     {/* 3. Imp. Questions / FAQ */}
                     <a href="/jec/JEC-FAQ" className="dash-card">
                         <div className="dash-icon"><i className="fas fa-question-circle"></i></div>
@@ -83,22 +83,22 @@ const StudentsCorner = () => {
                 </div>
 
                 <div className="info-grid">
-                    
+
                     <div className="info-box">
                         <h3><i className="fas fa-comments" style={{ color: 'var(--primary)' }}></i> JEC Feedback</h3>
                         <p>Your feedback matters. Help us improve Jaipur Engineering College.</p>
-                        
+
                         <div style={{ marginTop: '1.5rem' }}>
-                            <strong>Student Feedback:</strong><br/>
-                            <a href="#" style={{ color:'var(--accent)', textDecoration:'none', fontWeight:'600' }}>Submit Form &rarr;</a>
+                            <strong>Student Feedback:</strong><br />
+                            <a href="#" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: '600' }}>Submit Form &rarr;</a>
                         </div>
                         <div style={{ marginTop: '1rem' }}>
-                            <strong>Faculty Feedback:</strong><br/>
-                            <a href="#" style={{ color:'var(--accent)', textDecoration:'none', fontWeight:'600' }}>Submit Form &rarr;</a>
+                            <strong>Faculty Feedback:</strong><br />
+                            <a href="#" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: '600' }}>Submit Form &rarr;</a>
                         </div>
                         <div style={{ marginTop: '1rem' }}>
-                            <strong>Parents/Alumni:</strong><br/>
-                            <a href="#" style={{ color:'var(--accent)', textDecoration:'none', fontWeight:'600' }}>Submit Form &rarr;</a>
+                            <strong>Parents/Alumni:</strong><br />
+                            <a href="#" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: '600' }}>Submit Form &rarr;</a>
                         </div>
                     </div>
 
@@ -106,11 +106,11 @@ const StudentsCorner = () => {
                         <h3><i className="fas fa-landmark" style={{ color: 'var(--gold)' }}></i> AICTE Support</h3>
                         <p>Advanced resources from the All India Council for Technical Education.</p>
                         <ul className="info-list">
-                            <li><a href="#" style={{ color:'var(--text-main)' }}>AICTE Centralized Support System</a></li>
-                            <li><a href="#" style={{ color:'var(--text-main)' }}>AICTE Online Feedback Portal</a></li>
+                            <li><a href="#" style={{ color: 'var(--text-main)' }}>AICTE Centralized Support System</a></li>
+                            <li><a href="#" style={{ color: 'var(--text-main)' }}>AICTE Online Feedback Portal</a></li>
                         </ul>
                         <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                            <h4 style={{ marginBottom:'0.5rem' }}>Policies:</h4>
+                            <h4 style={{ marginBottom: '0.5rem' }}>Policies:</h4>
                             <ul className="info-list">
                                 <li><strong>Anti-Ragging:</strong> Zero tolerance policy.</li>
                                 <li><strong>Grievance Cell:</strong> Redressal system.</li>
@@ -122,15 +122,15 @@ const StudentsCorner = () => {
                     <div className="info-box" style={{ borderLeftColor: '#10B981' }}>
                         <h3><i className="fas fa-graduation-cap" style={{ color: '#10B981' }}></i> Degree Status</h3>
                         <p>Secure your degree from JEC & JIET by filling your details.</p>
-                        
-                        <strong style={{ display:'block', marginTop:'1rem', color:'var(--text-main)' }}>Instructions for Collection:</strong>
+
+                        <strong style={{ display: 'block', marginTop: '1rem', color: 'var(--text-main)' }}>Instructions for Collection:</strong>
                         <ul className="info-list">
                             <li>Handed to candidate only.</li>
                             <li>Bring Govt ID (Aadhar/PAN).</li>
                             <li>Bring Consolidated Mark Sheet.</li>
                             <li><strong>Time:</strong> 11 AM - 3 PM (Working Days).</li>
                         </ul>
-                        <a href="#" className="btn-outline" style={{ borderColor:'#10B981', color:'#10B981' }}>Fill Degree Form</a>
+                        <a href="#" className="btn-outline" style={{ borderColor: '#10B981', color: '#10B981' }}>Fill Degree Form</a>
                     </div>
 
                 </div>
@@ -141,17 +141,17 @@ const StudentsCorner = () => {
                         <p>"One bee cannot build a hive; one ant cannot build a colony." We believe in empowering students with grit and determination.</p>
                         <p>JEC encourages students to engage in more than <strong>30 co-curricular activities</strong> with <strong>7 established clubs</strong> catering to overall development. Inspired by Maharaja Agrasen’s values, we foster leadership, creativity, and community.</p>
                         <p>Interested to be a member?</p>
-                         <a
+                        <a
                             href="mailto:director.marketing@jeckukas.org.in"
                             className="btn-outline"
                             style={{ borderColor: 'var(--gold)', color: 'var(--gold)', marginTop: '0' }}
                         >
-                            Email Us -&gt;
+                            Email Us &rarr;
                         </a>
                     </div>
                     <div className="club-img">
                         {/* Use the public folder path for images */}
-                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=800" alt="JEC Student Clubs"/>
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=800" alt="JEC Student Clubs" />
                     </div>
                 </div>
 
@@ -181,7 +181,7 @@ const StudentsCorner = () => {
                             <tr><td>8</td><td><a href="https://www.oeconsortium.org/" target="_blank" rel="noopener noreferrer">oeconsortium.org</a></td><td>The Open Education Consortium (OEC)</td></tr>
                             <tr><td>9</td><td><a href="https://oyc.yale.edu/" target="_blank" rel="noopener noreferrer">oyc.yale.edu</a></td><td>Open Yale Courses</td></tr>
                             <tr><td>10</td><td><a href="https://open.umich.edu/" target="_blank" rel="noopener noreferrer">open.umich.edu</a></td><td>Open Michigan</td></tr>
-                            <tr><td>11</td><td><a href="http://ocw.jhsph.edu/" target="_blank" rel="noopener noreferrer">ocw.jhsph.edu</a></td><td>Johns Hopkins Public health knowledge for the world</td></tr>
+                            <tr><td>11</td><td><a href="https://publichealth.jhu.edu/departments/international-health" target="_blank" rel="noopener noreferrer">Johns Hopkins Public Health</a></td><td>Johns Hopkins Public health knowledge for the world</td></tr>
                             <tr><td>12</td><td><a href="http://oli.cmu.edu/independent-learner-courses/" target="_blank" rel="noopener noreferrer">oli.cmu.edu</a></td><td>Carnegie Mellon University</td></tr>
                             <tr><td>13</td><td><a href="https://sites.tufts.edu/ocw/" target="_blank" rel="noopener noreferrer">sites.tufts.edu/ocw</a></td><td>Tufts Open Courseware</td></tr>
                             <tr><td>14</td><td><a href="https://www.nd.edu/" target="_blank" rel="noopener noreferrer">nd.edu</a></td><td>Notre Dame university</td></tr>
@@ -198,7 +198,7 @@ const StudentsCorner = () => {
                 </div>
 
             </div>
-            
+
             <LogoCarousel />
         </div>
     );

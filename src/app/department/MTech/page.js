@@ -2,12 +2,12 @@
 import React from 'react';
 import Link from 'next/link';
 import LogoCarousel from '@/components/LogoCarousel'; // Import Added
-import '@/styles/MTech.css'; 
+import '@/styles/MTech.css';
 
 function MTech() {
     return (
         <div className="mtech-page">
-            
+
             <header className="hero-section">
                 <div className="hero-content">
                     <h1 className="hero-title">Master of Technology (M.Tech)</h1>
@@ -128,7 +128,7 @@ function MTech() {
                     <div className="course-card">
                         <div className="card-header">
                             <div className="card-icon"><i className="fas fa-leaf"></i></div>
-                            <h3 className="card-title">Environmental Engineering</h3>
+                            <h3 className="card-title">Environmental Engineering*</h3>
                         </div>
                         <div className="card-body">
                             <p className="course-desc">Focuses on sustainable development and managing natural resources. Addresses water, air, and waste management challenges.</p>
@@ -157,10 +157,10 @@ function MTech() {
                     {/* Alumni: Atul */}
                     <div className="alumni-card">
                         <div className="alumni-img-wrapper">
-                            <img 
-                                src="/images/atul.jpg" 
-                                alt="Atul Kumar" 
-                                className="alumni-photo" 
+                            <img
+                                src="/images/atul.jpg"
+                                alt="Atul Kumar"
+                                className="alumni-photo"
                             />
                         </div>
                         <h3 className="alumni-name">Atul Kumar</h3>
@@ -175,10 +175,10 @@ function MTech() {
                     {/* Alumni: Himanshu */}
                     <div className="alumni-card">
                         <div className="alumni-img-wrapper">
-                            <img 
-                                src="/images/himanshu.jpeg" 
-                                alt="Himanshu Gupta" 
-                                className="alumni-photo" 
+                            <img
+                                src="/images/himanshu.jpeg"
+                                alt="Himanshu Gupta"
+                                className="alumni-photo"
                             />
                         </div>
                         <h3 className="alumni-name">Himanshu Gupta</h3>
@@ -193,10 +193,10 @@ function MTech() {
                     {/* Alumni: Akshay */}
                     <div className="alumni-card">
                         <div className="alumni-img-wrapper">
-                            <img 
-                                src="/images/akshay.jpeg" 
-                                alt="Akshay Tripathi" 
-                                className="alumni-photo" 
+                            <img
+                                src="/images/akshay.jpeg"
+                                alt="Akshay Tripathi"
+                                className="alumni-photo"
                             />
                         </div>
                         <h3 className="alumni-name">Akshay Tripathi</h3>
@@ -251,7 +251,7 @@ function MTech() {
                 <div className="max-width-container">
                     <h3>Ready to Make a Difference?</h3>
                     <p>Secure one of the 18 seats available for this prestigious program.</p>
-                    <Link href="/admission/admission-enquiry" className="apply-btn">Apply Now</Link>
+                    <Link href="/admission-enquiry" className="apply-btn">Apply Now</Link>
                 </div>
             </section>
 

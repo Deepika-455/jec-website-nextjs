@@ -1,6 +1,6 @@
 /* src/styles/mtech.css */
 
-:root {
+.mtech-page {
     /* Brand Palette */
     --logo-red: #D62828;
     --logo-blue: #0072C6;
@@ -11,7 +11,7 @@
     --bg-light: #f8f9fa;
     --text-main: #333;
     --text-light: #666;
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     --transition: all 0.3s ease;
 }
 
@@ -56,11 +56,11 @@
 }
 
 .highlight-pill {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     padding: 8px 20px;
     border-radius: 50px;
     font-size: 0.9rem;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
 }
 
@@ -116,14 +116,27 @@
 
 .course-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Specialized top borders */
-.course-card:nth-child(2) { border-top-color: var(--logo-red); }
-.course-card:nth-child(3) { border-top-color: var(--logo-gold); }
-.course-card:nth-child(4) { border-top-color: var(--logo-black); }
-.course-card:nth-child(5) { border-top-color: #2D6A4F; } /* Env Green */
+.course-card:nth-child(2) {
+    border-top-color: var(--logo-red);
+}
+
+.course-card:nth-child(3) {
+    border-top-color: var(--logo-gold);
+}
+
+.course-card:nth-child(4) {
+    border-top-color: var(--logo-black);
+}
+
+.course-card:nth-child(5) {
+    border-top-color: #2D6A4F;
+}
+
+/* Env Green */
 
 .card-header {
     padding: 25px;
@@ -147,9 +160,17 @@
     flex-shrink: 0;
 }
 
-.course-card:nth-child(2) .card-icon { color: var(--logo-red); }
-.course-card:nth-child(3) .card-icon { color: var(--logo-gold); }
-.course-card:nth-child(4) .card-icon { color: var(--logo-black); }
+.course-card:nth-child(2) .card-icon {
+    color: var(--logo-red);
+}
+
+.course-card:nth-child(3) .card-icon {
+    color: var(--logo-gold);
+}
+
+.course-card:nth-child(4) .card-icon {
+    color: var(--logo-black);
+}
 
 .card-title {
     font-size: 1.25rem;
@@ -243,7 +264,8 @@
 }
 
 .alumni-img-wrapper {
-    width: 120px; /* Consistent circular size */
+    width: 120px;
+    /* Consistent circular size */
     height: 120px;
     margin: 0 auto 20px;
     border-radius: 50%;
@@ -258,8 +280,10 @@
 .alumni-img-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Prevents image stretching */
-    object-position: center; /* Keeps faces centered */
+    object-fit: cover;
+    /* Prevents image stretching */
+    object-position: center;
+    /* Keeps faces centered */
     display: block;
 }
 
@@ -425,13 +449,13 @@
     font-weight: 700;
     border-radius: 50px;
     text-decoration: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .apply-btn:hover {
     transform: translateY(-3px);
-    background: #e59400; 
+    background: #e59400;
 }
 
 /* --- Responsive --- */

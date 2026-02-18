@@ -51,7 +51,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3 className="widget-title">Quick Links</h3>
                     <ul className="footer-list">
-                        <li><Link href="/admission/Admission-Open" style={{ color: 'var(--jec-gold)', fontWeight: '600' }}>Apply Now</Link></li>
+                        <li><Link href="https://admission.jeckukas.org.in/" target="_blank" style={{ color: 'var(--jec-gold)', fontWeight: '600' }}>Apply Now</Link></li>
                         <li><Link href="/campus-life/image-gallery">Campus Life</Link></li>
                         <li><Link href="/Infrastructure/Learning-By-Doing">Infrastructure</Link></li>
                         <li><Link href="/placement">Training & Placements</Link></li>
@@ -71,10 +71,10 @@ const Footer = () => {
                             <span>Campus Address</span>
                         </div>
                         {/* ADDRESS LINK EMBEDDED HERE */}
-                        <a 
-                            href="https://www.google.com/maps/place/Jaipur+Engineering+College/@27.0279997,75.8951122,19.75z/data=!4m14!1m7!3m6!1s0x396daff9724b0af1:0x5c4f01d43902fe9a!2sJaipur+Engineering+College!8m2!3d27.0279997!4d75.8948747!16s%2Fm%2F0134w8xs!3m5!1s0x396daff9724b0af1:0x5c4f01d43902fe9a!8m2!3d27.0279997!4d75.8948747!16s%2Fm%2F0134w8xs?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        <a
+                            href="https://www.google.com/maps/place/Jaipur+Engineering+College/@27.0279997,75.8951122,19.75z/data=!4m14!1m7!3m6!1s0x396daff9724b0af1:0x5c4f01d43902fe9a!2sJaipur+Engineering+College!8m2!3d27.0279997!4d75.8948747!16s%2Fm%2F0134w8xs!3m5!1s0x396daff9724b0af1:0x5c4f01d43902fe9a!8m2!3d27.0279997!4d75.8948747!16s%2Fm%2F0134w8xs?entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="contact-row"
                             style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
                         >
@@ -134,7 +134,7 @@ const Footer = () => {
             <div className="footer-bottom">
                 <div className="bottom-content">
                     <div className="copyright">
-                        © 2025 Jaipur Engineering College. All Rights Reserved.
+                        © 2026 Jaipur Engineering College. All Rights Reserved.
                         Designed by Amazing IT Solutions.
                     </div>
                     <div className="bottom-links">

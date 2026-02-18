@@ -6,7 +6,7 @@ import LogoCarousel from '@/components/LogoCarousel'; // <--- 1. IMPORT ADDED
 export const metadata = {
   title: "Alumni – Jaipur Engineering College",
   description: "JEC Group alumni have a rich heritage and diverse spanning over 19 years. This diversity helps us to think outside the program of study.",
-  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality." ,
+  keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
 
 };
 
@@ -20,9 +20,8 @@ export default function Alumni() {
           <h1>JEC Alumni Network</h1>
           <p>Our heritage spans over 21 years of excellence. Join a community of over 7300+ successful professionals shaping the future worldwide.</p>
           {/* Using Next.js Link for navigation */}
-          <Link href="/jec/alumni-registration">
-            <div className="alumni-hero-btn">Join Alumni Network</div>
-          </Link>
+          <div className="alumni-hero-btn">Join Alumni Network</div>
+
         </div>
       </section>
 
@@ -123,7 +122,7 @@ export default function Alumni() {
         <div className="max-width-container">
           <h2 className="section-title">Get Involved: Student & Alumni Clubs</h2>
           <p style={{ textAlign: 'center', maxWidth: '700px', margin: '0 auto 30px', color: '#555' }}>Walk down memory lane and mentor current students in these active clubs.</p>
-          
+
           <div className="clubs-grid">
             <div className="club-card">
               <div className="club-content">
@@ -179,7 +178,7 @@ export default function Alumni() {
         </div>
       </section>
       {/* --- 2. AFFILIATION LOGO CAROUSEL ADDED HERE --- */}
-            <LogoCarousel />
+      <LogoCarousel />
     </div>
   );
 }

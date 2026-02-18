@@ -3,10 +3,10 @@
    ========================================================================== */
 
 /* Define Variables locally to guarantee exact colors */
-:root {
+.testimonials-page {
     --logo-white: #ffffff;
     --logo-black: #000000;
-    --logo-blue: #003366;
+    --logo-blue: #0072c6;
     --logo-red: #e63946;
     --logo-gold: #f1c40f;
     --color-text-main: #333333;
@@ -14,8 +14,8 @@
     --color-background-medium: #f4f4f4;
     --color-background-dark: #f0f0f0;
     --color-border: #eeeeee;
-    --shadow-card: 0 5px 15px rgba(0,0,0,0.08);
-    --shadow-hover: 0 15px 30px rgba(0,0,0,0.15);
+    --shadow-card: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .testimonials-page {
@@ -23,15 +23,15 @@
     color: var(--color-text-main);
 }
 
-.testimonials-page .max-width-container { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 0 20px; 
+.testimonials-page .max-width-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.testimonials-page a { 
-    text-decoration: none; 
-    color: inherit; 
+.testimonials-page a {
+    text-decoration: none;
+    color: inherit;
 }
 
 /* =========================================
@@ -40,27 +40,29 @@
 .testimonials-page .testimonial-hero {
     position: relative;
     width: 100%;
-    height: 400px; /* Fixed height for the banner */
+    height: 400px;
+    /* Fixed height for the banner */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
     overflow: hidden;
-    background-color: #003366; /* Fallback color */
+    background-color: #0072c6;
+    /* Fallback color */
     margin-bottom: 2rem;
     border-bottom: 5px solid var(--logo-gold);
 }
 
 /* The Background Image */
-.testimonials-page .hero-bg-img {
+.testimonials-page .t-hero-bg-img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    z-index: 1; 
+    object-fit: cover;
+    z-index: 1;
 }
 
 /* The Dark Overlay */
@@ -71,28 +73,29 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Black overlay 60% opacity */
-    z-index: 2; 
+    background: rgba(0, 0, 0, 0.6);
+    /* Black overlay 60% opacity */
+    z-index: 2;
 }
 
 /* The Content Wrapper */
-.testimonials-page .hero-overlay {
+.testimonials-page .t-hero-overlay {
     position: relative;
-    z-index: 3; 
+    z-index: 3;
     width: 100%;
     padding: 20px;
 }
 
 /* Typography for the Hero Section */
-.testimonials-page .hero-overlay h1 {
-    font-size: 3rem; 
+.testimonials-page .t-hero-overlay h1 {
+    font-size: 3rem;
     margin-bottom: 15px;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     color: #fff;
 }
 
-.testimonials-page .hero-overlay p {
+.testimonials-page .t-hero-overlay p {
     font-size: 1.2rem;
     font-weight: 500;
     color: #f0f0f0;
@@ -104,8 +107,8 @@
    GRID & CARD SECTION
    ========================================= */
 
-.testimonials-page .testimonial-grid-section { 
-    padding: 80px 20px; 
+.testimonials-page .testimonial-grid-section {
+    padding: 80px 20px;
     background: var(--color-background-medium);
 }
 
@@ -227,7 +230,7 @@
     font-weight: 600;
     padding: 4px 10px;
     border-radius: 4px;
-    margin-bottom: 6px; 
+    margin-bottom: 6px;
     width: fit-content;
 }
 
@@ -260,7 +263,7 @@
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .testimonials-page .load-more-main-btn:hover {
@@ -269,8 +272,8 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .hero-overlay h1 { 
-        font-size: 2.2rem; 
+    .testimonials-page .t-hero-overlay h1 {
+        font-size: 2.2rem;
     }
 }
 

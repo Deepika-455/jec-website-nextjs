@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from '@/firebase'; 
+import { db } from '@/firebase';
 import '@/styles/Testimonials.css';
-import LogoCarousel from '@/components/LogoCarousel'; 
+import LogoCarousel from '@/components/LogoCarousel';
 
 
 
@@ -16,7 +16,7 @@ import LogoCarousel from '@/components/LogoCarousel';
 // Sub-component for individual cards
 const TestimonialCard = ({ item }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const maxLength = 150; 
+  const maxLength = 150;
 
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
@@ -42,9 +42,9 @@ const TestimonialCard = ({ item }) => {
       <div className="student-info">
         <div className="student-avatar">
           {item.imageUrl ? (
-             <img src={item.imageUrl} alt={item.name} />
+            <img src={item.imageUrl} alt={item.name} />
           ) : (
-             <i className="fas fa-user"></i>
+            <i className="fas fa-user"></i>
           )}
         </div>
         <div className="student-details">
@@ -61,21 +61,21 @@ const TestimonialCard = ({ item }) => {
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(6); 
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) setVisibleCount(4); 
-      else setVisibleCount(100); 
+      if (window.innerWidth < 768) setVisibleCount(4);
+      else setVisibleCount(100);
     };
     handleResize();
 
     const fetchTestimonials = async () => {
       try {
         const testimonialsRef = collection(db, "student_testimonials");
-        const q = query(testimonialsRef, orderBy("order")); 
+        const q = query(testimonialsRef, orderBy("order"));
         const querySnapshot = await getDocs(q);
-        
+
         const data = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
@@ -103,56 +103,56 @@ export default function Testimonials() {
   return (
     <div className="testimonials-page">
 
-        {/* HERO SECTION - Always Visible */}
-        <section className="testimonial-hero">
-            <img src="/images/jec-building.jpeg" alt="Campus Building" className="hero-bg-img" />
-            <div className="hero-overlay">
-                <div className="max-width-container">
-                    <h1>Student Testimonials</h1>
-                    <p>Hear from our students and alumni about their journey at JEC.</p>
-                </div>
+      {/* HERO SECTION - Always Visible */}
+      <section className="testimonial-hero">
+        <img src="/images/jec-building.jpeg" alt="Campus Building" className="t-hero-bg-img" />
+        <div className="t-hero-overlay">
+          <div className="max-width-container">
+            <h1>Student Testimonials</h1>
+            <p>Hear from our students and alumni about their journey at JEC.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* GRID SECTION - Handles Loading State Internally */}
+      <section className="testimonial-grid-section">
+        <div className="max-width-container">
+
+          {loading ? (
+            // LOADING MESSAGE
+            <div style={{ textAlign: 'center', padding: '40px 0' }}>
+              <h2>Loading Stories...</h2>
+              <p>Please wait while we fetch the latest testimonials.</p>
             </div>
-        </section>
+          ) : (
+            // DATA GRID
+            <>
+              <div className="t-grid">
+                {testimonials.slice(0, visibleCount).map((item) => (
+                  <TestimonialCard key={item.id} item={item} />
+                ))}
 
-        {/* GRID SECTION - Handles Loading State Internally */}
-        <section className="testimonial-grid-section">
-            <div className="max-width-container">
-                
-                {loading ? (
-                    // LOADING MESSAGE
-                    <div style={{ textAlign: 'center', padding: '40px 0' }}>
-                        <h2>Loading Stories...</h2>
-                        <p>Please wait while we fetch the latest testimonials.</p>
-                    </div>
-                ) : (
-                    // DATA GRID
-                    <>
-                        <div className="t-grid">
-                            {testimonials.slice(0, visibleCount).map((item) => (
-                                <TestimonialCard key={item.id} item={item} />
-                            ))}
-
-                            {testimonials.length === 0 && (
-                                <p style={{textAlign: 'center', width: '100%', gridColumn: '1/-1'}}>
-                                No testimonials found. Check your database connection.
-                                </p>
-                            )}
-                        </div>
-
-                        {visibleCount < testimonials.length && (
-                            <div className="load-more-container">
-                                <button onClick={handleShowMore} className="load-more-main-btn">
-                                Show More Stories
-                                </button>
-                            </div>
-                        )}
-                    </>
+                {testimonials.length === 0 && (
+                  <p style={{ textAlign: 'center', width: '100%', gridColumn: '1/-1' }}>
+                    No testimonials found. Check your database connection.
+                  </p>
                 )}
-            </div>
-        </section>
+              </div>
 
-        {/* --- LOGO CAROUSEL - NOW ALWAYS VISIBLE --- */}
-        <LogoCarousel />
+              {visibleCount < testimonials.length && (
+                <div className="load-more-container">
+                  <button onClick={handleShowMore} className="load-more-main-btn">
+                    Show More Stories
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* --- LOGO CAROUSEL - NOW ALWAYS VISIBLE --- */}
+      <LogoCarousel />
 
     </div>
   );

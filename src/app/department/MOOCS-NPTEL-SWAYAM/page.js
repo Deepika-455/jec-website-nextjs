@@ -79,7 +79,7 @@ const MoocsNptel = () => {
             <p>In 2011, Peter Norvig and Sebastian Thurn facilitated the Artificial Intelligence MOOC, attracting 160,000 learners from 190 countries. MIT developed MITx web resource which was later incorporated into EdX. The online educational mode is now gradually accepted by many countries including India.</p>
           </div>
           <div className="img-block">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop" alt="Students Learning Online" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/jec-website-55397.firebasestorage.app/o/images%2FNPTL.png?alt=media&token=e31b80d0-8fda-4c33-b56e-1e6dedf79385" alt="Students Learning Online" />
           </div>
         </div>
 
@@ -92,20 +92,20 @@ const MoocsNptel = () => {
 
         <div className="tabs-container animated-section">
           <div className="tabs-nav">
-            <button 
-              className={`tab-btn ${activeTab === 'india' ? 'active' : ''}`} 
+            <button
+              className={`tab-btn ${activeTab === 'india' ? 'active' : ''}`}
               onClick={() => setActiveTab('india')}
             >
               Indian Providers
             </button>
-            <button 
-              className={`tab-btn ${activeTab === 'global' ? 'active' : ''}`} 
+            <button
+              className={`tab-btn ${activeTab === 'global' ? 'active' : ''}`}
               onClick={() => setActiveTab('global')}
             >
               International Providers
             </button>
           </div>
-          
+
           <div className={`tab-content ${activeTab === 'india' ? 'active' : ''}`}>
             <div className="provider-grid">
               <div className="provider-item"><i className="fas fa-check-circle"></i> SWAYAM</div>
@@ -181,13 +181,30 @@ const MoocsNptel = () => {
             <h3>About NPTEL</h3>
             <p>NPTEL (National Programme on Technology Enhanced Learning) project was proposed for the first time in 1999 by Prof. M. S. Ananth, Director, IIT Madras and funded by the Ministry of Human Resource Development, Government of India. It has developed curriculum-based course contents for engineering courses at the undergraduate level. NPTEL is a joint initiative of the IITs and IISc.</p>
             <p>Through this initiative, NPTEL offers online courses and certification in various topics. The main objective is to reach out to students and faculty by providing them access to NPTEL content and Online Certifications from NPTEL Centre of Continuing Education.</p>
-            
-            <div style={{ background: '#EFF6FF', padding: '1.5rem', borderRadius: '12px', borderLeft: '4px solid var(--jec-blue)', marginTop: '1.5rem' }}>
-              <h4 style={{ color: 'var(--jec-blue)', marginBottom: '0.5rem' }}><i className="fas fa-university"></i> JEC Group Local Chapter</h4>
-              <p style={{ fontSize: '0.95rem' }}>JEC Group of Colleges has taken a step forward towards the establishment of an NPTEL local Chapter. The objective is to enable students to gain knowledge through enhanced video lectures and obtain certificates. It also makes them employable in the industry or pursue a suitable higher education programme in Engineering and Technology.</p>
-              <hr style={{ border: 0, borderTop: '1px solid #CBD5E1', margin: '10px 0' }} />
-              <p><strong>SPOC:</strong> Dr. B.B. Jain, Professor, Faculty of Electrical Engineering</p>
-              <p style={{ fontSize: '0.9rem', marginTop: '5px' }}>Dr. Jain is nominated as SPOC of NPTEL JEC Group Chapter. The role includes identifying mentors from various departments who will motivate students to enroll, monitor coursework, submit assignments, and register for exams.</p>
+
+
+          </div>
+        </div>
+        {/* JEC Local Chapter - Full Width Below Section */}
+        <div className="animated-section" style={{ background: '#EFF6FF', padding: '2.5rem', borderRadius: '12px', borderTop: '5px solid var(--jec-blue)', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+          <h3 style={{ color: 'var(--jec-blue)', marginBottom: '1rem', fontFamily: 'var(--font-head)', fontSize: '1.8rem' }}>
+            <i className="fas fa-university" style={{ marginRight: '10px' }}></i>
+            JEC Group Local Chapter
+          </h3>
+          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: 'var(--text-main)', marginBottom: '1.5rem' }}>
+            JEC Group of Colleges has taken a step forward towards the establishment of an NPTEL local Chapter. The objective is to enable students to gain knowledge through enhanced video lectures and obtain certificates. It also makes them employable in the industry or pursue a suitable higher education programme in Engineering and Technology.
+          </p>
+
+          <div style={{ background: 'white', padding: '1.5rem', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'flex-start', gap: '15px' }}>
+            <div style={{ background: '#E0F2FE', padding: '12px', borderRadius: '50%', color: 'var(--jec-blue)' }}>
+              <i className="fas fa-user-tie" style={{ fontSize: '1.5rem' }}></i>
+            </div>
+            <div>
+              <h4 style={{ margin: '0 0 5px 0', fontSize: '1.1rem', color: 'var(--text-main)' }}>SPOC: Dr. B.B. Jain</h4>
+              <span style={{ fontSize: '0.9rem', color: 'var(--jec-blue)', fontWeight: '600', display: 'block', marginBottom: '8px' }}>Professor, Faculty of Electrical Engineering</span>
+              <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', margin: 0 }}>
+                Dr. Jain is nominated as SPOC of NPTEL JEC Group Chapter. The role includes identifying mentors from various departments who will motivate students to enroll, monitor coursework, submit assignments, and register for exams.
+              </p>
             </div>
           </div>
         </div>
@@ -227,7 +244,7 @@ const MoocsNptel = () => {
 
         <h3 className="animated-section" style={{ marginTop: '4rem', textAlign: 'center', fontFamily: 'var(--font-head)' }}>9 National Coordinators</h3>
         <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>In order to ensure that best quality content is produced and delivered, nine National Coordinators have been appointed:</p>
-        
+
         <div className="coordinator-grid animated-section">
           <div className="coordinator-card">
             <span className="coord-acronym">AICTE</span>
@@ -288,10 +305,10 @@ const MoocsNptel = () => {
           <a href="https://ndl.iitkgp.ac.in/" target="_blank" rel="noopener noreferrer" className="resource-btn">
             <i className="fas fa-book"></i> NDLI Library
           </a>
-          <a href="http://ugcmoocs.inflibnet.ac.in/ugcmoocs/moocs_courses.php" target="_blank" rel="noopener noreferrer" className="resource-btn">
+          <a href="https://swayam.gov.in/" target="_blank" rel="noopener noreferrer" className="resource-btn">
             <i className="fas fa-laptop"></i> SWAYAM Courses
           </a>
-          <a href="http://ugcmoocs.inflibnet.ac.in/ugcmoocs/moocs_courses.php" target="_blank" rel="noopener noreferrer" className="resource-btn">
+          <a href="https://www.mooc-list.com/" target="_blank" rel="noopener noreferrer" className="resource-btn">
             <i className="fas fa-list-alt"></i> MOOCs
           </a>
           <a href="http://epgp.inflibnet.ac.in/" target="_blank" rel="noopener noreferrer" className="resource-btn">
@@ -327,10 +344,10 @@ const MoocsNptel = () => {
         </div>
 
         {/* Credit Transfer / Conclusion */}
-       
+
 
       </div>
-      
+
       {/* 2. LOGO CAROUSEL ADDED HERE */}
       <LogoCarousel />
     </div>
