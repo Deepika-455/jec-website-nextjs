@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 // Import db from your firebase config. Adjust path if needed (e.g., '@/firebase')
-import { db } from '@/firebase'; 
+import { db } from '@/firebase';
 import { collection, query, getDocs, orderBy } from "firebase/firestore";
 import '@/styles/Placements.css';
-import LogoCarousel from '@/components/LogoCarousel'; 
+import LogoCarousel from '@/components/LogoCarousel';
 
 function Placements() {
     const [activeTab, setActiveTab] = useState('');
@@ -105,7 +105,7 @@ function Placements() {
                         <div className="pg-stat-label">Highest Package</div>
                     </div>
                     <div className="pg-stat-card">
-                        <div className="pg-stat-value">9000+</div>
+                        <div className="pg-stat-value">4300+</div>
                         <div className="pg-stat-label">Total Placements</div>
                     </div>
                     <div className="pg-stat-card">
