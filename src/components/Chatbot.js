@@ -1,7 +1,17 @@
+'use client';
+
 // src/components/Chatbot.js
 import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 
 const Chatbot = () => {
+  const pathname = usePathname();
+
+  // Hide chatbot on admin pages
+  if (pathname && pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <>
       {/* 1. The required container div */}
