@@ -48,6 +48,18 @@ export default function Hero() {
                     </div>
                 </div>
             ))}
+
+            {/* Navigation Arrows */}
+            {banners.length > 1 && (
+                <>
+                    <button className="slider-arrow prev" onClick={() => setCurrentIndex((currentIndex - 1 + banners.length) % banners.length)}>
+                        <i className="fas fa-chevron-left"></i>
+                    </button>
+                    <button className="slider-arrow next" onClick={() => setCurrentIndex((currentIndex + 1) % banners.length)}>
+                        <i className="fas fa-chevron-right"></i>
+                    </button>
+                </>
+            )}
         </section>
     );
 }
