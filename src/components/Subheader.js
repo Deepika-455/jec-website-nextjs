@@ -14,10 +14,10 @@ const menuData = [
 function Subheader() {
     // --- 1. SEARCH STATES ---
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [query, setQuery] = useState(""); 
+    const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [searchIndex, setSearchIndex] = useState([]);
-    
+
     // UI States
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -56,7 +56,7 @@ function Subheader() {
         setIsMobileMenuOpen(false);
         setActiveDropdown(null);
         setIsSearchOpen(false);
-        setQuery(""); 
+        setQuery("");
         setResults([]);
     }, [pathname, searchParams]);
 
@@ -64,27 +64,27 @@ function Subheader() {
     const highlightTextOnPage = (searchText) => {
         const root = document.querySelector('main') || document.body;
         const terms = searchText.toLowerCase().split(' ').filter(t => t.length > 2);
-        
+
         if (terms.length === 0) return;
 
         const walk = (node) => {
             // 1. BLOCK ENTIRE SECTIONS (Nuclear Option)
             // If the code sees these classes, it stops immediately.
             if (node.nodeType === 1 && (
-                node.classList.contains('jec-master-header') || 
-                node.classList.contains('jec-nav-wrapper') || 
+                node.classList.contains('jec-master-header') ||
+                node.classList.contains('jec-nav-wrapper') ||
                 node.classList.contains('jec-top-bar')
             )) return;
 
             // 2. Text Node Matching
-            if (node.nodeType === 3) { 
+            if (node.nodeType === 3) {
                 const text = node.textContent.toLowerCase();
                 const matchedTerm = terms.find(term => text.includes(term));
-                
+
                 if (matchedTerm) {
                     // Double Safety: Check parents
                     if (node.parentElement && (
-                        node.parentElement.closest('header') || 
+                        node.parentElement.closest('header') ||
                         node.parentElement.closest('nav') ||
                         node.parentElement.closest('.jec-nav-wrapper')
                     )) return;
@@ -94,24 +94,24 @@ function Subheader() {
                         const range = document.createRange();
                         range.setStart(node, idx);
                         range.setEnd(node, idx + matchedTerm.length);
-                        
+
                         const mark = document.createElement('mark');
                         mark.className = 'jec-highlight';
                         range.surroundContents(mark);
-                        return true; 
+                        return true;
                     }
                 }
-            } 
+            }
             // 3. TRAVERSAL (The Critical Fix)
             // We added 'HEADER' and 'NAV' here. The code will NOT enter them.
-            else if (node.nodeType === 1 && node.childNodes && !['SCRIPT','STYLE','INPUT','TEXTAREA','MARK','HEADER','NAV','FOOTER'].includes(node.tagName)) {
+            else if (node.nodeType === 1 && node.childNodes && !['SCRIPT', 'STYLE', 'INPUT', 'TEXTAREA', 'MARK', 'HEADER', 'NAV', 'FOOTER'].includes(node.tagName)) {
                 for (let i = 0; i < node.childNodes.length; i++) {
-                    if (walk(node.childNodes[i])) break; 
+                    if (walk(node.childNodes[i])) break;
                 }
             }
         };
         walk(root);
-        
+
         // Scroll to match
         const first = document.querySelector('.jec-highlight');
         if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -147,7 +147,7 @@ function Subheader() {
 
     return (
         <div className="jec-master-header">
-            
+
             {/* --- TOP BLACK BAR --- */}
             <div className="jec-top-bar">
                 <div className="jec-container jec-top-container">
@@ -180,7 +180,10 @@ function Subheader() {
                             <img src="/JEC-LOGO.png" alt="JEC Logo" className="jec-logo-img" />
                         </Link>
 
-                        <div className="jec-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <div className="jec-hamburger" onClick={() => {
+                            setIsMobileMenuOpen(!isMobileMenuOpen);
+                            setActiveDropdown(null);
+                        }}>
                             <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
                         </div>
 
@@ -300,11 +303,11 @@ function Subheader() {
                                         onChange={handleSearch}
                                         autoFocus={isSearchOpen}
                                     />
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => {
                                             setIsSearchOpen(!isSearchOpen);
-                                            if(!isSearchOpen) setTimeout(() => inputRef.current?.focus(), 100);
+                                            if (!isSearchOpen) setTimeout(() => inputRef.current?.focus(), 100);
                                         }}
                                     >
                                         <i className="fas fa-search"></i>
@@ -315,7 +318,7 @@ function Subheader() {
                                             <div className="jec-modal-header">Found {results.length} results</div>
                                             <ul className="jec-results-list">
                                                 {results.length === 0 ? (
-                                                    <li style={{padding:'15px', color:'#777'}}>No results found.</li>
+                                                    <li style={{ padding: '15px', color: '#777' }}>No results found.</li>
                                                 ) : (
                                                     results.map((res, idx) => (
                                                         <li key={idx}>
@@ -338,7 +341,7 @@ function Subheader() {
                     </div>
                 </header>
             </div>
-            
+
             <style jsx>{`
                 :global(.jec-highlight) {
                     background-color: #FFFF00;

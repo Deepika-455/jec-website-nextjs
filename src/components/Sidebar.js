@@ -44,8 +44,12 @@ function Sidebar() {
                     key={link.id}
                     href={link.path}
                     className={`${link.id} ${hoveredItem === link.id ? 'active' : ''}`}
-                    onMouseEnter={() => setHoveredItem(link.id)}
-                    onMouseLeave={() => setHoveredItem(null)}
+                    onMouseEnter={() => {
+                        if (window.innerWidth > 768) setHoveredItem(link.id);
+                    }}
+                    onMouseLeave={() => {
+                        if (window.innerWidth > 768) setHoveredItem(null);
+                    }}
                     onClick={(e) => {
                         // On mobile, first tap expands, second tap navigates
                         if (typeof window !== 'undefined' && window.innerWidth <= 768 && hoveredItem !== link.id) {

@@ -429,16 +429,16 @@ body {
         right: 30px;
         transform: none;
     }
-}
 
-.jec-dropdown.jec-mega.jec-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-    min-width: 750px;
-}
+    .jec-dropdown.jec-mega.jec-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+        min-width: 750px;
+    }
 
-.jec-dropdown.jec-mega.jec-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-    min-width: 500px;
+    .jec-dropdown.jec-mega.jec-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+        min-width: 500px;
+    }
 }
 
 .jec-dropdown-link {
