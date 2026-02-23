@@ -62,6 +62,9 @@ const ManageDepartments = () => {
     const [hodMessage, setHodMessage] = useState('');
     const [hodImage, setHodImage] = useState('');
     const [eligibility, setEligibility] = useState('');
+    const [metaTitle, setMetaTitle] = useState('');
+    const [metaDescription, setMetaDescription] = useState('');
+    const [metaKeywords, setMetaKeywords] = useState('');
 
     // Upload States
     const [uploading, setUploading] = useState(false);
@@ -198,7 +201,9 @@ const ManageDepartments = () => {
         const data = {
             name, slug: slug || name.toLowerCase().replace(/ /g, '-'),
             title, subtitle, bannerImage, content,
-            hodName, hodMessage, hodImage, eligibility, updatedAt: new Date()
+            hodName, hodMessage, hodImage, eligibility,
+            metaTitle, metaDescription, metaKeywords,
+            updatedAt: new Date()
         };
         try {
             if (isEditing) { await updateDoc(doc(db, "departments", editId), data); toast.success("Updated!"); }
@@ -213,6 +218,7 @@ const ManageDepartments = () => {
         setContent(dept.content || ''); setHodName(dept.hodName || '');
         setHodMessage(dept.hodMessage || ''); setHodImage(dept.hodImage || '');
         setEligibility(dept.eligibility || '');
+        setMetaTitle(dept.metaTitle || ''); setMetaDescription(dept.metaDescription || ''); setMetaKeywords(dept.metaKeywords || '');
         setEditId(dept.id); setIsEditing(true); window.scrollTo(0, 0);
     };
 
@@ -221,6 +227,7 @@ const ManageDepartments = () => {
         setName(''); setSlug(''); setTitle(''); setSubtitle('');
         setBannerImage(''); setContent(''); setHodName('');
         setHodMessage(''); setHodImage(''); setEligibility('');
+        setMetaTitle(''); setMetaDescription(''); setMetaKeywords('');
     };
 
     const handleDelete = async (id) => {
@@ -400,6 +407,34 @@ const ManageDepartments = () => {
                                 modules={modules}
                             />
                         </div>
+                    </div>
+
+                    <div style={{ background: '#F0FDF4', padding: '25px', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+                        <h3 style={{ ...styles.head, color: '#16a34a' }}>6. SEO / Meta Tags</h3>
+                        <p style={{ color: '#64748b', fontSize: '13px', marginBottom: '15px' }}>These fields control what appears on Google search results for this department page.</p>
+                        <label style={styles.label}>Meta Title <span style={{ fontWeight: 400, color: '#94a3b8' }}>(shown on browser tab &amp; Google — keep under 60 characters)</span></label>
+                        <input
+                            type="text"
+                            value={metaTitle}
+                            onChange={e => setMetaTitle(e.target.value)}
+                            placeholder={`e.g. Computer Science Engineering | JEC Jaipur`}
+                            style={styles.input}
+                        />
+                        <label style={styles.label}>Meta Description <span style={{ fontWeight: 400, color: '#94a3b8' }}>(shown under link on Google — keep under 160 characters)</span></label>
+                        <textarea
+                            value={metaDescription}
+                            onChange={e => setMetaDescription(e.target.value)}
+                            placeholder="e.g. Explore the CSE department at JEC Jaipur — modern labs, expert faculty, and 90%+ placement record."
+                            style={{ ...styles.input, height: '80px', resize: 'vertical' }}
+                        />
+                        <label style={styles.label}>Meta Keywords <span style={{ fontWeight: 400, color: '#94a3b8' }}>(comma-separated)</span></label>
+                        <input
+                            type="text"
+                            value={metaKeywords}
+                            onChange={e => setMetaKeywords(e.target.value)}
+                            placeholder="e.g. CSE JEC, computer science Jaipur, engineering college Rajasthan"
+                            style={styles.input}
+                        />
                     </div>
 
                     <div style={{ display: 'flex', gap: '15px' }}>
