@@ -1,14 +1,12 @@
 import "@/styles/globals.css";
 import "@/styles/Navigation.css";
-// import Header from './components/Header';
 import "@/styles/Footer.css";
 import "@/styles/AdmissionPopup.css";
-import { Suspense } from 'react'; // 1. Import Suspense
-import "@/styles/Sidebar.css"; // <--- 1. Import your Sidebar CSS
-import ClientLayout from "@/components/ClientLayout"; 
-import AdmissionPopup from "@/components/AdmissionPopup";
-import Chatbot from "@/components/Chatbot"; 
-import Sidebar from "@/components/Sidebar"; // <--- 2. Import the Sidebar component
+import { Suspense } from 'react';
+import "@/styles/Sidebar.css";
+import ClientLayout from "@/components/ClientLayout";
+import Chatbot from "@/components/Chatbot";
+import Sidebar from "@/components/Sidebar";
 import Script from 'next/script';
 
 export default function RootLayout({ children }) {
@@ -21,9 +19,8 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
       </head>
       <body style={{ margin: 0, padding: 0, fontFamily: "'Poppins', sans-serif" }}>
-        {/* --- 2. GOOGLE SCRIPTS START --- */}
-        
-        {/* Google Tag Manager (Script) */}
+
+        {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -55,20 +52,60 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        
-        {/* --- GOOGLE SCRIPTS END --- */}
-        
-        {/* ClientLayout now handles the Header (Subheader) and Footer visibility logic */}
+
+        {/* ClientLayout handles Header (Subheader) and Footer */}
         <Suspense fallback={null}>
-         <ClientLayout>
-             {children}
-         </ClientLayout>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
         </Suspense>
 
-        <AdmissionPopup /> 
+        {/* =====================================================
+            ADMISSION POPUP — Raw HTML (No React Component)
+            Renders instantly before React hydration.
+            JS logic to show/hide is handled by:
+              1) The inline <script> below (first paint)
+              2) ClientLayout useEffect (on route changes)
+        ===================================================== */}
+        <div
+          id="admission-popup"
+          className="popup-overlay"
+          style={{ display: 'none' }}
+          suppressHydrationWarning={true}
+        >
+          <div className="popup-content">
+            <button id="admission-close-btn" className="close-btn">&times;</button>
+            <div
+              className="npf_wgts"
+              data-height="580px"
+              data-w="c1073fe2350d112d90b129addc24e9ff"
+              suppressHydrationWarning={true}
+            ></div>
+          </div>
+        </div>
 
-        <Sidebar /> {/* <--- 3. Add Sidebar here */}
+        {/*
+          Inline script — runs immediately when the browser parses this tag,
+          BEFORE React hydration. Shows popup on homepage only.
+          The NoPaperForms widget script is loaded in ClientLayout
+          (after hydration) to avoid the iframe hydration mismatch error.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (window.location.pathname === '/' || window.location.pathname === '') {
+                  var popup = document.getElementById('admission-popup');
+                  if (popup) {
+                    popup.style.display = 'flex';
+                  }
+                }
+              })();
+            `
+          }}
+        />
 
+        <Sidebar />
         <Chatbot />
       </body>
     </html>

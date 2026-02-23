@@ -18,6 +18,9 @@ html,
 body {
     overflow-x: hidden;
     width: 100%;
+    /* Prevent iOS Safari from inflating font sizes on orientation change */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 /* This pushes the page content down so it doesn't hide behind the fixed header */
@@ -483,19 +486,18 @@ body {
         top: var(--jec-height);
         left: -100%;
         width: 300px;
-        /* Issue 3 Fix: ensure this width doesn't cause overflow */
         max-width: 80vw;
-        /* Safety check for smaller phones */
         height: calc(100vh - var(--jec-height));
         background: white;
         flex-direction: column;
         transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
         overflow-y: auto;
+        overflow-x: hidden;
+        /* Prevent horizontal shift when dropdown opens */
         align-items: flex-start;
         padding-bottom: 0px;
         justify-content: flex-start;
-        /* Reset align */
     }
 
     .jec-menu-list.jec-active {
@@ -512,19 +514,23 @@ body {
 
     .jec-nav-link {
         width: 100%;
-        /* Increased padding top/bottom to make items taller */
         padding: 22px 25px;
         justify-content: space-between;
-        /* Increased font size for better visibility */
-        font-size: 1.15rem;
+        /* Hardcoded px prevents iOS WebKit from scaling this up */
+        font-size: 16px !important;
         font-weight: 700;
         color: var(--jec-dark);
+        -webkit-text-size-adjust: 100%;
     }
 
     .jec-dropdown {
         position: static !important;
         display: none;
         width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        /* Contain content within menu width */
         background: #f8fafc !important;
         grid-template-columns: 1fr !important;
         padding: 0 !important;
@@ -541,6 +547,11 @@ body {
         padding: 15px 25px 15px 40px;
         white-space: normal;
         min-height: 40px;
+        max-width: 100%;
+        /* Prevent link from stretching beyond panel */
+        box-sizing: border-box;
+        font-size: 14px !important;
+        -webkit-text-size-adjust: 100%;
     }
 
     /* --- MOBILE CONTACT INFO STYLES (Issue 2 Fix) --- */

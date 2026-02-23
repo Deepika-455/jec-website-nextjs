@@ -209,21 +209,35 @@
     box-shadow: 0 5px 15px rgba(252, 163, 17, 0.15);
 }
 
+/* Ribbon container — sits inside the card */
 .human-network-page .hod-badge {
     position: absolute;
-    top: 15px;
-    right: -30px;
+    top: 0;
+    right: 0;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Actual ribbon text strip */
+.human-network-page .hod-badge::before {
+    content: 'HOD';
+    position: absolute;
+    top: 18px;
+    right: -22px;
+    width: 90px;
     background-color: #FCA311;
     color: #fff;
-    font-size: 0.75rem;
-    font-weight: 800;
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    padding: 5px 30px;
+    padding: 5px 0;
     transform: rotate(45deg);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    letter-spacing: 1px;
-    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 /* --- 7. Mobile Responsiveness --- */
