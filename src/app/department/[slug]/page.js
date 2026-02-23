@@ -1,4 +1,4 @@
-import DepartmentContent from './DepartmentContent';
+import DepartmentContent from './DepartmentClient.js';
 
 export async function generateMetadata({ params }) {
     const slug = (await params).slug || '';
