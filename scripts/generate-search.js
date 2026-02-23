@@ -21,23 +21,27 @@ files.forEach((file) => {
     // Skip dynamic folders
     if (file.includes('[') || file.includes(']')) return;
 
+    // Skip admin pages — never show in public search results
+    if (file.includes('/admin/') || file.includes('\\admin\\')) return;
+
+
     let content = fs.readFileSync(file, 'utf8');
     if (content.length < 50) return;
 
     // --- STRATEGY: TAG EXTRACTOR ---
     // Instead of reading the whole file, we ONLY grab text that sits strictly between > and <
     // Example: <div>Hello World</div>  -> We grab "Hello World"
-    
+
     // 1. Find all text segments between HTML tags
     const matches = content.match(/>([^<]+)</g);
-    
+
     if (!matches) return;
 
     // 2. Filter and Clean the matches
     let cleanParts = matches.map(part => {
         // Remove the > and < symbols
         let text = part.replace(/[><]/g, '').trim();
-        
+
         // --- THE FILTER: TRASH ANYTHING THAT LOOKS LIKE CODE ---
         if (text.includes('import ')) return '';
         if (text.includes('export ')) return '';
@@ -49,20 +53,20 @@ files.forEach((file) => {
         if (text.includes('useEffect')) return '';
         if (text.includes('useClient')) return '';
         if (text.includes('//')) return ''; // Comments
-        
+
         // Remove lines with code symbols
-        if (text.includes('{')) return ''; 
-        if (text.includes('}')) return ''; 
-        if (text.includes(';')) return ''; 
-        if (text.includes('=')) return ''; 
-        if (text.includes('(')) return ''; 
-        if (text.includes(')')) return ''; 
+        if (text.includes('{')) return '';
+        if (text.includes('}')) return '';
+        if (text.includes(';')) return '';
+        if (text.includes('=')) return '';
+        if (text.includes('(')) return '';
+        if (text.includes(')')) return '';
 
         return text;
     }).filter(text => text.length > 2); // Keep only real words
 
     let cleanText = cleanParts.join(' ');
-    
+
     // Final Polish: Collapse extra spaces
     cleanText = cleanText.replace(/\s+/g, ' ').trim();
 
