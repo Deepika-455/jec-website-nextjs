@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { db, storage } from '@/firebase'; 
+import { db, storage } from '@/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, query, orderBy } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"; 
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditPlacements = () => {
-    const [activeTab, setActiveTab] = useState('drives'); 
+    const [activeTab, setActiveTab] = useState('drives');
     const [loading, setLoading] = useState(false);
 
     // --- YEARS STATE ---
@@ -286,14 +286,14 @@ const EditPlacements = () => {
                             <input placeholder="Student Name" value={starForm.name} onChange={e => setStarForm({ ...starForm, name: e.target.value })} style={styles.input} />
                             <input placeholder="Company" value={starForm.company} onChange={e => setStarForm({ ...starForm, company: e.target.value })} style={styles.input} />
                             <input placeholder="Package (e.g. 1.56 Cr)" value={starForm.package} onChange={e => setStarForm({ ...starForm, package: e.target.value })} style={styles.input} />
-                            
+
                             {/* --- STAR IMAGE UPLOAD --- */}
                             <div style={{ gridColumn: '1 / -1' }}>
                                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Student Photo</label>
                                 {!starForm.image ? (
-                                    <label 
-                                        style={{ 
-                                            ...styles.uploadBox, 
+                                    <label
+                                        style={{
+                                            ...styles.uploadBox,
                                             backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
                                             borderColor: dragActive ? '#0072C6' : '#ccc'
                                         }}
@@ -303,17 +303,17 @@ const EditPlacements = () => {
                                         onDrop={(e) => handleDrop(e, (url) => setStarForm({ ...starForm, image: url }))}
                                     >
                                         {uploading ? (
-                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin:0 }}>Uploading...</p>
+                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin: 0 }}>Uploading...</p>
                                         ) : (
                                             <>
-                                                <input 
-                                                    type="file" 
-                                                    accept="image/*" 
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
                                                     onChange={(e) => {
                                                         processUpload(e.target.files[0], (url) => setStarForm({ ...starForm, image: url }));
-                                                        e.target.value = null; 
+                                                        e.target.value = null;
                                                     }}
-                                                    style={{ display: 'none' }} 
+                                                    style={{ display: 'none' }}
                                                 />
                                                 <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
                                                     Drag & Drop or Click to Upload
@@ -325,12 +325,12 @@ const EditPlacements = () => {
                                 ) : (
                                     <div style={{ position: 'relative', width: '100px' }}>
                                         <img src={starForm.image} alt="Preview" style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '5px' }} />
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             onClick={() => setStarForm({ ...starForm, image: '' })}
                                             style={{
-                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', 
-                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display:'flex', alignItems:'center', justifyContent:'center'
+                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white',
+                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
                                             }}
                                         >
                                             &times;
@@ -375,14 +375,14 @@ const EditPlacements = () => {
                                 <input type="checkbox" checked={galleryForm.isPremium} onChange={e => setGalleryForm({ ...galleryForm, isPremium: e.target.checked })} />
                                 Is Premium?
                             </label>
-                            
+
                             {/* --- GALLERY IMAGE UPLOAD --- */}
                             <div style={{ gridColumn: '1 / -1' }}>
                                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Student Photo</label>
                                 {!galleryForm.image ? (
-                                    <label 
-                                        style={{ 
-                                            ...styles.uploadBox, 
+                                    <label
+                                        style={{
+                                            ...styles.uploadBox,
                                             backgroundColor: dragActive ? '#e2e8f0' : '#fafafa',
                                             borderColor: dragActive ? '#0072C6' : '#ccc'
                                         }}
@@ -392,17 +392,17 @@ const EditPlacements = () => {
                                         onDrop={(e) => handleDrop(e, (url) => setGalleryForm({ ...galleryForm, image: url }))}
                                     >
                                         {uploading ? (
-                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin:0 }}>Uploading...</p>
+                                            <p style={{ color: '#0072C6', fontWeight: 'bold', margin: 0 }}>Uploading...</p>
                                         ) : (
                                             <>
-                                                <input 
-                                                    type="file" 
-                                                    accept="image/*" 
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
                                                     onChange={(e) => {
                                                         processUpload(e.target.files[0], (url) => setGalleryForm({ ...galleryForm, image: url }));
-                                                        e.target.value = null; 
+                                                        e.target.value = null;
                                                     }}
-                                                    style={{ display: 'none' }} 
+                                                    style={{ display: 'none' }}
                                                 />
                                                 <div style={{ cursor: 'pointer', color: '#0072C6', fontWeight: '600' }}>
                                                     Drag & Drop or Click to Upload
@@ -414,12 +414,12 @@ const EditPlacements = () => {
                                 ) : (
                                     <div style={{ position: 'relative', width: '100px' }}>
                                         <img src={galleryForm.image} alt="Preview" style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '5px' }} />
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             onClick={() => setGalleryForm({ ...galleryForm, image: '' })}
                                             style={{
-                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', 
-                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display:'flex', alignItems:'center', justifyContent:'center'
+                                                position: 'absolute', top: -5, right: -5, background: 'red', color: 'white',
+                                                border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
                                             }}
                                         >
                                             &times;
@@ -496,8 +496,8 @@ const EditPlacements = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {yearDrives.map(d => (
-                                                <tr key={d.id} style={{ borderBottom: '1px solid #eee' }}>
+                                            {yearDrives.map((d, idx) => (
+                                                <tr key={`${year}-${d.id}-${idx}`} style={{ borderBottom: '1px solid #eee' }}>
                                                     <td style={{ padding: '8px' }}>{d.date}</td>
                                                     <td style={{ padding: '8px' }}>{d.company}</td>
                                                     <td style={{ padding: '8px' }}>{d.ctc}</td>
@@ -538,14 +538,14 @@ const styles = {
     editBtn: { padding: '5px 10px', background: '#e0f2fe', color: '#0072C6', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '5px' },
     delBtn: { padding: '5px 10px', background: '#fee2e2', color: 'red', border: 'none', borderRadius: '4px', cursor: 'pointer' },
     // ADDED STYLE FOR DRAG BOX
-    uploadBox: { 
-        border: '2px dashed #cbd5e1', 
-        borderRadius: '6px', 
-        padding: '20px', 
-        textAlign: 'center', 
-        display: 'block', 
-        cursor: 'pointer', 
-        transition: '0.2s all' 
+    uploadBox: {
+        border: '2px dashed #cbd5e1',
+        borderRadius: '6px',
+        padding: '20px',
+        textAlign: 'center',
+        display: 'block',
+        cursor: 'pointer',
+        transition: '0.2s all'
     }
 };
 

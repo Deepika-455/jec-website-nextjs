@@ -2,6 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/firebase';
 import '@/styles/Admin.css';
 import '@/styles/Navigation.css';
 
@@ -16,10 +18,13 @@ export default function AdminLayout({ children }) {
     return <>{children}</>;
   }
 
-  const handleLogout = () => {
-    // Add firebase signout logic here
-    // signOut(auth).then(() => router.push('/admin/login'));
-    router.push('/admin/login');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.replace('/admin/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   // 2. For all other Admin pages, wrap in ProtectedRoute + Sidebar
@@ -29,14 +34,14 @@ export default function AdminLayout({ children }) {
         {/* Sidebar */}
         <aside className="admin-sidebar">
           <div className="admin-brand">JEC Admin</div>
-          
+
           <nav className="admin-nav">
             <p className="menu-label">Dashboard</p>
             <Link href="/admin" className={`nav-item ${pathname === '/admin' ? 'active' : ''}`}>Overview</Link>
-            
+
             <p className="menu-label">Page Content</p>
             <Link href="/admin/manage-home" className={`nav-item ${pathname.includes('manage-home') ? 'active' : ''}`}>Home Page</Link>
-            
+
             <p className="menu-label">Dynamic Updates</p>
             <Link href="/admin/manage-blogs" className={`nav-item ${pathname.includes('manage-blogs') ? 'active' : ''}`}>Blogs & News</Link>
             <Link href="/admin/manage-gallery" className={`nav-item ${pathname.includes('manage-gallery') ? 'active' : ''}`}>Gallery Manager</Link>
