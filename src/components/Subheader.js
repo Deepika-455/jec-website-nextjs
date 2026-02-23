@@ -187,7 +187,10 @@ function Subheader() {
                             <img src="/JEC-LOGO.png" alt="JEC Logo" className="jec-logo-img" />
                         </Link>
 
-                        <div className="jec-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <div className="jec-hamburger" onClick={() => {
+                            setIsMobileMenuOpen(!isMobileMenuOpen);
+                            setActiveDropdown(null);
+                        }}>
                             <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
                         </div>
 
