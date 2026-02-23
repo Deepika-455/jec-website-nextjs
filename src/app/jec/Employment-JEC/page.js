@@ -1,12 +1,12 @@
 import EmploymentContent from './EmploymentContent';
 
 export const metadata = {
-    title: "Careers & Employment at JEC | Jaipur Engineering College",
-    description: "Explore career opportunities at Jaipur Engineering College. We invite passionate educators and professionals to join our team and shape the next generation of engineers.",
-    keywords: "JEC jobs, teaching jobs Jaipur, engineering college careers Rajasthan, faculty jobs JEC, employment at JEC",
+    title: "Jaipur Engineering College Recruitment | Apply for Vacancies | JEC Kukas i Careers in JEC",
+    description: "Jaipur Engineering College is one of the top engineering college in Jaipur. Check latest recruitment and available vacancies in college.",
+    keywords: "JEC is one of the Best Engineering Colleges of Rajasthan in Jaipur city, Offering Top Quality education in various disciplines of Engineering &amp; Technology. Since 2000, Jaipur Engineering College (JEC) has been known to enable students to develop a strong personality.",
     openGraph: {
-        title: "Careers & Employment | Jaipur Engineering College",
-        description: "Join the JEC family. Explore teaching and non-teaching career opportunities at one of Rajasthan's top engineering colleges.",
+        title: "Jaipur Engineering College Recruitment | Apply for Vacancies | JEC Kukas i Careers in JEC",
+        description: "Jaipur Engineering College is one of the top engineering college in Jaipur. Check latest recruitment and available vacancies in college.",
         url: "https://www.jeckukas.org.in/jec/Employment-JEC",
         siteName: "Jaipur Engineering College",
         type: "website",
